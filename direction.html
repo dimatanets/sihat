@@ -3,39 +3,225 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Страница направления — Сихат РКБ (макет)</title>
-  <meta name="description" content="Дизайн-макет сайта платного отделения РКБ «Сихат».">
+  <title>Чек-ап программы — Сихат РКБ (макет)</title>
+  <meta name="description" content="Направление платного отделения РКБ «Сихат»: описание, этапы, услуги и цены, врачи, документы, запись.">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/placeholder.css">
+  <link rel="stylesheet" href="css/pages/direction.css">
   <script src="js/a11y.js"></script>
 </head>
+<!--
+  One template for every direction (A-02). js/direction.js fills the [data-dir-…] slots from
+  data/direction-pages.js by the URL parameter: direction.html?d=checkup | direction.html?d=analyses.
+  In Bitrix this is the detail template of the directions info block; the slots are its fields.
+-->
 <body data-page="direction">
   <a class="skip-link" href="#main">Перейти к содержимому</a>
 
   <!-- Shared header (js/layout.js, A-11) -->
   <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><span class="logo__mark" aria-hidden="true"></span><span class="logo__text"><span class="logo__name">Сихат</span><span class="logo__sub">Платное отделение РКБ</span></span></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
 
-  <main id="main" class="container placeholder">
-    <span class="placeholder__label">Сихат РКБ · дизайн-макет</span>
-    <h1>Страница направления</h1>
-    <p class="placeholder__lead">Здесь будет страница направления (этап P4).</p>
-    <nav class="placeholder__nav" aria-label="Страницы макета">
-      <a class="btn btn--secondary" href="index.html">Главная</a>
-      <a class="btn btn--primary" href="direction.html" aria-current="page">Страница направления</a>
-      <a class="btn btn--secondary" href="kit.html">Компоненты</a>
+  <main id="main" class="direction container">
+
+    <!-- 1. Breadcrumbs, title, «Записаться» -->
+    <section class="page-head" aria-labelledby="page-title">
+      <div class="page-head__main">
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <ol class="breadcrumbs__list">
+            <li class="breadcrumbs__item"><a href="index.html">Главная</a></li>
+            <li class="breadcrumbs__item"><a href="index.html#directions">Направления</a></li>
+            <li class="breadcrumbs__item"><span aria-current="page" data-dir-text="title">Чек-ап программы</span></li>
+          </ol>
+        </nav>
+        <div class="page-head__intro">
+          <h1 class="page-head__title" id="page-title" data-dir-text="title">Чек-ап программы</h1>
+          <p class="page-head__lead" data-dir-text="lead"></p>
+          <ul class="page-head__facts" data-dir-facts aria-label="Коротко о направлении"></ul>
+        </div>
+        <div class="page-head__actions">
+          <!-- Booking type comes from the services of the direction (A-03): request for check-ups, lab visit for tests -->
+          <button class="btn btn--primary" type="button" data-book data-dir-book>Записаться</button>
+          <a class="phone-link" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
+        </div>
+      </div>
+      <!-- A-07: photo of the direction goes here; placeholder until photos arrive -->
+      <div class="page-head__media media media--placeholder" role="img" aria-label="Здесь будет фото направления" data-dir-media><span class="icon icon--clipboard-heart" aria-hidden="true"></span></div>
+    </section>
+
+    <!-- 2. Anchor navigation (sticky under the header, highlights the section in view) -->
+    <nav class="anchor-nav direction__nav" aria-label="Разделы страницы" data-anchor-nav>
+      <ul class="anchor-nav__list">
+        <li><a class="anchor-nav__link" href="#about">О направлении</a></li>
+        <li><a class="anchor-nav__link" href="#steps">Этапы</a></li>
+        <li><a class="anchor-nav__link" href="#services">Услуги и цены</a></li>
+        <li><a class="anchor-nav__link" href="#doctors">Специалисты</a></li>
+        <li><a class="anchor-nav__link" href="#documents">Документы</a></li>
+        <li><a class="anchor-nav__link" href="#bring">Что взять с собой</a></li>
+        <li><a class="anchor-nav__link" href="#booking">Записаться</a></li>
+      </ul>
     </nav>
-    <p class="placeholder__card">Шапка и подвал общие для всех страниц (этап P2). Компоненты и их состояния — на странице «Компоненты».</p>
+
+    <!-- 3. Description -->
+    <section class="direction-section" id="about" aria-labelledby="about-title">
+      <div class="section-head direction-section__head">
+        <div class="section-head__text">
+          <p class="section-head__eyebrow">О направлении</p>
+          <h2 id="about-title">Описание</h2>
+        </div>
+      </div>
+      <div class="about">
+        <div class="about__text" data-dir-about></div>
+        <aside class="about__aside" data-dir-includes aria-labelledby="about-includes-title"></aside>
+      </div>
+      <ul class="features about__features" data-dir-features></ul>
+    </section>
+
+    <!-- 4. Steps -->
+    <section class="direction-section" id="steps" aria-labelledby="steps-title">
+      <div class="section-head direction-section__head">
+        <div class="section-head__text">
+          <p class="section-head__eyebrow">Этапы</p>
+          <h2 id="steps-title">Как получить услугу</h2>
+          <p class="section-head__lead" data-dir-text="stepsLead"></p>
+        </div>
+      </div>
+      <ol class="steps" data-dir-steps></ol>
+    </section>
+
+    <!-- 5. Services with prices and the full price list -->
+    <section class="direction-section" id="services" aria-labelledby="services-title">
+      <div class="section-head direction-section__head">
+        <div class="section-head__text">
+          <p class="section-head__eyebrow">Услуги</p>
+          <h2 id="services-title">Услуги и цены</h2>
+          <p class="section-head__lead" data-dir-text="servicesLead"></p>
+        </div>
+        <a class="link-arrow" href="#" download data-dir-pricelist><span class="icon icon--file-type-xls" aria-hidden="true"></span><span data-dir-pricelist-label>Скачать полный прайс-лист</span></a>
+      </div>
+      <div class="services" data-dir-services></div>
+    </section>
+
+    <!-- 6. Doctors (data/doctors.js, filtered by direction) -->
+    <section class="direction-section" id="doctors" aria-labelledby="doctors-title">
+      <div class="section-head direction-section__head">
+        <div class="section-head__text">
+          <p class="section-head__eyebrow">Специалисты</p>
+          <h2 id="doctors-title">Врачи</h2>
+          <p class="section-head__lead" data-dir-text="doctorsLead"></p>
+        </div>
+        <div class="section-head__actions">
+          <a class="link-arrow" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
+          <div class="section-head__controls">
+            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="dir-doctors-track" aria-label="Предыдущие врачи"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
+            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="dir-doctors-track" aria-label="Следующие врачи"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="scroller__track" id="dir-doctors-track" data-scroller tabindex="0" role="region" aria-label="Список врачей, прокручивается по горизонтали">
+        <ul class="scroller__list" data-dir-doctors></ul>
+      </div>
+    </section>
+
+    <!-- 7–8. Documents and what to bring, side by side on desktop -->
+    <div class="direction-pair">
+      <section class="direction-section" id="documents" aria-labelledby="documents-title">
+        <div class="section-head direction-section__head">
+          <div class="section-head__text">
+            <p class="section-head__eyebrow">Пациентам</p>
+            <h2 id="documents-title">Документы</h2>
+          </div>
+        </div>
+        <ul class="doc-list" data-dir-documents></ul>
+      </section>
+      <section class="direction-section" id="bring" aria-labelledby="bring-title">
+        <div class="section-head direction-section__head">
+          <div class="section-head__text">
+            <p class="section-head__eyebrow">Подготовка</p>
+            <h2 id="bring-title">Что взять с собой</h2>
+          </div>
+        </div>
+        <ul class="checklist checklist--1col bring" data-dir-bring></ul>
+      </section>
+    </div>
+
+    <!-- 9. Request form at the end (A-24 fields; services of this direction in the list) -->
+    <section class="direction-section" aria-labelledby="booking-title">
+      <div class="form-panel" id="booking">
+        <div class="form-panel__text">
+          <h2 class="form-panel__title" id="booking-title">Оставить заявку</h2>
+          <p class="form-panel__lead" data-dir-text="formLead"></p>
+          <div class="form-panel__contacts">
+            <a class="phone-link phone-link--inverse" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Или позвоните</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
+          </div>
+        </div>
+        <div class="form-panel__card">
+          <form class="form" data-validate novalidate aria-labelledby="booking-title">
+            <div class="form__row">
+              <div class="field">
+                <label class="field__label" for="db-name">Имя <span class="field__req" aria-hidden="true">*</span></label>
+                <input class="field__control" id="db-name" name="name" type="text" autocomplete="name" required data-msg-required="Напишите, как к вам обращаться">
+                <p class="field__msg" id="db-name-msg" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="db-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>
+                <input class="field__control" id="db-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required data-msg-required="Укажите телефон, чтобы мы могли связаться">
+                <p class="field__msg" id="db-phone-msg" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="db-service">Услуга</label>
+              <div class="field__wrap">
+                <select class="field__control" id="db-service" name="service" data-dir-service-options>
+                  <option value="">Пока не знаю</option>
+                </select>
+                <span class="icon icon--chevron-down field__icon" aria-hidden="true"></span>
+              </div>
+            </div>
+            <fieldset class="field choices">
+              <legend class="field__label">Удобный способ связи</legend>
+              <div class="choices__list">
+                <label class="slot" for="db-c-call"><input class="slot__input" type="radio" id="db-c-call" name="contact" value="call" checked><span class="slot__text"><span class="icon icon--phone" aria-hidden="true"></span>Звонок</span></label>
+                <label class="slot" for="db-c-sms"><input class="slot__input" type="radio" id="db-c-sms" name="contact" value="sms"><span class="slot__text"><span class="icon icon--device-mobile-message" aria-hidden="true"></span>Сообщение на мобильный</span></label>
+                <label class="slot" for="db-c-tg"><input class="slot__input" type="radio" id="db-c-tg" name="contact" value="telegram"><span class="slot__text"><span class="icon icon--brand-telegram" aria-hidden="true"></span>Telegram</span></label>
+                <label class="slot" for="db-c-wa"><input class="slot__input" type="radio" id="db-c-wa" name="contact" value="whatsapp"><span class="slot__text"><span class="icon icon--brand-whatsapp" aria-hidden="true"></span>WhatsApp</span></label>
+                <!-- A-15: MAX has no Tabler icon -->
+                <label class="slot" for="db-c-max"><input class="slot__input" type="radio" id="db-c-max" name="contact" value="max"><span class="slot__text"><span class="icon icon--message-circle" aria-hidden="true"></span>MAX</span></label>
+              </div>
+            </fieldset>
+            <div class="field">
+              <label class="check" for="db-consent"><input class="check__input" id="db-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>
+              <p class="field__msg" id="db-consent-msg" aria-live="polite"></p>
+            </div>
+            <div><button class="btn btn--primary" type="submit">Отправить заявку</button></div>
+          </form>
+          <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
+            <span class="icon icon--circle-check" aria-hidden="true"></span>
+            <div>
+              <p class="alert__title">Заявка отправлена</p>
+              <p>Администратор свяжется с вами выбранным способом в рабочее время: пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>. Это макет: данные никуда не отправляются.</p>
+              <p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Shared footer (js/layout.js, A-11) -->
   <div data-include="footer"><noscript><p class="container">ГАУЗ «РКБ МЗ РТ», платное отделение «Сихат» · <a href="tel:+78432312090">+7 (843) 231-20-90</a></p></noscript></div>
 
   <script src="data/site.js"></script>
+  <script src="data/directions.js"></script>
+  <script src="data/doctors.js"></script>
+  <script src="data/services.js"></script>
+  <script src="data/direction-pages.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/direction.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
+  <script src="js/booking.js"></script>
 </body>
 </html>

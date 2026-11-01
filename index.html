@@ -28,8 +28,8 @@
           <h1 class="hero__title" id="hero-title">Забота о здоровье с врачами клиники экспертного уровня</h1>
           <p class="hero__lead">Платные медицинские услуги Республиканской клинической больницы Татарстана: консультации врачей, чек-апы, диагностика, хирургия и роды.</p>
           <div class="hero__actions">
-            <!-- A-23 / P4 hook: for now a plain link to the form below (#booking). P4: point it to the booking flow (e.g. data-modal-open). -->
-            <a class="btn btn--inverse" href="#booking" data-hero-book>Записаться на приём</a>
+            <!-- A-23: opens the booking flow (js/booking.js); without JS the link still leads to the form below. -->
+            <a class="btn btn--inverse" href="#booking" data-hero-book data-book>Записаться на приём</a>
             <a class="btn btn--inverse-outline hero__phone" href="tel:+78432312090"><span class="icon icon--phone" aria-hidden="true"></span><span><span class="visually-hidden">Позвонить: </span>+7 (843) 231-20-90</span></a>
             <p class="hero__hours">Пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span></p>
           </div>
@@ -39,11 +39,11 @@
           <!-- A-21: same set and order as the directions section below -->
           <ul class="hero__quick-list">
             <li><a class="btn btn--inverse-outline btn--xs" href="#">Роды</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html">Чек-ап программы</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html?d=checkup">Чек-ап программы</a></li>
             <li><a class="btn btn--inverse-outline btn--xs" href="#">Хирургия</a></li>
             <li><a class="btn btn--inverse-outline btn--xs" href="#">Консультации врачей</a></li>
             <li><a class="btn btn--inverse-outline btn--xs" href="#">Диагностика</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="#">Анализы</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html?d=analyses">Анализы</a></li>
           </ul>
         </nav>
       </div>
@@ -158,9 +158,11 @@
   <script src="data/site.js"></script>
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
+  <script src="data/services.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
+  <script src="js/booking.js"></script>
 </body>
 </html>

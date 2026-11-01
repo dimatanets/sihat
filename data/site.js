@@ -62,7 +62,8 @@ window.SIHAT_DATA = {
         title: "Услуги",
         links: [
           { label: "Направления", href: "#", page: "services" },
-          { label: "Чек-ап программы", href: "direction.html", page: "direction" },
+          { label: "Чек-ап программы", href: "direction.html?d=checkup", page: "direction" },
+          { label: "Анализы", href: "direction.html?d=analyses", page: "direction" },
           { label: "Цены", href: "#", page: "prices" },
           { label: "Врачи", href: "#", page: "doctors" }
         ]

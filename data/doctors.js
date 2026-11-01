@@ -10,7 +10,7 @@
     role        string   position (head of department etc.), shortened from the current site
     position    string   full position and qualification text as on the current site
     regalia     string[] badges on the card: category, degree, honorary title
-    directions  string[] ids from data/directions.js
+    directions  string[] ids from data/directions.js (A-26: who is shown on a direction page)
     href        string   doctor page; "#" until it is built (A-13)
     photo       string|null  photo path; null until photos arrive (A-07)
     home        number|null  position on the home page; null = not on the home page (A-22)
@@ -59,7 +59,7 @@ window.SIHAT_DOCTORS = [
     role: "Руководитель Центра клинической иммунологии",
     position: "Руководитель Центра клинической иммунологии, врач аллерголог-иммунолог высшей категории, кандидат медицинских наук, член Российской Ассоциации аллергологов и клинических иммунологов, член Европейской академии аллергологии и клинической иммунологии",
     regalia: ["Высшая категория", "к.м.н."],
-    directions: ["allergologiya", "konsultacii"],
+    directions: ["allergologiya", "konsultacii", "analizy"],
     href: "#",
     photo: null,
     home: 4
@@ -83,7 +83,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующий отделением неврологии № 1",
     position: "Заведующий отделением неврологии № 1, врач-невролог высшей категории, Заслуженный врач РТ",
     regalia: ["Высшая категория", "Заслуженный врач РТ"],
-    directions: ["konsultacii"],
+    directions: ["konsultacii", "chek-ap"],
     href: "#",
     photo: null,
     home: 6
@@ -95,7 +95,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующая акушерским отделением Перинатального центра",
     position: "Заведующая акушерским отделением, врач-акушер-гинеколог высшей категории Перинатального центра",
     regalia: ["Высшая категория"],
-    directions: ["rody", "konsultacii"],
+    directions: ["rody", "konsultacii", "chek-ap"],
     href: "#",
     photo: null,
     home: 7
@@ -107,7 +107,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующая медико-генетической консультацией",
     position: "Заведующая медико-генетической консультацией, врач-генетик высшей категории, Заслуженный врач РТ",
     regalia: ["Высшая категория", "Заслуженный врач РТ"],
-    directions: ["konsultacii"],
+    directions: ["konsultacii", "analizy"],
     href: "#",
     photo: null,
     home: 8
@@ -119,7 +119,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующий отделением гематологии",
     position: "Заведующий отделением гематологии, врач-гематолог",
     regalia: [],
-    directions: ["konsultacii"],
+    directions: ["konsultacii", "chek-ap", "analizy"],
     href: "#",
     photo: null,
     home: null
@@ -131,7 +131,7 @@ window.SIHAT_DOCTORS = [
     role: "Врач-невролог",
     position: "Врач-невролог высшей категории, кандидат медицинских наук",
     regalia: ["Высшая категория", "к.м.н."],
-    directions: ["konsultacii"],
+    directions: ["konsultacii", "chek-ap"],
     href: "#",
     photo: null,
     home: null

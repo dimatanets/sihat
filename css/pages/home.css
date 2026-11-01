@@ -1,7 +1,7 @@
 /* Home page (index.html): section rhythm and the hero. Shared parts come from components.css. */
 
 @media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; } /* «Записаться на приём» in the hero scrolls to the form */
+  html { scroll-behavior: smooth; } /* «Записаться на приём» without JS scrolls to the form */
 }
 
 .home { padding-top: var(--grid-gap); }

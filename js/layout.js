@@ -1,9 +1,11 @@
 /*
-  Shared layout: header (with accessibility panel), mobile menu, quick booking modal and footer.
+  Shared layout: header (with accessibility panel), mobile menu and footer.
+  Every «Записаться» here is a [data-book] button: js/booking.js opens the booking flow (A-03, A-16).
   A-11: one source for every page without network requests. Each page has placeholders:
     <div data-include="header"><noscript>…fallback…</noscript></div>
     <div data-include="footer"><noscript>…fallback…</noscript></div>
-  and loads, at the end of <body>: data/site.js, js/layout.js, js/ui.js, js/forms.js.
+  and loads, at the end of <body>: data/site.js, data/directions.js, data/doctors.js, data/services.js, js/layout.js,
+  js/render.js, js/ui.js, js/forms.js, js/booking.js.
   The placeholder is replaced by the markup below. The current page is marked from <body data-page="…">.
   For Bitrix: each function below returns the exact HTML of one template part (header.php / footer.php).
 */
@@ -23,7 +25,11 @@
     return '<span class="icon icon--' + name + (extra ? " " + extra : "") + '" aria-hidden="true"></span>';
   }
   function current(link) {
-    return link.page && link.page === page ? ' aria-current="page"' : "";
+    if (!link.page || link.page !== page) return "";
+    // One template for several directions (direction.html?d=…): only the link with the same ?d is current.
+    var q = link.href.split("?")[1];
+    if (q && "?" + q !== (location.search || "?d=checkup")) return "";
+    return ' aria-current="page"';
   }
   var mainPhone = D.phones[0];
 
@@ -136,13 +142,12 @@
       '<div class="site-header__actions">' +
       '<a class="btn btn--tint btn--xs btn--icon site-header__call" href="' + mainPhone.href +
       '" aria-label="Позвонить: ' + esc(mainPhone.number) + '">' + icon("phone") + "</a>" +
-      // A-16: «Записаться» opens the quick request modal; the full booking flow comes in P4.
-      '<button class="btn btn--primary btn--book" type="button" data-modal-open="modal-booking">Записаться</button>' +
+      // A-16: «Записаться» opens the booking flow without a preselected service (js/booking.js).
+      '<button class="btn btn--primary btn--book" type="button" data-book>Записаться</button>' +
       '<button class="btn btn--tint btn--xs site-header__menu" type="button" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">' +
       icon("menu-2") + '<span class="site-header__menu-text">Меню</span></button>' +
       "</div></div></header>" +
-      mobileMenu() +
-      bookingModal()
+      mobileMenu()
     );
   }
 
@@ -158,7 +163,7 @@
       D.phones.map(function (p) { return phoneLink(p, { inverse: true, label: true }); }).join("") +
       '<p class="mnav__text">' + esc(D.hours) + "</p>" +
       "</div>" +
-      '<button class="btn btn--inverse btn--block" type="button" data-modal-open="modal-booking">Записаться на приём</button>' +
+      '<button class="btn btn--inverse btn--block" type="button" data-book>Записаться на приём</button>' +
       '<nav aria-label="Меню сайта">' +
       D.nav.groups.map(function (g) {
         return '<div class="mnav__group"><p class="mnav__label">' + esc(g.title) + '</p><ul class="mnav__list">' +
@@ -186,51 +191,6 @@
     );
   }
 
-  // Quick request: name, phone, direction, consent (A-16). Validation: js/forms.js.
-  function bookingModal() {
-    return (
-      '<dialog class="modal" id="modal-booking" aria-labelledby="modal-booking-title">' +
-      '<div class="modal__handle" aria-hidden="true"></div>' +
-      '<div class="modal__head"><div><h2 class="modal__title" id="modal-booking-title">Записаться на приём</h2>' +
-      '<p class="modal__lead">Оставьте телефон: администратор перезвонит в рабочее время, подберёт врача и время приёма.</p></div>' +
-      '<button class="btn btn--tint btn--s btn--icon" type="button" data-modal-close aria-label="Закрыть">' + icon("x") + "</button></div>" +
-      '<div class="modal__body">' +
-      '<form class="form" data-validate novalidate>' +
-      field("mb-name", "Имя", '<input class="field__control" id="mb-name" name="name" type="text" autocomplete="name" required>') +
-      field("mb-phone", "Телефон", '<input class="field__control" id="mb-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required>') +
-      field("mb-direction", "Направление", '<div class="field__wrap"><select class="field__control" id="mb-direction" name="direction">' +
-        '<option value="">Не знаю, нужна консультация</option>' +
-        D.directions.map(function (d) { return "<option>" + esc(d) + "</option>"; }).join("") +
-        "</select>" + icon("chevron-down", "field__icon") + "</div>", true) +
-      consent("mb-consent") +
-      '<button class="btn btn--primary btn--block" type="submit">Отправить заявку</button>' +
-      '<p class="form__note">Или позвоните: <a href="' + mainPhone.href + '">' + esc(mainPhone.number) + "</a>, " + esc(D.hours) + ".</p>" +
-      "</form>" +
-      '<div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>' + icon("circle-check") +
-      '<div><p class="alert__title">Заявка отправлена</p><p>Администратор перезвонит вам в рабочее время. Это макет: данные никуда не отправляются.</p></div></div>' +
-      "</div></dialog>"
-    );
-  }
-
-  function field(id, label, control, optional) {
-    return (
-      '<div class="field"><label class="field__label" for="' + id + '">' + esc(label) +
-      (optional ? "" : ' <span class="field__req" aria-hidden="true">*</span>') + "</label>" +
-      control + '<p class="field__msg" id="' + id + '-msg" aria-live="polite"></p></div>'
-    );
-  }
-
-  function consent(id) {
-    var docs = D.legal.docs;
-    return (
-      '<div class="field"><label class="check" for="' + id + '">' +
-      '<input class="check__input" id="' + id + '" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку">' +
-      '<span class="check__text">Согласен на <a href="' + docs[1].href + '">обработку персональных данных</a> и принимаю ' +
-      '<a href="' + docs[0].href + '">политику конфиденциальности</a></span></label>' +
-      '<p class="field__msg" id="' + id + '-msg" aria-live="polite"></p></div>'
-    );
-  }
-
   function footer() {
     var L = D.legal;
     return (
@@ -238,7 +198,7 @@
       '<div class="site-footer__main">' +
       '<div class="site-footer__brand">' + logo(false) +
       '<p class="site-footer__about">' + esc(D.brand.about) + "</p>" +
-      '<button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться на приём</button>' +
+      '<button class="btn btn--primary btn--s" type="button" data-book>Записаться на приём</button>' +
       "</div>" +
       '<nav class="site-footer__nav" aria-label="Разделы сайта">' +
       D.nav.groups.map(function (g) {

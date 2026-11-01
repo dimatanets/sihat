@@ -45,6 +45,8 @@
           <li><a class="anchor-nav__link" href="#content">Этапы и документы</a></li>
           <li><a class="anchor-nav__link" href="#form-panel">Блок записи</a></li>
           <li><a class="anchor-nav__link" href="#modal">Окна</a></li>
+          <li><a class="anchor-nav__link" href="#flows">Запись и оплата</a></li>
+          <li><a class="anchor-nav__link" href="#long-list">Длинный список</a></li>
           <li><a class="anchor-nav__link" href="#footer">Подвал</a></li>
         </ul>
       </nav>
@@ -421,7 +423,7 @@
                   <li class="badge">Стаж 18 лет</li>
                 </ul>
               </div>
-              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-modal-open="modal-booking">Записаться</button></div>
+              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-book>Записаться</button></div>
             </article>
           </li>
           <li>
@@ -435,7 +437,7 @@
                   <li class="badge">Стаж 11 лет</li>
                 </ul>
               </div>
-              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-modal-open="modal-booking">Записаться</button></div>
+              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-book>Записаться</button></div>
             </article>
           </li>
           <li>
@@ -480,7 +482,7 @@
     <!-- ============================================================ Services -->
     <section class="container kit-section" id="services" aria-labelledby="h-services">
       <h2 id="h-services">Строка услуги и аккордеон</h2>
-      <p class="kit-section__note">Строка: название, краткое описание, код по номенклатуре, цена, «Записаться» и «Оплатить» (A-04, A-20). Аккордеон — на странице цен: направление, внутри услуги.</p>
+      <p class="kit-section__note">Строка: название, краткое описание, код по номенклатуре, цена, «Записаться» и «Оплатить» (A-04, A-20). Кнопки настоящие: <code>[data-book data-service]</code> открывает запись, <code>[data-pay]</code> — оплату. Аккордеон — на странице цен: направление, внутри услуги. Длинный список с поиском и группами — в разделе «Запись и оплата» ниже.</p>
 
       <div class="kit-block">
         <h3>Строка услуги</h3>
@@ -493,8 +495,8 @@
             </div>
             <p class="service-row__price">4 400 ₽</p>
             <div class="service-row__actions">
-              <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
-              <a class="btn btn--secondary btn--s" href="#"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</a>
+              <button class="btn btn--primary btn--s" type="button" data-book data-service="cons-akusher">Записаться</button>
+              <button class="btn btn--secondary btn--s" type="button" data-pay="cons-akusher"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button>
             </div>
           </article>
           <article class="service-row is-hover">
@@ -505,8 +507,8 @@
             </div>
             <p class="service-row__price">2 500 ₽</p>
             <div class="service-row__actions">
-              <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
-              <a class="btn btn--secondary btn--s" href="#"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</a>
+              <button class="btn btn--primary btn--s" type="button" data-book data-service="cons-kardiolog">Записаться</button>
+              <button class="btn btn--secondary btn--s" type="button" data-pay="cons-kardiolog"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button>
             </div>
           </article>
           <article class="service-row">
@@ -516,7 +518,7 @@
             </div>
             <p class="service-row__price">131 450 ₽</p>
             <div class="service-row__actions">
-              <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
+              <button class="btn btn--primary btn--s" type="button" data-book data-direction="rody">Записаться</button>
               <button class="btn btn--secondary btn--s" type="button" disabled><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button>
             </div>
           </article>
@@ -537,8 +539,8 @@
                   </div>
                   <p class="service-row__price">3 200 ₽</p>
                   <div class="service-row__actions">
-                    <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
-                    <a class="btn btn--secondary btn--s" href="#"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</a>
+                    <button class="btn btn--primary btn--s" type="button" data-book data-service="cons-kardiolog">Записаться</button>
+                    <button class="btn btn--secondary btn--s" type="button" data-pay="cons-kardiolog"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button>
                   </div>
                 </article>
               </div>
@@ -706,11 +708,101 @@
     <!-- ============================================================ Modal -->
     <section class="container kit-section" id="modal" aria-labelledby="h-modal">
       <h2 id="h-modal">Модальное окно и нижняя панель</h2>
-      <p class="kit-section__note">На десктопе окно по центру, на телефоне — нижняя панель (bottom sheet). Закрывается крестиком, Esc или кликом по затемнению; фокус возвращается на кнопку. Форма в окне проверяется и показывает сообщение об успехе.</p>
+      <p class="kit-section__note">На десктопе окно по центру, на телефоне — нижняя панель (bottom sheet). Закрывается крестиком, Esc или кликом по затемнению; фокус возвращается на кнопку. Запись и оплата — окно пошагового сценария (<code>.modal--flow</code>), на телефоне оно на весь экран; см. раздел «Запись и оплата».</p>
       <div class="kit-row">
-        <button class="btn btn--primary" type="button" data-modal-open="modal-booking">Открыть форму записи</button>
         <button class="btn btn--secondary" type="button" data-modal-open="kit-modal-info">Открыть информационное окно</button>
       </div>
+    </section>
+
+
+    <!-- ============================================================ Booking and payment flows (P4) -->
+    <section class="container kit-section" id="flows" aria-labelledby="h-flows">
+      <h2 id="h-flows">Запись и оплата</h2>
+      <p class="kit-section__note">Сценарии из <code>js/booking.js</code> (A-03, A-04, A-25). Открываются кнопками с <code>data-book</code> (можно добавить <code>data-service</code>, <code>data-doctor</code> или <code>data-direction</code>) и <code>data-pay="id услуги"</code>, из JS — <code>Sihat.booking.open({ service, doctor, direction }, кнопка)</code> и <code>Sihat.payment.open(id, кнопка)</code>. В шапке окна — «Назад», шаг и прогресс; при закрытии с введёнными данными окно спрашивает «Закрыть запись?».</p>
+
+      <div class="kit-block">
+        <h3>Открыть сценарий</h3>
+        <div class="kit-row">
+          <button class="btn btn--primary" type="button" data-book>Консультация: с выбора услуги</button>
+          <button class="btn btn--secondary" type="button" data-book data-doctor="gilmanov-albert-anasovich">К врачу: сразу дата и время</button>
+          <button class="btn btn--secondary" type="button" data-book data-service="lab-ttg">Анализ: визит в будни 8–12</button>
+          <button class="btn btn--secondary" type="button" data-book data-service="checkup-female">Чек-ап: заявка менеджеру</button>
+          <button class="btn btn--secondary" type="button" data-pay="cons-kardiolog"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплата услуги</button>
+        </div>
+      </div>
+
+      <div class="kit-grid--2 kit-grid kit-block">
+        <div>
+          <h3 class="kit-title">Карточка выбора (радио)</h3>
+          <p class="kit-section__note"><code>label.option</code> → <code>input.option__input</code> + <code>.option__box</code>: фото (необязательно), название и текст, цена справа, кружок выбора. Состояния: обычное, наведение, фокус, выбрано, ошибка группы.</p>
+          <fieldset class="field options">
+            <legend class="visually-hidden">Пример выбора врача</legend>
+            <div class="options__list">
+              <label class="option is-checked" for="kit-opt-1"><input class="option__input" type="radio" id="kit-opt-1" name="kit-opt" checked><span class="option__box"><span class="option__media media media--placeholder"><span class="icon icon--stethoscope" aria-hidden="true"></span></span><span class="option__body"><span class="option__title">Любой врач</span><span class="option__text">Выбрано</span></span><span class="option__mark" aria-hidden="true"></span></span></label>
+              <label class="option is-hover" for="kit-opt-2"><input class="option__input" type="radio" id="kit-opt-2" name="kit-opt"><span class="option__box"><span class="option__media media media--placeholder"><span class="icon icon--user" aria-hidden="true"></span></span><span class="option__body"><span class="option__title">Гильманов Альберт Анасович</span><span class="option__text">Наведение</span><span class="option__tags"><span class="badge">Высшая категория</span></span></span><span class="option__mark" aria-hidden="true"></span></span></label>
+              <label class="option is-focus" for="kit-opt-3"><input class="option__input" type="radio" id="kit-opt-3" name="kit-opt"><span class="option__box"><span class="option__body"><span class="option__title">Приём врача-кардиолога первичный</span><span class="option__text">Фокус с клавиатуры</span></span><span class="option__aside">3 800 ₽</span><span class="option__mark" aria-hidden="true"></span></span></label>
+            </div>
+          </fieldset>
+        </div>
+        <div>
+          <h3 class="kit-title">Сводка и экран результата</h3>
+          <p class="kit-section__note"><code>dl.summary</code> (компактная — <code>.summary--compact</code>, вверху шагов), <code>.result</code> — итог записи, заявки или оплаты, <code>.pay-total</code> — сумма в оплате.</p>
+          <div class="result"><span class="result__icon"><span class="icon icon--circle-check icon--l" aria-hidden="true"></span></span><p class="result__text">Ждём вас 4 ноября, среда в 10:30.</p></div>
+          <div class="kit-mt">
+            <dl class="summary">
+              <div class="summary__row"><dt class="summary__term">Услуга</dt><dd class="summary__value">Приём врача-кардиолога первичный <span class="summary__price">3 800 ₽</span></dd></div>
+              <div class="summary__row"><dt class="summary__term">Врач</dt><dd class="summary__value">Гильманов Альберт Анасович</dd></div>
+              <div class="summary__row"><dt class="summary__term">Дата и время</dt><dd class="summary__value">4 ноября, среда, 10:30</dd></div>
+            </dl>
+          </div>
+          <div class="pay-total kit-mt"><p class="pay-total__title">Тиреотропный гормон (ТТГ)</p><p class="pay-total__code">Код услуги A09.05.065</p><p class="pay-total__price">500 ₽</p></div>
+        </div>
+      </div>
+
+      <div class="kit-grid--2 kit-grid kit-block">
+        <div>
+          <h3 class="kit-title">«Закрыть запись?»</h3>
+          <p class="kit-section__note"><code>.modal__confirm</code> — слой поверх окна сценария; остальное окно на это время <code>inert</code>. Esc или «Продолжить запись» возвращают к шагу.</p>
+          <div class="modal__confirm modal__confirm--static">
+            <div class="modal__confirm-box">
+              <p class="modal__confirm-title">Закрыть запись?</p>
+              <p class="modal__confirm-text">Введённые данные не сохранятся.</p>
+              <div class="modal__confirm-actions"><button class="btn btn--primary btn--s" type="button">Продолжить запись</button><button class="btn btn--secondary btn--s" type="button">Закрыть</button></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="kit-title">Преимущества направления</h3>
+          <p class="kit-section__note"><code>ul.features</code> → <code>li.feature</code>: иконка, заголовок, текст.</p>
+          <ul class="features">
+            <li class="feature"><span class="feature__icon"><span class="icon icon--certificate" aria-hidden="true"></span></span><h4 class="feature__title">Врачи экспертного уровня</h4><p class="feature__text">Кандидаты и доктора медицинских наук.</p></li>
+            <li class="feature"><span class="feature__icon"><span class="icon icon--clock" aria-hidden="true"></span></span><h4 class="feature__title">Персональное сопровождение</h4><p class="feature__text">Администратор на каждом этапе.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Long service list -->
+    <section class="container kit-section" id="long-list" aria-labelledby="h-long-list">
+      <h2 id="h-long-list">Длинный список услуг</h2>
+      <p class="kit-section__note">Для направлений, где услуг больше восьми (A-28): поиск по названию, коду и описанию (<code>.search</code>), чипы групп (<code>.filter-chips</code>, на телефоне листаются в одну строку), группы (<code>.service-group</code>) с компактными строками (<code>.service-row--compact</code>: на телефоне цена и кнопки в одну линию), в каждой группе первые 6 и «Показать все», пустой результат (<code>.empty</code>). Живой пример — <a href="direction.html?d=analyses#services">страница «Анализы»</a>.</p>
+      <div>
+        <div class="field"><label class="field__label" for="kit-search">Поиск по услугам</label><div class="search"><span class="icon icon--search" aria-hidden="true"></span><input class="field__control" id="kit-search" type="search" placeholder="Название или код услуги"></div></div>
+        <fieldset class="filter-chips kit-mt"><legend class="visually-hidden">Группа услуг</legend><div class="filter-chips__list">
+          <label class="slot" for="kit-f-1"><input class="slot__input" type="radio" id="kit-f-1" name="kit-f" checked><span class="slot__text">Все <span class="filter-chips__count">43</span></span></label>
+          <label class="slot" for="kit-f-2"><input class="slot__input" type="radio" id="kit-f-2" name="kit-f"><span class="slot__text">Гормоны <span class="filter-chips__count">8</span></span></label>
+          <label class="slot" for="kit-f-3"><input class="slot__input" type="radio" id="kit-f-3" name="kit-f"><span class="slot__text">Аллергены <span class="filter-chips__count">8</span></span></label>
+        </div></fieldset>
+      </div>
+      <section class="service-group kit-mt" aria-labelledby="kit-g-title">
+        <div class="service-group__head"><h3 class="service-group__title" id="kit-g-title">Гормоны</h3><span class="service-group__count">8 услуг</span></div>
+        <ul class="service-list">
+          <li><article class="service-row service-row--compact"><div class="service-row__main"><h4 class="service-row__title">Тиреотропный гормон (ТТГ)</h4><p class="service-row__text">Кровь из вены · результат через 1 рабочий день</p><p class="service-row__code">Код услуги A09.05.065</p></div><p class="service-row__price">500 ₽</p><div class="service-row__actions"><button class="btn btn--primary btn--s" type="button" data-book data-service="lab-ttg">Записаться</button><button class="btn btn--secondary btn--s" type="button" data-pay="lab-ttg"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button></div></article></li>
+          <li><article class="service-row service-row--compact"><div class="service-row__main"><h4 class="service-row__title">Тироксин свободный (Т4 св.)</h4><p class="service-row__text">Кровь из вены · результат через 1 рабочий день</p><p class="service-row__code">Код услуги A09.05.063</p></div><p class="service-row__price">500 ₽</p><div class="service-row__actions"><button class="btn btn--primary btn--s" type="button" data-book data-service="lab-t4">Записаться</button><button class="btn btn--secondary btn--s" type="button" data-pay="lab-t4"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button></div></article></li>
+        </ul>
+        <div class="service-group__more"><button class="btn btn--ghost btn--s" type="button" aria-expanded="false">Показать все 8 услуг</button></div>
+      </section>
+      <div class="empty kit-mt"><p class="empty__title">Ничего не нашли</p><p class="empty__text">Проверьте написание или поищите по коду услуги.</p><button class="btn btn--secondary btn--s" type="button">Сбросить поиск</button></div>
     </section>
 
     <div class="container kit-section" id="footer"><p class="kit-section__note">Подвал ниже — общий для всех страниц.</p></div>
@@ -729,7 +821,7 @@
         <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Приходите за 15 минут до начала</span></li>
       </ul>
       <div class="kit-row kit-mt">
-        <button class="btn btn--primary" type="button" data-modal-open="modal-booking">Записаться</button>
+        <button class="btn btn--primary" type="button" data-book data-direction="chek-ap">Записаться</button>
         <button class="btn btn--secondary" type="button" data-modal-close>Понятно</button>
       </div>
     </div>
@@ -741,9 +833,11 @@
   <script src="data/site.js"></script>
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
+  <script src="data/services.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
+  <script src="js/booking.js"></script>
 </body>
 </html>

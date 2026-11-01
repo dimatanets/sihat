@@ -8,7 +8,8 @@
     title     string   card title
     text      string   short description (current site)
     slug      string   path segment on the current site (/napravleniya/<slug>/)
-    href      string   link in the prototype; "#" for pages that are not built yet (A-13)
+    href      string   link in the prototype; "#" for pages that are not built yet (A-13). The two built directions
+                     open the one template direction.html with ?d=checkup / ?d=analyses (A-02)
     icon      string   Tabler icon name for the photo placeholder (A-07)
     image     string|null  photo path; null until photos arrive (A-07)
     priority  number|null  position on the home page; null = not on the home page (A-21)
@@ -29,7 +30,7 @@ window.SIHAT_DIRECTIONS = [
     title: "Чек-ап программы",
     text: "Комплексная проверка здоровья за несколько дней: консультации специалистов, диагностика и лабораторные исследования.",
     slug: "chek-ap-programmy",
-    href: "direction.html",
+    href: "direction.html?d=checkup",
     icon: "clipboard-heart",
     image: null,
     priority: 2
@@ -69,7 +70,7 @@ window.SIHAT_DIRECTIONS = [
     title: "Анализы",
     text: "Общеклинические, биохимические, гормональные, бактериологические, аллергены и другие виды анализов",
     slug: "laboratornye-issledovaniya",
-    href: "#",
+    href: "direction.html?d=analyses",
     icon: "test-pipe",
     image: null,
     priority: 6

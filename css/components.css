@@ -11,6 +11,11 @@
     6. Form fields, checkbox             13. Media placeholder
     7. Date picker, time slots, cards,   14. Scroller (horizontal card row)
        service row                       15. Choice chips (radio), form panel
+                                        16. Flow modal (booking, payment), close confirmation
+                                        17. Option card (radio)
+                                        18. Summary, result, payment total
+                                        19. Search, filter chips, service groups, empty state
+                                        20. Feature cards
 */
 
 /* =========================================================================
@@ -1216,3 +1221,267 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 @media (max-width: 767px) {
   .form-panel__card { padding: var(--space-4); }
 }
+
+/* =========================================================================
+   16. Flow modal: booking and payment (js/booking.js). A wider modal on desktop, a full-screen sheet below 768px.
+       Head: back, progress, title, close. Body scrolls; the foot with the main button stays at the bottom.
+   ========================================================================= */
+
+.modal--flow { max-width: var(--modal-width-l); }
+.modal__title:focus { outline: none; box-shadow: none; }
+.flow__head { align-items: center; padding-bottom: var(--space-3); }
+.flow__heading { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 0; }
+.flow__progress {
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-line);
+  font-weight: var(--text-label-weight);
+  text-transform: var(--text-label-transform);
+  letter-spacing: var(--text-label-tracking);
+  color: var(--color-primary);
+}
+.flow__bar { flex: none; height: var(--flow-bar-height); margin: 0 var(--space-6) var(--space-4); border-radius: var(--radius-pill); background: var(--color-surface-alt); overflow: hidden; }
+.flow__bar-fill { display: block; height: 100%; border-radius: inherit; background: var(--color-primary); transition: width var(--duration-base) var(--easing-base); }
+.flow__body { display: flex; flex-direction: column; gap: var(--space-5); flex: 1; min-height: 0; }
+.modal__foot {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  border-top: var(--border-width) solid var(--color-border);
+  background: var(--color-bg);
+}
+.flow__lead { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+/* Secondary way out of a step, e.g. «Чек-ап, роды или операция?» with «Оставить заявку». */
+.flow__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  font-size: var(--text-body-s-size);
+  line-height: var(--text-body-s-line);
+  color: var(--color-text-muted);
+}
+.flow__aside-title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
+.flow__aside .btn { margin-top: var(--space-1); }
+/* Date and time step: calendar and slots side by side on desktop. */
+.flow__datetime { display: grid; grid-template-columns: minmax(0, var(--datepicker-width)) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.flow__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* Desktop: the main button sits on the right at its own width; phones keep it full width. */
+@media (min-width: 768px) {
+  .modal--flow .modal__foot { justify-content: flex-end; }
+  .modal--flow .modal__foot .btn--block { width: auto; }
+}
+
+/* «Закрыть запись?»: a layer over the flow; the rest of the dialog is inert while it is shown. */
+.modal__confirm {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: var(--color-backdrop);
+}
+.modal__confirm-box {
+  width: 100%;
+  max-width: var(--confirm-width);
+  padding: var(--space-5);
+  border-radius: var(--radius-panel);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-modal);
+}
+.modal__confirm-title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
+.modal__confirm-text { margin-top: var(--space-2); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+.modal__confirm-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-5); }
+/* kit.html shows the layer statically inside a frame. */
+.modal__confirm--static { position: relative; inset: auto; border-radius: var(--radius-card); }
+
+@media (max-width: 767px) {
+  .modal--flow {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+  .modal--flow[open] { animation-name: sheet-in; }
+  .flow__head { padding: var(--space-3) var(--space-4); }
+  .flow__bar { margin: 0 var(--space-4) var(--space-4); }
+  .modal--flow .modal__foot { padding: var(--space-3) var(--space-4) var(--space-4); }
+  .flow__datetime { grid-template-columns: minmax(0, 1fr); }
+  .flow__datetime .datepicker { max-width: none; }
+  .modal__confirm { align-items: flex-end; padding: var(--space-3); }
+  .modal__confirm-actions .btn { flex: 1; }
+}
+
+/* =========================================================================
+   17. Option card: one-of-many radio with a title, text, price or photo (service, doctor in the booking flow)
+   ========================================================================= */
+
+.options__list { display: flex; flex-direction: column; gap: var(--space-2); }
+.option { position: relative; display: block; cursor: pointer; }
+.option__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.option__box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-bg);
+  transition: background-color var(--duration-fast) var(--easing-base), border-color var(--duration-fast) var(--easing-base);
+}
+.option__media { flex: none; width: var(--option-media); height: var(--option-media); border-radius: var(--radius-circle); }
+.option__media .icon { width: var(--icon-size); height: var(--icon-size); }
+.option__body { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 0; }
+.option__title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
+.option__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+.option__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.option__aside { flex: none; font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-bold); color: var(--color-heading); white-space: nowrap; }
+.option__mark {
+  position: relative;
+  flex: none;
+  width: var(--check-size);
+  height: var(--check-size);
+  border: var(--border-width-strong) solid var(--color-border-strong);
+  border-radius: var(--radius-circle);
+  background: var(--color-bg);
+}
+.option__mark::after { content: ""; position: absolute; inset: var(--space-0); border-radius: inherit; background: var(--color-primary); opacity: 0; }
+.option__input:hover + .option__box, .option.is-hover .option__box { border-color: var(--color-primary); }
+.option__input:focus-visible + .option__box, .option.is-focus .option__box {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
+}
+.option__input:checked + .option__box, .option.is-checked .option__box { border-color: var(--color-primary); background: var(--color-primary-tint); }
+.option__input:checked + .option__box .option__mark, .option.is-checked .option__mark { border-color: var(--color-primary); }
+.option__input:checked + .option__box .option__mark::after, .option.is-checked .option__mark::after { opacity: 1; }
+.field--error .option__box { border-color: var(--color-error); }
+@media (max-width: 767px) {
+  .option__box { gap: var(--space-3); padding: var(--space-3); }
+  .option__media { width: var(--option-media-m); height: var(--option-media-m); }
+  .option__box:has(.option__aside) { flex-wrap: wrap; }
+  .option__box:has(.option__aside) .option__body { flex-basis: calc(100% - var(--check-size) - var(--space-3)); }
+  .option__box:has(.option__aside) .option__aside { order: 3; margin-left: 0; }
+}
+
+/* =========================================================================
+   18. Summary (chosen service, doctor, time), result screen, payment total
+   ========================================================================= */
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+.summary__row {
+  display: grid;
+  grid-template-columns: minmax(0, var(--summary-term-width)) minmax(0, 1fr);
+  gap: var(--space-1) var(--space-4);
+  padding-block: var(--space-2);
+  border-bottom: var(--border-width) solid var(--color-border);
+  font-size: var(--text-body-s-size);
+  line-height: var(--text-body-s-line);
+}
+.summary__row:last-child { border-bottom: 0; }
+.summary__term { color: var(--color-text-muted); }
+.summary__value { margin: 0; color: var(--color-heading); font-weight: var(--font-weight-medium); }
+.summary__price { font-weight: var(--font-weight-bold); white-space: nowrap; }
+.summary--compact { padding-block: var(--space-1); }
+.summary--compact .summary__row { padding-block: var(--space-1); border-bottom: 0; }
+@media (max-width: 767px) {
+  .summary__row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+
+.result { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+.result__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--result-icon-box);
+  height: var(--result-icon-box);
+  border-radius: var(--radius-circle);
+  background: var(--color-success-tint);
+  color: var(--color-success);
+}
+.result__text { max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-text); }
+
+.pay-total { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4) var(--space-5); border-radius: var(--radius-panel); background: var(--color-surface); }
+.pay-total__title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
+.pay-total__code { font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
+.pay-total__price { margin-top: var(--space-1); font-size: var(--text-h4-size); line-height: var(--text-h4-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
+
+/* =========================================================================
+   19. Search field, filter chips, grouped service list, empty state (long lists, e.g. «Анализы»)
+   ========================================================================= */
+
+.search { position: relative; display: flex; }
+.search > .icon { position: absolute; top: 50%; left: var(--space-4); transform: translateY(-50%); color: var(--color-text-muted); pointer-events: none; }
+.search .field__control { padding-left: calc(var(--space-4) + var(--icon-size) + var(--space-2)); }
+
+/* Filter chips: radio chips (.slot) that wrap on desktop and scroll sideways in one row on phones. */
+.filter-chips__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.filter-chips .slot__text { gap: var(--space-2); padding-inline: var(--space-4); white-space: nowrap; }
+.filter-chips__count { font-weight: var(--font-weight-regular); }
+@media (max-width: 767px) {
+  .filter-chips__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: var(--focus-ring-width);
+    margin: calc(-1 * var(--focus-ring-width));
+  }
+  .filter-chips__list::-webkit-scrollbar { display: none; }
+  .filter-chips .slot { flex: none; }
+}
+
+.service-group + .service-group { margin-top: var(--space-7); }
+.service-group__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); margin-bottom: var(--space-3); }
+.service-group__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
+.service-group__count { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+.service-group__more { margin-top: var(--space-3); }
+.service-list__status { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+
+/* Compact row for long lists: smaller title and padding; on phones the price and both buttons share one line. */
+.service-row--compact { padding-block: var(--space-4); }
+.service-row--compact .service-row__title { font-size: var(--text-body-size); line-height: var(--text-body-line); }
+.service-row--compact .service-row__price { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); }
+@media (max-width: 767px) {
+  .service-row--compact { grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-3); padding-block: var(--space-3); }
+  .service-row--compact .service-row__price { grid-column: 1; grid-row: 2; align-self: center; }
+  .service-row--compact .service-row__actions { grid-column: 2; grid-row: 2; justify-content: flex-end; }
+  .service-row--compact .service-row__actions .btn { flex: none; min-height: var(--control-height-xs); padding-inline: var(--space-3); }
+  .service-row--compact .service-row__actions .btn .icon { display: none; }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+.empty__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
+.empty__text { color: var(--color-text-muted); }
+
+/* =========================================================================
+   20. Feature cards (short reasons on a direction page)
+   ========================================================================= */
+
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--steps-col-min)), 1fr)); gap: var(--grid-gap); }
+.feature { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); border: var(--border-width) solid var(--color-border); border-radius: var(--radius-card); }
+.feature__icon { display: inline-flex; align-items: center; justify-content: center; width: var(--doc-icon-box); height: var(--doc-icon-box); border-radius: var(--radius-circle); background: var(--color-primary-tint); color: var(--color-primary); }
+.feature__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
+.feature__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }

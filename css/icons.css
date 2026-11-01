@@ -30,6 +30,7 @@
 .icon--brand-whatsapp { --icon: url("../assets/icons/brand-whatsapp.svg"); }
 .icon--building-hospital { --icon: url("../assets/icons/building-hospital.svg"); }
 .icon--calendar { --icon: url("../assets/icons/calendar.svg"); }
+.icon--calendar-plus { --icon: url("../assets/icons/calendar-plus.svg"); }
 .icon--certificate { --icon: url("../assets/icons/certificate.svg"); }
 .icon--check { --icon: url("../assets/icons/check.svg"); }
 .icon--chevron-down { --icon: url("../assets/icons/chevron-down.svg"); }
@@ -52,6 +53,7 @@
 .icon--first-aid-kit { --icon: url("../assets/icons/first-aid-kit.svg"); }
 .icon--heart-rate-monitor { --icon: url("../assets/icons/heart-rate-monitor.svg"); }
 .icon--info-circle { --icon: url("../assets/icons/info-circle.svg"); }
+.icon--lock { --icon: url("../assets/icons/lock.svg"); }
 .icon--mail { --icon: url("../assets/icons/mail.svg"); }
 .icon--map-pin { --icon: url("../assets/icons/map-pin.svg"); }
 .icon--menu-2 { --icon: url("../assets/icons/menu-2.svg"); }
@@ -62,6 +64,7 @@
 .icon--photo-off { --icon: url("../assets/icons/photo-off.svg"); }
 .icon--player-play { --icon: url("../assets/icons/player-play.svg"); }
 .icon--plus { --icon: url("../assets/icons/plus.svg"); }
+.icon--search { --icon: url("../assets/icons/search.svg"); }
 .icon--stethoscope { --icon: url("../assets/icons/stethoscope.svg"); }
 .icon--test-pipe { --icon: url("../assets/icons/test-pipe.svg"); }
 .icon--text-size { --icon: url("../assets/icons/text-size.svg"); }

@@ -6,6 +6,9 @@
     open:  <button data-modal-open="modal-id">   or  Sihat.modal.open("modal-id" | element, openerElement)
     close: <button data-modal-close>              or  Sihat.modal.close("modal-id" | element), Esc, click on the backdrop
     Focus returns to the opener. Events on the dialog: "modal:open", "modal:close".
+    Before any close (button, Esc, backdrop, Sihat.modal.close) a cancelable "modal:beforeclose" fires on the dialog;
+    preventDefault() keeps it open (the booking flow asks "Закрыть запись?"). Sihat.modal.close(target, { force: true })
+    skips that check.
   Mobile menu: <dialog class="mnav" id="site-menu">, opened by [data-menu-open]; closes itself on desktop widths.
   Anchor navigation: <nav data-anchor-nav> with links to #ids; the link of the section in view gets aria-current="true".
   Accordion: native <details>/<summary>, no JS.
@@ -37,9 +40,14 @@
       dialog.showModal();
       dialog.dispatchEvent(new CustomEvent("modal:open", { bubbles: true }));
     },
-    close: function (target) {
+    close: function (target, opts) {
       var dialog = resolve(target);
-      if (dialog && dialog.open) dialog.close();
+      if (!dialog || !dialog.open) return;
+      if (!(opts && opts.force)) {
+        var ev = new CustomEvent("modal:beforeclose", { bubbles: true, cancelable: true });
+        if (!dialog.dispatchEvent(ev)) return;
+      }
+      dialog.close();
     }
   };
   window.Sihat.modal = modal;
@@ -69,6 +77,21 @@
       if (!inside) modal.close(e.target);
     }
   });
+
+  // Esc goes through modal.close too, so "modal:beforeclose" can keep the dialog open.
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" || e.defaultPrevented) return;
+    var dialog = document.querySelector("dialog.modal[open]");
+    if (!dialog) return;
+    e.preventDefault();
+    modal.close(dialog);
+  });
+  document.addEventListener("cancel", function (e) {
+    var dialog = e.target;
+    if (!dialog || !dialog.matches || !dialog.matches("dialog.modal")) return;
+    e.preventDefault();
+    modal.close(dialog);
+  }, true);
 
   // Restore focus and state on every close (button, Esc or backdrop).
   document.addEventListener("close", function (e) {

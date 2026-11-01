@@ -59,8 +59,8 @@
           d.regalia.map(function (r) { return '<li class="badge">' + esc(r) + "</li>"; }).join("") + "</ul>"
         : "") +
       "</div>" +
-      // A-16: opens the quick request for now; P4 replaces it with booking for this doctor.
-      '<div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-modal-open="modal-booking" data-doctor="' + esc(d.id) + '">' +
+      // Booking with this doctor preselected: js/booking.js starts at the date and time step (A-03).
+      '<div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-book data-doctor="' + esc(d.id) + '">' +
       'Записаться<span class="visually-hidden"> к врачу: ' + esc(d.name) + "</span></button></div>" +
       "</article>"
     );

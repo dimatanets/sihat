@@ -13,14 +13,19 @@
 
   Phone mask — <input type="tel" data-phone-mask>: formats to +7 (XXX) XXX-XX-XX.
 
-  Date picker — <div class="datepicker" data-datepicker data-name="date" data-days="60" data-slots-target="slots-id">
-    Renders a month grid (keyboard: arrows, Home/End, PageUp/PageDown). Sundays and some mock days are
-    unavailable. Writes ISO date to a hidden input, fires "datepicker:change" {detail: {date, iso, label}}.
-    JS: Sihat.datepicker.init(el).
+  Date picker — <div class="datepicker" data-datepicker data-name="date" data-days="60" data-slots-target="slots-id"
+    [data-closed="0,6"] [data-seed="3"]>
+    Renders a month grid (keyboard: arrows, Home/End, PageUp/PageDown). Closed weekdays (data-closed, 0 = Sunday,
+    default "0") and some mock days are unavailable; data-seed varies the mock busy days (e.g. per doctor).
+    Writes ISO date to a hidden input, fires "datepicker:change" {detail: {date, iso, label}}.
+    JS: Sihat.datepicker.init(el), Sihat.datepicker.label(date) → "4 ноября, среда", Sihat.datepicker.iso(date).
 
   Time slots — <fieldset class="slots" id="slots-id" data-slots data-name="time"><legend class="slots__legend">…
     <div class="slots__list"></div></fieldset>. Radio chips; arrow keys work natively.
     JS: Sihat.slots.render(fieldset, date) fills mock slots for that date (or a hint when date is null).
+    Options as attributes on the fieldset: data-from="8" data-to="18" hours (Saturday ends two hours earlier),
+    data-step="30" minutes, data-seed="3" varies the busy slots, data-required makes the radios required
+    (validation message "Выберите время").
 */
 (function () {
   "use strict";
@@ -231,9 +236,9 @@
   }
   function label(d) { return d.getDate() + " " + MONTHS_GEN[d.getMonth()] + ", " + DAYS[d.getDay()]; }
 
-  // Mock schedule: no work on Sundays, a few fully booked days.
-  function available(d) {
-    return d.getDay() !== 0 && (d.getDate() * 7 + d.getMonth()) % 11 !== 0;
+  // Mock schedule: closed weekdays (Sunday by default), a few fully booked days.
+  function available(d, closed, seed) {
+    return closed.indexOf(d.getDay()) === -1 && (d.getDate() * 7 + d.getMonth() + seed) % 11 !== 0;
   }
 
   function Datepicker(el) {
@@ -242,6 +247,8 @@
     this.min = this.today;
     this.max = addDays(this.today, parseInt(el.getAttribute("data-days"), 10) || 60);
     this.selected = null;
+    this.closed = (el.getAttribute("data-closed") || "0").split(",").map(Number);
+    this.seed = parseInt(el.getAttribute("data-seed"), 10) || 0;
     this.input = el.querySelector('input[type="hidden"]');
     if (!this.input) {
       this.input = document.createElement("input");
@@ -259,7 +266,7 @@
     this.render(false);
   }
 
-  Datepicker.prototype.isOpen = function (d) { return d >= this.min && d <= this.max && available(d); };
+  Datepicker.prototype.isOpen = function (d) { return d >= this.min && d <= this.max && available(d, this.closed, this.seed); };
   Datepicker.prototype.firstAvailable = function (from, step) {
     var d = from;
     for (var i = 0; i < 400; i++) {
@@ -301,7 +308,7 @@
       if ((offset + dnum) % 7 === 0 && dnum !== daysIn) h += "</tr><tr>";
     }
     h += "</tr></tbody></table>" +
-      '<p class="datepicker__legend">Зачёркнуты дни без свободного времени. Выходной: воскресенье.</p>';
+      '<p class="datepicker__legend">Зачёркнуты дни без свободного времени. ' + this.closedText() + "</p>";
     this.box.innerHTML = h;
     // If the focus date is not in this month, let the first open day take the tab stop.
     if (!this.box.querySelector('.datepicker__day[tabindex="0"]')) {
@@ -312,6 +319,12 @@
       var f = this.box.querySelector('.datepicker__day[tabindex="0"]');
       if (f) f.focus();
     }
+  };
+
+  Datepicker.prototype.closedText = function () {
+    var names = this.closed.map(function (n) { return DAYS[n]; });
+    if (!names.length) return "";
+    return (names.length > 1 ? "Выходные: " : "Выходной: ") + names.join(" и ") + ".";
   };
 
   Datepicker.prototype.parse = function (s) {
@@ -367,7 +380,9 @@
   };
 
   window.Sihat.datepicker = {
-    init: function (el) { if (!el._dp) el._dp = new Datepicker(el); return el._dp; }
+    init: function (el) { if (!el._dp) el._dp = new Datepicker(el); return el._dp; },
+    label: label,
+    iso: iso
   };
 
   /* ------------------------------------------------------------------ time slots */
@@ -381,19 +396,22 @@
         list.innerHTML = '<p class="slots__empty">Сначала выберите дату</p>';
         return;
       }
-      var end = date.getDay() === 6 ? 15 : 17; // Saturday until 16:00
+      var from = parseInt(fieldset.getAttribute("data-from"), 10) || 8;
+      var to = parseInt(fieldset.getAttribute("data-to"), 10) || 18;
+      if (date.getDay() === 6) to -= 2; // Saturday until 16:00
+      var stepMin = parseInt(fieldset.getAttribute("data-step"), 10) || 30;
+      var seed = parseInt(fieldset.getAttribute("data-seed"), 10) || 0;
+      var req = fieldset.hasAttribute("data-required") ? ' required data-msg-required="Выберите время"' : "";
       var h = "";
       var i = 0;
-      for (var hour = 8; hour <= end; hour++) {
-        for (var min = 0; min < 60; min += 30) {
-          var t = hour + ":" + (min ? "30" : "00");
-          var busy = (date.getDate() * 13 + i * 7) % 10 < 3; // about 30% booked
-          var id = fieldset.id + "-" + i;
-          h += '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="' + name +
-            '" value="' + t + '"' + (busy ? " disabled" : "") + '><span class="slot__text">' + t +
-            (busy ? '<span class="visually-hidden">, занято</span>' : "") + "</span></label>";
-          i++;
-        }
+      for (var m = from * 60; m < to * 60; m += stepMin) {
+        var t = Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0");
+        var busy = (date.getDate() * 13 + i * 7 + seed) % 10 < 3; // about 30% booked
+        var id = fieldset.id + "-" + i;
+        h += '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="' + name +
+          '" value="' + t + '"' + (busy ? " disabled" : "") + req + '><span class="slot__text">' + t +
+          (busy ? '<span class="visually-hidden">, занято</span>' : "") + "</span></label>";
+        i++;
       }
       list.innerHTML = h;
     }
