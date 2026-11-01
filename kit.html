@@ -4,24 +4,654 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Компоненты — Сихат РКБ (макет)</title>
-  <meta name="description" content="Дизайн-макет сайта платного отделения РКБ «Сихат». Заглушка этапа P1.">
+  <meta name="description" content="Дизайн-макет сайта платного отделения РКБ «Сихат»: общие компоненты.">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/placeholder.css">
+  <link rel="stylesheet" href="css/pages/kit.css">
+  <script src="js/a11y.js"></script>
 </head>
-<body>
+<body data-page="kit">
   <a class="skip-link" href="#main">Перейти к содержимому</a>
-  <main id="main" class="container placeholder">
-    <span class="placeholder__label">Сихат РКБ · дизайн-макет</span>
-    <h1>Компоненты</h1>
-    <p class="placeholder__lead">Здесь будут общие компоненты (этап P2).</p>
-    <nav class="placeholder__nav" aria-label="Страницы макета">
-      <a class="placeholder__btn" href="index.html">Главная</a>
-      <a class="placeholder__btn" href="direction.html">Страница направления</a>
-      <a class="placeholder__btn placeholder__btn--primary" href="kit.html">Компоненты</a>
-    </nav>
-    <p class="placeholder__card">Заглушка этапа P1. Цвета, шрифты, радиусы и отступы на этой странице берутся из css/tokens.css.</p>
+
+  <!-- Shared header (js/layout.js, A-11) -->
+  <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><span class="logo__mark" aria-hidden="true"></span><span class="logo__text"><span class="logo__name">Сихат</span><span class="logo__sub">Платное отделение РКБ</span></span></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
+
+  <main id="main" class="kit">
+    <div class="container kit__intro">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <ol class="breadcrumbs__list">
+          <li class="breadcrumbs__item"><a href="index.html">Главная</a></li>
+          <li class="breadcrumbs__item"><span aria-current="page">Компоненты</span></li>
+        </ol>
+      </nav>
+      <h1>Компоненты</h1>
+      <p class="kit__lead">Общие части сайта и их состояния. Шапка и подвал на этой странице — настоящие, те же, что на главной и странице направления.</p>
+    </div>
+
+    <div class="container kit__nav">
+      <nav class="anchor-nav" aria-label="Разделы страницы" data-anchor-nav>
+        <ul class="anchor-nav__list">
+          <li><a class="anchor-nav__link" href="#header">Шапка</a></li>
+          <li><a class="anchor-nav__link" href="#a11y">Для слабовидящих</a></li>
+          <li><a class="anchor-nav__link" href="#buttons">Кнопки</a></li>
+          <li><a class="anchor-nav__link" href="#fields">Поля формы</a></li>
+          <li><a class="anchor-nav__link" href="#datetime">Дата и время</a></li>
+          <li><a class="anchor-nav__link" href="#cards">Карточки</a></li>
+          <li><a class="anchor-nav__link" href="#services">Услуги</a></li>
+          <li><a class="anchor-nav__link" href="#navigation">Навигация</a></li>
+          <li><a class="anchor-nav__link" href="#content">Этапы и документы</a></li>
+          <li><a class="anchor-nav__link" href="#modal">Окна</a></li>
+          <li><a class="anchor-nav__link" href="#footer">Подвал</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- ============================================================ Header -->
+    <section class="container kit-section" id="header" aria-labelledby="h-header">
+      <h2 id="h-header">Шапка и меню</h2>
+      <p class="kit-section__note">Десктоп: строка с адресом, мессенджерами, языком и версией для слабовидящих; ниже закреплённая строка с логотипом, меню, телефоном и «Записаться». Уже 1100 px: компактная строка (логотип, звонок, «Записаться», меню), меню открывается на весь экран. Шапка подключается из <code>js/layout.js</code>.</p>
+
+      <div class="kit-block">
+        <h3>Мобильное меню</h3>
+        <div class="kit-row">
+          <button class="btn btn--tint btn--s" type="button" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu"><span class="icon icon--menu-2" aria-hidden="true"></span>Открыть мобильное меню</button>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Телефон</h3>
+        <div class="kit-row">
+          <div class="kit-state">
+            <a class="phone-link" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Платные услуги</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
+            <span class="kit-caption">по умолчанию</span>
+          </div>
+          <div class="kit-state">
+            <a class="phone-link is-hover" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Платные услуги</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
+            <span class="kit-caption">наведение</span>
+          </div>
+          <div class="kit-panel kit-panel--primary">
+            <a class="phone-link phone-link--inverse" href="tel:+79270457974"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Мобильный</span><span class="phone-link__number">+7 (927) 045-79-74</span></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Accessibility -->
+    <section class="container kit-section" id="a11y" aria-labelledby="h-a11y">
+      <h2 id="h-a11y">Версия для слабовидящих</h2>
+      <p class="kit-section__note">Включается кнопкой с глазом в шапке (на мобильном — в меню). Над шапкой появляется панель: размер шрифта (три шага), цветовая схема (чёрным по белому, белым по чёрному, синим по голубому), показ изображений и кнопка «Обычная версия». Выбор запоминается в браузере. Меняются только токены, поэтому режим работает на всех компонентах.</p>
+      <div class="kit-row">
+        <button class="btn btn--primary" type="button" data-a11y-toggle aria-pressed="false"><span class="icon icon--eye" aria-hidden="true"></span><span class="a11y-toggle__off">Включить версию для слабовидящих</span><span class="a11y-toggle__on">Выключить версию для слабовидящих</span></button>
+      </div>
+    </section>
+
+    <!-- ============================================================ Buttons -->
+    <section class="container kit-section" id="buttons" aria-labelledby="h-buttons">
+      <h2 id="h-buttons">Кнопки</h2>
+      <p class="kit-section__note">Главное действие на любой странице — «Записаться» (основная кнопка). Высота 56, компактная 48 и 40. Состояния наведения и фокуса показаны статично.</p>
+
+      <div class="kit-block">
+        <h3>Основная</h3>
+        <div class="kit-row">
+          <div class="kit-state"><button class="btn btn--primary" type="button">Записаться</button><span class="kit-caption">по умолчанию</span></div>
+          <div class="kit-state"><button class="btn btn--primary is-hover" type="button">Записаться</button><span class="kit-caption">наведение</span></div>
+          <div class="kit-state"><button class="btn btn--primary is-focus" type="button">Записаться</button><span class="kit-caption">фокус</span></div>
+          <div class="kit-state"><button class="btn btn--primary" type="button" disabled>Записаться</button><span class="kit-caption">недоступна</span></div>
+          <div class="kit-state"><button class="btn btn--primary btn--s" type="button">Записаться</button><span class="kit-caption">48</span></div>
+          <div class="kit-state"><button class="btn btn--primary btn--xs" type="button">Записаться</button><span class="kit-caption">40</span></div>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Вторичная</h3>
+        <div class="kit-row">
+          <div class="kit-state"><a class="btn btn--secondary" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a><span class="kit-caption">по умолчанию</span></div>
+          <div class="kit-state"><a class="btn btn--secondary is-hover" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a><span class="kit-caption">наведение</span></div>
+          <div class="kit-state"><a class="btn btn--secondary is-focus" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a><span class="kit-caption">фокус</span></div>
+          <div class="kit-state"><button class="btn btn--secondary" type="button" disabled><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button><span class="kit-caption">недоступна</span></div>
+          <div class="kit-state"><button class="btn btn--tint" type="button"><span class="icon icon--menu-2" aria-hidden="true"></span>Меню</button><span class="kit-caption">тонированная</span></div>
+          <div class="kit-state"><button class="btn btn--tint is-hover" type="button"><span class="icon icon--menu-2" aria-hidden="true"></span>Меню</button><span class="kit-caption">тонированная, наведение</span></div>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Текстовая (ghost) и ссылка со стрелкой</h3>
+        <div class="kit-row">
+          <div class="kit-state"><button class="btn btn--ghost" type="button">Подробнее</button><span class="kit-caption">по умолчанию</span></div>
+          <div class="kit-state"><button class="btn btn--ghost is-hover" type="button">Подробнее</button><span class="kit-caption">наведение</span></div>
+          <div class="kit-state"><button class="btn btn--ghost is-focus" type="button">Подробнее</button><span class="kit-caption">фокус</span></div>
+          <div class="kit-state"><button class="btn btn--ghost" type="button" disabled>Подробнее</button><span class="kit-caption">недоступна</span></div>
+          <div class="kit-state"><a class="link-arrow" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a><span class="kit-caption">ссылка</span></div>
+          <div class="kit-state"><a class="link-arrow is-hover" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a><span class="kit-caption">ссылка, наведение</span></div>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Иконка</h3>
+        <div class="kit-row">
+          <div class="kit-state"><button class="btn btn--secondary btn--icon" type="button" aria-label="Назад"><span class="icon icon--chevron-left" aria-hidden="true"></span></button><span class="kit-caption">по умолчанию</span></div>
+          <div class="kit-state"><button class="btn btn--secondary btn--icon is-hover" type="button" aria-label="Вперёд"><span class="icon icon--chevron-right" aria-hidden="true"></span></button><span class="kit-caption">наведение</span></div>
+          <div class="kit-state"><button class="btn btn--secondary btn--icon is-focus" type="button" aria-label="Вперёд"><span class="icon icon--chevron-right" aria-hidden="true"></span></button><span class="kit-caption">фокус</span></div>
+          <div class="kit-state"><button class="btn btn--secondary btn--icon" type="button" aria-label="Вперёд" disabled><span class="icon icon--chevron-right" aria-hidden="true"></span></button><span class="kit-caption">недоступна</span></div>
+          <div class="kit-state"><a class="btn btn--tint btn--icon btn--s" href="tel:+78432312090" aria-label="Позвонить: +7 (843) 231-20-90"><span class="icon icon--phone" aria-hidden="true"></span></a><span class="kit-caption">звонок, 48</span></div>
+          <div class="kit-state"><button class="btn btn--primary btn--icon" type="button" aria-label="Открыть"><span class="icon icon--arrow-up-right" aria-hidden="true"></span></button><span class="kit-caption">основная</span></div>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>На синем фоне</h3>
+        <div class="kit-panel kit-panel--primary">
+          <div class="kit-row">
+            <button class="btn btn--inverse" type="button">Отправить</button>
+            <button class="btn btn--inverse is-hover" type="button">Отправить</button>
+            <button class="btn btn--inverse-outline" type="button">Позвонить</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Fields -->
+    <section class="container kit-section" id="fields" aria-labelledby="h-fields">
+      <h2 id="h-fields">Поля формы</h2>
+      <p class="kit-section__note">Подпись всегда над полем, обязательные отмечены звёздочкой. Телефон с маской +7 (XXX) XXX-XX-XX. Ошибка появляется после отправки и исчезает, как только поле заполнено верно.</p>
+
+      <div class="kit-block">
+        <h3>Состояния</h3>
+        <div class="kit-grid">
+          <div class="field">
+            <label class="field__label" for="k-f1">Имя <span class="field__req" aria-hidden="true">*</span></label>
+            <input class="field__control" id="k-f1" type="text" placeholder="Как к вам обращаться" autocomplete="off">
+            <p class="field__hint">По умолчанию</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="k-f2">Имя</label>
+            <input class="field__control is-hover" id="k-f2" type="text" value="Алсу" autocomplete="off">
+            <p class="field__hint">Наведение</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="k-f3">Имя</label>
+            <input class="field__control is-focus" id="k-f3" type="text" value="Алсу Р" autocomplete="off">
+            <p class="field__hint">Фокус</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="k-f4">Имя</label>
+            <input class="field__control" id="k-f4" type="text" value="Алсу" disabled>
+            <p class="field__hint">Недоступно</p>
+          </div>
+          <div class="field field--error">
+            <label class="field__label" for="k-f5">Телефон <span class="field__req" aria-hidden="true">*</span></label>
+            <input class="field__control" id="k-f5" type="tel" value="+7 (927) 045" aria-invalid="true" aria-describedby="k-f5-msg" data-phone-mask>
+            <p class="field__msg" id="k-f5-msg"><span class="icon icon--alert-circle" aria-hidden="true"></span><span>Введите номер полностью: +7 (XXX) XXX-XX-XX</span></p>
+          </div>
+          <div class="field field--success">
+            <label class="field__label" for="k-f6">Телефон</label>
+            <input class="field__control" id="k-f6" type="tel" value="+7 (927) 045-79-74" aria-describedby="k-f6-msg" data-phone-mask>
+            <p class="field__msg" id="k-f6-msg"><span class="icon icon--circle-check" aria-hidden="true"></span><span>Перезвоним на этот номер</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Список, текст, согласие</h3>
+        <div class="kit-grid">
+          <div class="field">
+            <label class="field__label" for="k-sel">Направление</label>
+            <div class="field__wrap">
+              <select class="field__control" id="k-sel">
+                <option value="">Выберите направление</option>
+                <option>Чек-ап программы</option>
+                <option>Консультации врачей</option>
+                <option>Роды</option>
+                <option>Эндоскопия</option>
+              </select>
+              <span class="icon icon--chevron-down field__icon" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="field field--error">
+            <label class="field__label" for="k-sel2">Врач <span class="field__req" aria-hidden="true">*</span></label>
+            <div class="field__wrap">
+              <select class="field__control" id="k-sel2" aria-invalid="true" aria-describedby="k-sel2-msg">
+                <option value="">Выберите врача</option>
+              </select>
+              <span class="icon icon--chevron-down field__icon" aria-hidden="true"></span>
+            </div>
+            <p class="field__msg" id="k-sel2-msg"><span class="icon icon--alert-circle" aria-hidden="true"></span><span>Выберите вариант из списка</span></p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="k-ta">Комментарий</label>
+            <textarea class="field__control" id="k-ta" placeholder="Например, удобное время для звонка"></textarea>
+          </div>
+        </div>
+        <div class="kit-row kit-mt">
+          <div class="kit-state">
+            <label class="check" for="k-c1"><input class="check__input" id="k-c1" type="checkbox"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a></span></label>
+            <span class="kit-caption">по умолчанию</span>
+          </div>
+          <div class="kit-state">
+            <label class="check" for="k-c2"><input class="check__input" id="k-c2" type="checkbox" checked><span class="check__text">Согласен на <a href="#">обработку персональных данных</a></span></label>
+            <span class="kit-caption">отмечено</span>
+          </div>
+          <div class="kit-state">
+            <label class="check is-focus" for="k-c3"><input class="check__input" id="k-c3" type="checkbox"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a></span></label>
+            <span class="kit-caption">фокус</span>
+          </div>
+          <div class="kit-state">
+            <label class="check" for="k-c4"><input class="check__input" id="k-c4" type="checkbox" disabled><span class="check__text">Согласен на обработку персональных данных</span></label>
+            <span class="kit-caption">недоступно</span>
+          </div>
+          <div class="kit-state field field--error">
+            <label class="check" for="k-c5"><input class="check__input" id="k-c5" type="checkbox" aria-invalid="true" aria-describedby="k-c5-msg"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a></span></label>
+            <p class="field__msg" id="k-c5-msg"><span class="icon icon--alert-circle" aria-hidden="true"></span><span>Без согласия мы не сможем обработать заявку</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Форма с проверкой и сообщения</h3>
+        <div class="kit-grid--2 kit-grid">
+          <div class="kit-panel kit-panel--bordered">
+            <form class="form" data-validate novalidate>
+              <div class="form__row">
+                <div class="field">
+                  <label class="field__label" for="kf-name">Имя <span class="field__req" aria-hidden="true">*</span></label>
+                  <input class="field__control" id="kf-name" name="name" type="text" autocomplete="name" required>
+                  <p class="field__msg" id="kf-name-msg" aria-live="polite"></p>
+                </div>
+                <div class="field">
+                  <label class="field__label" for="kf-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>
+                  <input class="field__control" id="kf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required>
+                  <p class="field__msg" id="kf-phone-msg" aria-live="polite"></p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="kf-dir">Направление <span class="field__req" aria-hidden="true">*</span></label>
+                <div class="field__wrap">
+                  <select class="field__control" id="kf-dir" name="direction" required>
+                    <option value="">Выберите направление</option>
+                    <option>Чек-ап программы</option>
+                    <option>Консультации врачей</option>
+                    <option>Роды</option>
+                  </select>
+                  <span class="icon icon--chevron-down field__icon" aria-hidden="true"></span>
+                </div>
+                <p class="field__msg" id="kf-dir-msg" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="kf-msg">Комментарий</label>
+                <textarea class="field__control" id="kf-msg" name="message"></textarea>
+              </div>
+              <div class="field">
+                <label class="check" for="kf-consent"><input class="check__input" id="kf-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>
+                <p class="field__msg" id="kf-consent-msg" aria-live="polite"></p>
+              </div>
+              <div><button class="btn btn--primary" type="submit">Отправить заявку</button></div>
+            </form>
+            <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
+              <span class="icon icon--circle-check" aria-hidden="true"></span>
+              <div><p class="alert__title">Заявка отправлена</p><p>Администратор перезвонит в рабочее время. Это макет: данные никуда не отправляются.</p></div>
+            </div>
+          </div>
+          <div class="form">
+            <div class="alert alert--success">
+              <span class="icon icon--circle-check" aria-hidden="true"></span>
+              <div><p class="alert__title">Заявка отправлена</p><p>Администратор перезвонит вам в рабочее время: пн–пт 8:00–18:00, сб 8:00–16:00.</p></div>
+            </div>
+            <div class="alert alert--error" role="alert">
+              <span class="icon icon--alert-circle" aria-hidden="true"></span>
+              <div><p class="alert__title">Не удалось отправить заявку</p><p>Проверьте подключение и попробуйте ещё раз или позвоните: <a href="tel:+78432312090">+7 (843) 231-20-90</a>.</p></div>
+            </div>
+            <div class="alert alert--info">
+              <span class="icon icon--info-circle" aria-hidden="true"></span>
+              <div><p class="alert__title">Оплата онлайн</p><p>После записи можно оплатить приём картой или через СБП.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Date & time -->
+    <section class="container kit-section" id="datetime" aria-labelledby="h-datetime">
+      <h2 id="h-datetime">Дата и время</h2>
+      <p class="kit-section__note">Календарь на 60 дней вперёд, расписание моковое. Выберите дату — ниже появятся слоты. Клавиатура: стрелки, Home/End, PageUp/PageDown.</p>
+      <div class="kit-grid--2 kit-grid">
+        <div class="datepicker" id="kit-datepicker" data-datepicker data-name="date" data-days="60" data-slots-target="kit-slots"></div>
+        <div class="form">
+          <fieldset class="slots" id="kit-slots" data-slots data-name="time">
+            <legend class="slots__legend">Время приёма</legend>
+            <div class="slots__list"></div>
+          </fieldset>
+          <div class="kit-block">
+            <h3>Состояния слота</h3>
+            <div class="kit-row">
+              <div class="kit-state"><label class="slot" for="ks1"><input class="slot__input" type="radio" id="ks1" name="kit-slot-demo"><span class="slot__text">10:00</span></label><span class="kit-caption">свободно</span></div>
+              <div class="kit-state"><label class="slot is-hover" for="ks2"><input class="slot__input" type="radio" id="ks2" name="kit-slot-demo"><span class="slot__text">10:30</span></label><span class="kit-caption">наведение</span></div>
+              <div class="kit-state"><label class="slot is-focus" for="ks3"><input class="slot__input" type="radio" id="ks3" name="kit-slot-demo"><span class="slot__text">11:00</span></label><span class="kit-caption">фокус</span></div>
+              <div class="kit-state"><label class="slot" for="ks4"><input class="slot__input" type="radio" id="ks4" name="kit-slot-demo" checked><span class="slot__text">11:30</span></label><span class="kit-caption">выбрано</span></div>
+              <div class="kit-state"><label class="slot" for="ks5"><input class="slot__input" type="radio" id="ks5" name="kit-slot-demo" disabled><span class="slot__text">12:00<span class="visually-hidden">, занято</span></span></label><span class="kit-caption">занято</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Cards -->
+    <section class="container kit-section" id="cards" aria-labelledby="h-cards">
+      <h2 id="h-cards">Карточки</h2>
+      <p class="kit-section__note">Фото временно заменены заглушками (A-07). Карточка направления — целиком ссылка. Врачи и регалии — пример (A-06).</p>
+
+      <div class="kit-block">
+        <h3>Направление</h3>
+        <ul class="kit-grid kit-grid--cards">
+          <li>
+            <article class="dcard">
+              <div class="dcard__media media media--placeholder"><span class="icon icon--stethoscope" aria-hidden="true"></span></div>
+              <div class="dcard__body">
+                <h3 class="dcard__title"><a class="dcard__link" href="direction.html">Чек-ап программы</a></h3>
+                <p class="dcard__text">Комплексное обследование за один-два дня с личным администратором и заключением врача.</p>
+                <div class="dcard__foot"><span class="dcard__arrow"><span class="icon icon--arrow-up-right" aria-hidden="true"></span></span></div>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="dcard is-hover">
+              <div class="dcard__media media media--placeholder"><span class="icon icon--stethoscope" aria-hidden="true"></span></div>
+              <div class="dcard__body">
+                <h3 class="dcard__title"><a class="dcard__link" href="#">Роды</a></h3>
+                <p class="dcard__text">Ведение родов в Перинатальном центре РКБ, индивидуальный врач и палата.</p>
+                <div class="dcard__foot"><span class="kit-caption">наведение</span><span class="dcard__arrow"><span class="icon icon--arrow-up-right" aria-hidden="true"></span></span></div>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="dcard is-focus">
+              <div class="dcard__media media media--placeholder"><span class="icon icon--stethoscope" aria-hidden="true"></span></div>
+              <div class="dcard__body">
+                <h3 class="dcard__title"><a class="dcard__link" href="#">Эндоскопия</a></h3>
+                <p class="dcard__text">Гастро- и колоноскопия, в том числе во сне, с осмотром врача-эндоскописта.</p>
+                <div class="dcard__foot"><span class="kit-caption">фокус</span><span class="dcard__arrow"><span class="icon icon--arrow-up-right" aria-hidden="true"></span></span></div>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+
+      <div class="kit-block">
+        <h3>Врач</h3>
+        <ul class="kit-grid kit-grid--cards">
+          <li>
+            <article class="doctor-card">
+              <div class="doctor-card__media media media--placeholder"><span class="icon icon--user" aria-hidden="true"></span></div>
+              <div class="doctor-card__body">
+                <p class="doctor-card__spec">Акушер-гинеколог</p>
+                <h3 class="doctor-card__name"><a href="#">Сафина Алсу Рашидовна</a></h3>
+                <ul class="doctor-card__facts">
+                  <li class="badge">Высшая категория</li>
+                  <li class="badge">к.м.н.</li>
+                  <li class="badge">Стаж 18 лет</li>
+                </ul>
+              </div>
+              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-modal-open="modal-booking">Записаться</button></div>
+            </article>
+          </li>
+          <li>
+            <article class="doctor-card">
+              <div class="doctor-card__media media media--placeholder"><span class="icon icon--user" aria-hidden="true"></span></div>
+              <div class="doctor-card__body">
+                <p class="doctor-card__spec">Кардиолог</p>
+                <h3 class="doctor-card__name"><a href="#">Гарипов Ильдар Ринатович</a></h3>
+                <ul class="doctor-card__facts">
+                  <li class="badge">Первая категория</li>
+                  <li class="badge">Стаж 11 лет</li>
+                </ul>
+              </div>
+              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-modal-open="modal-booking">Записаться</button></div>
+            </article>
+          </li>
+          <li>
+            <article class="doctor-card">
+              <div class="doctor-card__media media media--placeholder"><span class="icon icon--user" aria-hidden="true"></span></div>
+              <div class="doctor-card__body">
+                <p class="doctor-card__spec">Врач-эндоскопист</p>
+                <h3 class="doctor-card__name"><a href="#">Морозова Елена Викторовна</a></h3>
+                <ul class="doctor-card__facts">
+                  <li class="badge">Высшая категория</li>
+                  <li class="badge">д.м.н., профессор</li>
+                  <li class="badge">Стаж 25 лет</li>
+                </ul>
+              </div>
+              <div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" disabled>Нет записи онлайн</button></div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ Services -->
+    <section class="container kit-section" id="services" aria-labelledby="h-services">
+      <h2 id="h-services">Строка услуги и аккордеон</h2>
+      <p class="kit-section__note">Строка: название, краткое описание, код по номенклатуре, цена, «Записаться» и «Оплатить» (A-04, A-20). Аккордеон — на странице цен: направление, внутри услуги.</p>
+
+      <div class="kit-block">
+        <h3>Строка услуги</h3>
+        <div class="service-list">
+          <article class="service-row">
+            <div class="service-row__main">
+              <h4 class="service-row__title">Приём акушера-гинеколога первичный</h4>
+              <p class="service-row__text">Осмотр, консультация, план обследования. 30 минут.</p>
+              <p class="service-row__code">Код услуги B01.001.001</p>
+            </div>
+            <p class="service-row__price">4 400 ₽</p>
+            <div class="service-row__actions">
+              <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
+              <a class="btn btn--secondary btn--s" href="#"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</a>
+            </div>
+          </article>
+          <article class="service-row is-hover">
+            <div class="service-row__main">
+              <h4 class="service-row__title">Приём терапевта первичный</h4>
+              <p class="service-row__text">Наведение на строку подсвечивает её фон.</p>
+              <p class="service-row__code">Код услуги B01.047.001</p>
+            </div>
+            <p class="service-row__price">2 500 ₽</p>
+            <div class="service-row__actions">
+              <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
+              <a class="btn btn--secondary btn--s" href="#"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</a>
+            </div>
+          </article>
+          <article class="service-row">
+            <div class="service-row__main">
+              <h4 class="service-row__title">Естественные роды с индивидуальным врачом</h4>
+              <p class="service-row__code">Код услуги B01.001.006</p>
+            </div>
+            <p class="service-row__price">131 450 ₽</p>
+            <div class="service-row__actions">
+              <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
+              <button class="btn btn--secondary btn--s" type="button" disabled><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</button>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Аккордеон</h3>
+        <div class="accordion">
+          <details class="accordion__item" open>
+            <summary class="accordion__head"><span class="accordion__title">Консультации врачей</span><span class="badge">3 услуги</span><span class="accordion__chevron"><span class="icon icon--chevron-down" aria-hidden="true"></span></span></summary>
+            <div class="accordion__body">
+              <div class="service-list">
+                <article class="service-row">
+                  <div class="service-row__main">
+                    <h4 class="service-row__title">Приём кардиолога первичный</h4>
+                    <p class="service-row__code">Код услуги B01.015.001</p>
+                  </div>
+                  <p class="service-row__price">3 200 ₽</p>
+                  <div class="service-row__actions">
+                    <button class="btn btn--primary btn--s" type="button" data-modal-open="modal-booking">Записаться</button>
+                    <a class="btn btn--secondary btn--s" href="#"><span class="icon icon--credit-card" aria-hidden="true"></span>Оплатить</a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </details>
+          <details class="accordion__item">
+            <summary class="accordion__head is-hover"><span class="accordion__title">Эндоскопия</span><span class="badge">12 услуг</span><span class="accordion__chevron"><span class="icon icon--chevron-down" aria-hidden="true"></span></span></summary>
+            <div class="accordion__body"><p>Список услуг направления.</p></div>
+          </details>
+          <details class="accordion__item">
+            <summary class="accordion__head"><span class="accordion__title">Анализы</span><span class="badge">40 услуг</span><span class="accordion__chevron"><span class="icon icon--chevron-down" aria-hidden="true"></span></span></summary>
+            <div class="accordion__body"><p>Список услуг направления.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Navigation -->
+    <section class="container kit-section" id="navigation" aria-labelledby="h-navigation">
+      <h2 id="h-navigation">Навигация, бейджи, заголовок секции</h2>
+      <p class="kit-section__note">Якорная навигация для длинных страниц закреплена под шапкой и подсвечивает раздел, который сейчас на экране (пример — вверху этой страницы).</p>
+
+      <div class="kit-block">
+        <h3>Хлебные крошки</h3>
+        <nav class="breadcrumbs" aria-label="Хлебные крошки, пример">
+          <ol class="breadcrumbs__list">
+            <li class="breadcrumbs__item"><a href="index.html">Главная</a></li>
+            <li class="breadcrumbs__item"><a href="#">Направления</a></li>
+            <li class="breadcrumbs__item"><span aria-current="page">Чек-ап программы</span></li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="kit-block">
+        <h3>Якорная навигация</h3>
+        <nav class="anchor-nav anchor-nav--static" aria-label="Пример якорной навигации">
+          <ul class="anchor-nav__list">
+            <li><a class="anchor-nav__link" href="#navigation" aria-current="true">О направлении</a></li>
+            <li><a class="anchor-nav__link" href="#navigation">Этапы</a></li>
+            <li><a class="anchor-nav__link" href="#navigation">Услуги и цены</a></li>
+            <li><a class="anchor-nav__link" href="#navigation">Врачи</a></li>
+            <li><a class="anchor-nav__link" href="#navigation">Документы</a></li>
+            <li><a class="anchor-nav__link" href="#navigation">Что взять с собой</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="kit-block">
+        <h3>Бейджи</h3>
+        <div class="kit-row">
+          <span class="badge">Высшая категория</span>
+          <span class="badge badge--primary">Онлайн-оплата</span>
+          <span class="badge badge--solid">Новое</span>
+          <span class="badge badge--success"><span class="icon icon--circle-check" aria-hidden="true"></span>Есть запись сегодня</span>
+          <span class="badge badge--error">Нет свободного времени</span>
+          <span class="badge badge--outline">PDF</span>
+          <span class="kit-panel kit-panel--primary"><span class="badge badge--glass">Сотрудник недели</span></span>
+        </div>
+      </div>
+
+      <div class="kit-block">
+        <h3>Заголовок секции со ссылкой</h3>
+        <div class="kit-panel kit-panel--bordered">
+          <div class="section-head section-head--flush">
+            <div class="section-head__text">
+              <p class="section-head__eyebrow">Платные услуги РКБ</p>
+              <h2>Направления</h2>
+              <p class="section-head__lead">Консультации, диагностика, хирургия и роды в одной больнице.</p>
+            </div>
+            <a class="link-arrow" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Steps, docs, checklist -->
+    <section class="container kit-section" id="content" aria-labelledby="h-content">
+      <h2 id="h-content">Этапы, документы, что взять с собой</h2>
+      <p class="kit-section__note">Этапы — с текущей страницы «Чек-ап программы». Документы и список вещей — правдоподобная заглушка (A-06).</p>
+
+      <div class="kit-block">
+        <h3>Этапы</h3>
+        <ol class="steps">
+          <li class="steps__item"><h4 class="steps__title">Заявка</h4><p class="steps__text">Оставьте заявку на сайте или позвоните.</p></li>
+          <li class="steps__item"><h4 class="steps__title">Звонок менеджера</h4><p class="steps__text">Менеджер уточнит детали и подберёт удобную дату.</p></li>
+          <li class="steps__item"><h4 class="steps__title">Обследование</h4><p class="steps__text">Комплексное обследование с личным администратором.</p></li>
+          <li class="steps__item"><h4 class="steps__title">Результаты</h4><p class="steps__text">Заключение врача и рекомендации по итогам обследования.</p></li>
+        </ol>
+      </div>
+
+      <div class="kit-grid--2 kit-grid kit-block">
+        <div>
+          <h3 class="kit-title">Документы</h3>
+          <ul class="doc-list">
+            <li class="doc-row">
+              <span class="doc-row__icon"><span class="icon icon--file-type-pdf" aria-hidden="true"></span></span>
+              <div class="doc-row__body"><a class="doc-row__link" href="#" download>Подготовка к чек-апу</a><p class="doc-row__meta">PDF, 245 КБ</p></div>
+              <span class="doc-row__action" aria-hidden="true"><span class="icon icon--download" aria-hidden="true"></span><span class="doc-row__action-text">Скачать</span></span>
+            </li>
+            <li class="doc-row is-hover">
+              <span class="doc-row__icon"><span class="icon icon--file-type-doc" aria-hidden="true"></span></span>
+              <div class="doc-row__body"><a class="doc-row__link" href="#" download>Договор-оферта на оказание платных медицинских услуг</a><p class="doc-row__meta">DOC, 1,2 МБ</p></div>
+              <span class="doc-row__action" aria-hidden="true"><span class="icon icon--download" aria-hidden="true"></span><span class="doc-row__action-text">Скачать</span></span>
+            </li>
+            <li class="doc-row">
+              <span class="doc-row__icon"><span class="icon icon--file-type-xls" aria-hidden="true"></span></span>
+              <div class="doc-row__body"><a class="doc-row__link" href="#" download>Прейскурант платных медицинских услуг от 01.11.2026</a><p class="doc-row__meta">XLS, 380 КБ</p></div>
+              <span class="doc-row__action" aria-hidden="true"><span class="icon icon--download" aria-hidden="true"></span><span class="doc-row__action-text">Скачать</span></span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="kit-title">Что взять с собой</h3>
+          <ul class="checklist checklist--1col">
+            <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Паспорт</span></li>
+            <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Результаты прошлых обследований<span class="checklist__note">Выписки, анализы, снимки за последний год, если есть</span></span></li>
+            <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Список лекарств, которые принимаете</span></li>
+            <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Удобную одежду и сменную обувь</span></li>
+            <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Прийти натощак<span class="checklist__note">Не есть 8–12 часов, можно пить воду</span></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ Modal -->
+    <section class="container kit-section" id="modal" aria-labelledby="h-modal">
+      <h2 id="h-modal">Модальное окно и нижняя панель</h2>
+      <p class="kit-section__note">На десктопе окно по центру, на телефоне — нижняя панель (bottom sheet). Закрывается крестиком, Esc или кликом по затемнению; фокус возвращается на кнопку. Форма в окне проверяется и показывает сообщение об успехе.</p>
+      <div class="kit-row">
+        <button class="btn btn--primary" type="button" data-modal-open="modal-booking">Открыть форму записи</button>
+        <button class="btn btn--secondary" type="button" data-modal-open="kit-modal-info">Открыть информационное окно</button>
+      </div>
+    </section>
+
+    <div class="container kit-section" id="footer"><p class="kit-section__note">Подвал ниже — общий для всех страниц.</p></div>
   </main>
+
+  <dialog class="modal" id="kit-modal-info" aria-labelledby="kit-modal-info-title">
+    <div class="modal__handle" aria-hidden="true"></div>
+    <div class="modal__head">
+      <h2 class="modal__title" id="kit-modal-info-title">Как подготовиться к чек-апу</h2>
+      <button class="btn btn--tint btn--s btn--icon" type="button" data-modal-close aria-label="Закрыть"><span class="icon icon--x" aria-hidden="true"></span></button>
+    </div>
+    <div class="modal__body">
+      <ul class="checklist checklist--1col">
+        <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Не ешьте 8–12 часов до обследования</span></li>
+        <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Возьмите паспорт и результаты прошлых анализов</span></li>
+        <li class="checklist__item"><span class="checklist__icon"><span class="icon icon--check" aria-hidden="true"></span></span><span>Приходите за 15 минут до начала</span></li>
+      </ul>
+      <div class="kit-row kit-mt">
+        <button class="btn btn--primary" type="button" data-modal-open="modal-booking">Записаться</button>
+        <button class="btn btn--secondary" type="button" data-modal-close>Понятно</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Shared footer (js/layout.js, A-11) -->
+  <div data-include="footer"><noscript><p class="container">ГАУЗ «РКБ МЗ РТ», платное отделение «Сихат» · <a href="tel:+78432312090">+7 (843) 231-20-90</a></p></noscript></div>
+
+  <script src="data/site.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/forms.js"></script>
 </body>
 </html>

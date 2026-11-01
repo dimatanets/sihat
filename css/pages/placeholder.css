@@ -1,5 +1,5 @@
-/* Temporary styles for the P1 placeholder pages. Remove when real pages are built. */
-.placeholder { padding-block: var(--space-section); }
+/* Temporary styles for the placeholder pages. Remove when real pages are built (P3, P4). */
+.placeholder { padding-block: var(--space-8) 0; padding-inline: var(--content-gutter); }
 .placeholder__label {
   display: inline-block;
   margin-bottom: var(--space-4);
@@ -9,19 +9,8 @@
   text-transform: var(--text-label-transform);
   color: var(--color-primary);
 }
-.placeholder__lead { margin-top: var(--space-4); max-width: 640px; font-size: var(--text-lead-size); line-height: var(--text-lead-line); color: var(--color-text-muted); }
+.placeholder__lead { margin-top: var(--space-4); max-width: var(--text-measure); font-size: var(--text-lead-size); line-height: var(--text-lead-line); color: var(--color-text-muted); }
 .placeholder__nav { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
-.placeholder__btn {
-  display: inline-flex; align-items: center; gap: var(--space-2);
-  min-height: var(--control-height); padding-inline: var(--space-5);
-  border: 1px solid var(--color-border); border-radius: var(--radius-pill);
-  background: var(--color-bg); color: var(--color-text);
-  font-size: var(--text-button-size); font-weight: var(--text-button-weight);
-}
-.placeholder__btn--primary { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
-.placeholder__btn:hover { text-decoration: none; }
-.placeholder__btn--primary:hover { background: var(--color-primary-hover); }
-.placeholder__btn img { width: var(--icon-size); height: var(--icon-size); }
 .placeholder__card {
   margin-top: var(--space-6); padding: var(--space-5);
   border-radius: var(--radius-card); background: var(--color-surface);

@@ -1,0 +1,63 @@
+/*
+  A-19: icons are official Tabler outline SVGs from assets/icons, drawn as a CSS mask so they take currentColor
+  (and therefore follow the accessibility color schemes). Usage:
+    <span class="icon icon--phone" aria-hidden="true"></span>
+  Size modifiers: .icon--s (20px), .icon--l (32px). To add an icon: put the Tabler SVG into assets/icons
+  and add one line below.
+*/
+
+.icon {
+  display: inline-block;
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+          mask: var(--icon) center / contain no-repeat;
+  vertical-align: middle;
+  forced-color-adjust: none;
+}
+.icon--s { width: var(--icon-size-s); height: var(--icon-size-s); }
+.icon--l { width: var(--icon-size-l); height: var(--icon-size-l); }
+
+.icon--alert-circle { --icon: url("../assets/icons/alert-circle.svg"); }
+.icon--arrow-right { --icon: url("../assets/icons/arrow-right.svg"); }
+.icon--arrow-up-right { --icon: url("../assets/icons/arrow-up-right.svg"); }
+.icon--brand-telegram { --icon: url("../assets/icons/brand-telegram.svg"); }
+.icon--brand-vk { --icon: url("../assets/icons/brand-vk.svg"); }
+.icon--brand-whatsapp { --icon: url("../assets/icons/brand-whatsapp.svg"); }
+.icon--building-hospital { --icon: url("../assets/icons/building-hospital.svg"); }
+.icon--calendar { --icon: url("../assets/icons/calendar.svg"); }
+.icon--certificate { --icon: url("../assets/icons/certificate.svg"); }
+.icon--check { --icon: url("../assets/icons/check.svg"); }
+.icon--chevron-down { --icon: url("../assets/icons/chevron-down.svg"); }
+.icon--chevron-left { --icon: url("../assets/icons/chevron-left.svg"); }
+.icon--chevron-right { --icon: url("../assets/icons/chevron-right.svg"); }
+.icon--circle-check { --icon: url("../assets/icons/circle-check.svg"); }
+.icon--clock { --icon: url("../assets/icons/clock.svg"); }
+.icon--contrast { --icon: url("../assets/icons/contrast.svg"); }
+.icon--credit-card { --icon: url("../assets/icons/credit-card.svg"); }
+.icon--download { --icon: url("../assets/icons/download.svg"); }
+.icon--external-link { --icon: url("../assets/icons/external-link.svg"); }
+.icon--eye { --icon: url("../assets/icons/eye.svg"); }
+.icon--eye-off { --icon: url("../assets/icons/eye-off.svg"); }
+.icon--file-text { --icon: url("../assets/icons/file-text.svg"); }
+.icon--file-type-doc { --icon: url("../assets/icons/file-type-doc.svg"); }
+.icon--file-type-pdf { --icon: url("../assets/icons/file-type-pdf.svg"); }
+.icon--file-type-xls { --icon: url("../assets/icons/file-type-xls.svg"); }
+.icon--info-circle { --icon: url("../assets/icons/info-circle.svg"); }
+.icon--mail { --icon: url("../assets/icons/mail.svg"); }
+.icon--map-pin { --icon: url("../assets/icons/map-pin.svg"); }
+.icon--menu-2 { --icon: url("../assets/icons/menu-2.svg"); }
+.icon--message-circle { --icon: url("../assets/icons/message-circle.svg"); }
+.icon--minus { --icon: url("../assets/icons/minus.svg"); }
+.icon--phone { --icon: url("../assets/icons/phone.svg"); }
+.icon--photo { --icon: url("../assets/icons/photo.svg"); }
+.icon--photo-off { --icon: url("../assets/icons/photo-off.svg"); }
+.icon--player-play { --icon: url("../assets/icons/player-play.svg"); }
+.icon--plus { --icon: url("../assets/icons/plus.svg"); }
+.icon--stethoscope { --icon: url("../assets/icons/stethoscope.svg"); }
+.icon--text-size { --icon: url("../assets/icons/text-size.svg"); }
+.icon--user { --icon: url("../assets/icons/user.svg"); }
+.icon--world { --icon: url("../assets/icons/world.svg"); }
+.icon--x { --icon: url("../assets/icons/x.svg"); }

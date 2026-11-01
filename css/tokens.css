@@ -1,39 +1,59 @@
 /*
   Design tokens. The only file that may contain raw colors, fonts, sizes and radii.
-  Source: РКБ 2.0, Figma b1Lx2dWbxpkNECsxljEZej, section "update 27.10" (home 190:22 desktop, 190:1560 mobile).
+  Source: РКБ 2.0, Figma b1Lx2dWbxpkNECsxljEZej, section "update 27.10" (home 190:22 desktop, 190:1560 mobile,
+  mobile menu 190:4425).
   Values marked "estimate" were not found in Figma and must be confirmed (see docs/research.md).
   A-01: Сихат is a sub-brand of РКБ 2.0, so the tokens are shared; a separate brand changes only this file.
+  A-08: the accessibility version only overrides tokens (see the bottom of this file).
 */
 
 :root {
   /* ---- Color: brand ---- */
   --color-primary: #1e6bd0;
   --color-primary-hover: #1a5cb3;          /* estimate: primary darkened */
+  --color-primary-active: #154c95;         /* estimate */
   --color-primary-tint: #dbe7f7;           /* "Меню" button background */
+  --color-primary-tint-hover: #c7daf3;     /* estimate */
   --color-on-primary: #ffffff;
-  --color-on-primary-muted: rgba(255, 255, 255, 0.72);
+  --color-on-primary-muted: rgba(255, 255, 255, 0.92); /* estimate: raised from 0.72 in Figma to pass WCAG AA on primary */
   --color-on-primary-subtle: rgba(255, 255, 255, 0.16);
+  --color-on-primary-line: rgba(255, 255, 255, 0.32);  /* dividers in the blue mobile menu */
+  --color-panel-on-primary: rgba(15, 23, 42, 0.24);    /* darker card inside the blue menu (190:4425) */
 
   /* ---- Color: text ---- */
   --color-text: #010101;
   --color-heading: #0f172a;
   --color-text-muted: #475569;
   --color-link: var(--color-primary);
+  --color-disabled-text: #64748b;          /* estimate: AA on --color-disabled-bg for 16px medium */
+  --color-disabled-bg: #e2e8f0;
 
   /* ---- Color: surfaces and lines ---- */
   --color-bg: #ffffff;
   --color-surface: #f1f5f9;                /* review cards */
+  --color-surface-hover: #e7edf3;          /* estimate */
   --color-surface-alt: #e2e8f0;            /* dividers, input lines */
   --color-border: rgba(15, 23, 42, 0.12);  /* outlined buttons, news cards */
+  --color-border-strong: rgba(15, 23, 42, 0.32); /* estimate: input borders (3:1 non-text contrast) */
   --color-overlay-start: rgba(0, 0, 0, 0);
   --color-overlay-end: rgba(0, 0, 0, 0.64);/* gradient over photos */
   --color-overlay-heading-end: #0f172a;    /* gradient over the doctor card photo */
+  --color-backdrop: rgba(15, 23, 42, 0.56);/* estimate: modal backdrop */
+  --color-media-placeholder: #dbe7f7;      /* image placeholder until real photos arrive (A-07) */
+  --color-media-placeholder-icon: #1e6bd0;
 
   /* ---- Color: states ---- */
   --color-focus: #1e6bd0;
   --color-focus-ring: rgba(30, 107, 208, 0.32);
   --color-error: #c62828;                  /* estimate: no error state in Figma */
+  --color-error-tint: #fdecea;             /* estimate */
   --color-success: #2e7d32;                /* estimate: no success state in Figma */
+  --color-success-tint: #e8f5e9;           /* estimate */
+
+  /* ---- Color: accessibility panel samples (A-08). Each button previews its scheme. ---- */
+  --a11y-white-bg: #ffffff;  --a11y-white-fg: #000000;
+  --a11y-black-bg: #000000;  --a11y-black-fg: #ffffff;
+  --a11y-blue-bg: #9dd1ff;   --a11y-blue-fg: #063462;
 
   /* ---- Typography: family ---- */
   /* Gilroy is used in Figma; the font files are not in the repo yet, so fall back to system fonts. */
@@ -43,30 +63,47 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* ---- Typography: scale (desktop 1440) ---- */
-  --text-display-size: 56px;  --text-display-line: 64px;  --text-display-weight: var(--font-weight-bold);
-  --text-h1-size: 56px;       --text-h1-line: 64px;       --text-h1-weight: var(--font-weight-bold);
-  --text-h2-size: 40px;       --text-h2-line: 48px;       --text-h2-weight: var(--font-weight-bold);   --text-h2-tracking: -0.4px;
-  --text-h3-size: 32px;       --text-h3-line: 40px;       --text-h3-weight: var(--font-weight-bold);
-  --text-h4-size: 24px;       --text-h4-line: 32px;       --text-h4-weight: var(--font-weight-bold);   --text-h4-tracking: -0.24px;
-  --text-lead-size: 20px;     --text-lead-line: 28px;
-  --text-body-l-size: 18px;   --text-body-l-line: 26px;
-  --text-body-size: 16px;     --text-body-line: 24px;
-  --text-body-s-size: 14px;   --text-body-s-line: 22px;
-  --text-caption-size: 12px;  --text-caption-line: 20px;
-  --text-label-size: 12px;    --text-label-line: 20px;   --text-label-weight: var(--font-weight-medium);  --text-label-transform: uppercase;
-  --text-button-size: 16px;   --text-button-line: 22px;  --text-button-weight: var(--font-weight-medium);
-  --text-button-s-size: 14px; --text-button-s-line: 22px;
+  /* ---- Typography: scale (desktop 1440) ----
+     --font-scale is 1 normally; the accessibility version raises it (A-08). */
+  --font-scale: 1;
+  --text-display-size: calc(56px * var(--font-scale));  --text-display-line: calc(64px * var(--font-scale));  --text-display-weight: var(--font-weight-bold);
+  --text-h1-size: calc(56px * var(--font-scale));       --text-h1-line: calc(64px * var(--font-scale));       --text-h1-weight: var(--font-weight-bold);
+  --text-h2-size: calc(40px * var(--font-scale));       --text-h2-line: calc(48px * var(--font-scale));       --text-h2-weight: var(--font-weight-bold);   --text-h2-tracking: -0.4px;
+  --text-h3-size: calc(32px * var(--font-scale));       --text-h3-line: calc(40px * var(--font-scale));       --text-h3-weight: var(--font-weight-bold);
+  --text-h4-size: calc(24px * var(--font-scale));       --text-h4-line: calc(32px * var(--font-scale));       --text-h4-weight: var(--font-weight-bold);   --text-h4-tracking: -0.24px;
+  --text-h5-size: calc(20px * var(--font-scale));       --text-h5-line: calc(28px * var(--font-scale));       --text-h5-weight: var(--font-weight-semibold); /* estimate: card titles */
+  --text-lead-size: calc(20px * var(--font-scale));     --text-lead-line: calc(28px * var(--font-scale));
+  --text-body-l-size: calc(18px * var(--font-scale));   --text-body-l-line: calc(26px * var(--font-scale));
+  --text-body-size: calc(16px * var(--font-scale));     --text-body-line: calc(24px * var(--font-scale));
+  --text-body-s-size: calc(14px * var(--font-scale));   --text-body-s-line: calc(22px * var(--font-scale));
+  --text-caption-size: calc(12px * var(--font-scale));  --text-caption-line: calc(20px * var(--font-scale));
+  --text-label-size: calc(12px * var(--font-scale));    --text-label-line: calc(20px * var(--font-scale));   --text-label-weight: var(--font-weight-medium);  --text-label-transform: uppercase;  --text-label-tracking: 0.04em;
+  --text-button-size: calc(16px * var(--font-scale));   --text-button-line: calc(22px * var(--font-scale));  --text-button-weight: var(--font-weight-medium);
+  --text-button-s-size: calc(14px * var(--font-scale)); --text-button-s-line: calc(22px * var(--font-scale));
+  --text-price-size: calc(20px * var(--font-scale));    --text-price-line: calc(28px * var(--font-scale));   --text-price-weight: var(--font-weight-bold); /* estimate */
+  --text-menu-size: calc(18px * var(--font-scale));     --text-menu-line: calc(26px * var(--font-scale));    /* mobile menu links, 190:4425 */
+  --text-logo-size: calc(20px * var(--font-scale));     --text-logo-line: calc(22px * var(--font-scale));    /* estimate: placeholder wordmark */
+  --text-step-number-size: calc(32px * var(--font-scale)); /* estimate */
 
   /* ---- Radii ---- */
   --radius-card: 24px;
+  --radius-panel: 16px;       /* estimate: inner panels, mobile menu cards */
   --radius-input: 8px;
   --radius-image: 8px;        /* small thumbnails (news list) */
   --radius-pill: 1000px;      /* buttons, chips */
   --radius-circle: 50%;
+  --radius-check: 4px;        /* estimate: checkbox */
   --radius-tag: 2px;          /* estimate: smallest radius found in Figma */
 
+  /* ---- Borders ---- */
+  --border-width: 1px;
+  --border-width-strong: 2px;
+  --focus-width: 2px;
+  --focus-offset: 2px;
+  --focus-ring-width: 4px;
+
   /* ---- Spacing (4px base; 12/24 are the page rhythm in Figma) ---- */
+  --space-0: 2px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -81,18 +118,52 @@
   /* ---- Layout / grid ---- */
   --container-max: 1440px;
   --page-gutter: 12px;        /* page margin in both Figma frames */
+  --content-gutter: 24px;     /* estimate: inner padding of header/footer rows on desktop */
   --grid-gap: 12px;           /* gap between hero/tile cards in Figma */
   --grid-columns: 12;
-  --header-height: 96px;
+  --text-measure: 720px;      /* estimate: max width of running text */
+  --header-top-height: 40px;  /* estimate: utility row (address, languages, accessibility) */
+  --header-height: 80px;      /* estimate: Figma bar is 96px with three phone blocks; one phone here */
+  --header-height-m: 64px;    /* estimate: mobile bar */
   --control-height: 56px;     /* primary buttons, circular arrows */
   --control-height-s: 48px;   /* "Меню" button, input */
+  --control-height-xs: 40px;  /* estimate: compact bar buttons, chips */
+  --check-size: 20px;         /* estimate: checkbox box */
+  --textarea-min-height: 128px; /* estimate */
+  --badge-height: 28px;       /* estimate: chips like "Новости РКБ" in Figma */
+  --phone-icon-box: 40px;     /* estimate: tinted circle next to the header phone */
+  --footer-brand-width: 320px;/* estimate */
+  --card-col-min: 280px;      /* estimate: card grids wrap to fewer columns below this */
+  --steps-col-min: 240px;     /* estimate: steps wrap to fewer columns below this */
+  --checklist-col-min: 320px; /* estimate */
   --icon-size: 24px;
   --icon-size-s: 20px;
+  --icon-size-l: 32px;
+  --logo-mark-size: 44px;     /* estimate: placeholder logo mark */
+  --logo-mark-size-m: 32px;
+  --card-media-ratio: 4 / 3;  /* estimate: direction card photo */
+  --doctor-media-ratio: 1 / 1;/* estimate: doctor card photo */
+  --slot-min-width: 88px;     /* estimate: time chip */
+  --datepicker-cell: 44px;    /* estimate: day cell, also the minimum touch target */
+  --datepicker-width: 360px;  /* estimate */
+  --modal-width: 560px;       /* estimate */
+  --modal-max-height: 90vh;
+  --sheet-handle-width: 40px; /* estimate: bottom sheet grabber */
+  --sheet-handle-height: 4px;
+  --doc-icon-box: 48px;       /* estimate: document row icon box */
+  --anchor-nav-offset: 96px;  /* estimate: scroll offset for sticky header + anchor bar */
+
+  /* ---- Layering ---- */
+  --z-sticky: 20;
+  --z-header: 50;
+  --z-skip: 200;
 
   /* ---- Shadows / effects ---- */
   /* Figma has no box-shadows; elevation is done with borders. Kept as tokens for components. */
   --shadow-none: none;
   --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.12);   /* estimate: uses the Figma border/shadow color */
+  --shadow-header: 0 1px 0 rgba(15, 23, 42, 0.12);     /* estimate: sticky header separator */
+  --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.24);  /* estimate */
   --shadow-primary: 0 8px 24px rgba(30, 107, 208, 0.3);/* estimate: from the blue glow color in Figma */
   --blur-glass: 16px;         /* chips over photos */
 
@@ -100,17 +171,150 @@
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --easing-base: cubic-bezier(0.2, 0, 0, 1);
+  --motion-distance: 16px;    /* estimate: slide-in offset for modals */
 }
 
 /* ---- Mobile 360 overrides: estimate, Figma mobile frame shows smaller headings ---- */
 @media (max-width: 767px) {
   :root {
-    --text-display-size: 32px;  --text-display-line: 40px;
-    --text-h1-size: 32px;       --text-h1-line: 40px;
-    --text-h2-size: 28px;       --text-h2-line: 36px;
-    --text-h3-size: 24px;       --text-h3-line: 32px;
-    --text-h4-size: 20px;       --text-h4-line: 28px;
-    --text-lead-size: 18px;     --text-lead-line: 26px;
+    --text-display-size: calc(32px * var(--font-scale));  --text-display-line: calc(40px * var(--font-scale));
+    --text-h1-size: calc(32px * var(--font-scale));       --text-h1-line: calc(40px * var(--font-scale));
+    --text-h2-size: calc(28px * var(--font-scale));       --text-h2-line: calc(36px * var(--font-scale));
+    --text-h3-size: calc(24px * var(--font-scale));       --text-h3-line: calc(32px * var(--font-scale));
+    --text-h4-size: calc(20px * var(--font-scale));       --text-h4-line: calc(28px * var(--font-scale));
+    --text-h5-size: calc(18px * var(--font-scale));       --text-h5-line: calc(26px * var(--font-scale));
+    --text-lead-size: calc(18px * var(--font-scale));     --text-lead-line: calc(26px * var(--font-scale));
+    --text-logo-size: calc(18px * var(--font-scale));     --text-logo-line: calc(20px * var(--font-scale));
+    --text-step-number-size: calc(24px * var(--font-scale));
     --space-section: 64px;
+    --content-gutter: 12px;
+    --datepicker-cell: 40px;
   }
+}
+
+/*
+  ---- Accessibility version (A-08) ----
+  js/a11y.js sets on <html>: class "a11y", data-a11y-size="1|2|3", data-a11y-scheme="white|black|blue",
+  data-a11y-images="on|off". Only tokens change here; components pick them up.
+*/
+:root.a11y {
+  --font-scale: 1.25;
+  --text-h2-tracking: 0;
+  --text-h4-tracking: 0;
+  --text-label-tracking: 0.08em;
+  --shadow-card: none;
+  --shadow-primary: none;
+  --shadow-header: 0 2px 0 var(--color-text);
+  --focus-width: 3px;
+  --border-width: 2px;
+}
+:root.a11y[data-a11y-size="2"] { --font-scale: 1.5; }
+:root.a11y[data-a11y-size="3"] { --font-scale: 1.75; }
+/* Phones: smaller steps so long Russian words still fit 360px (estimate). */
+@media (max-width: 767px) {
+  :root.a11y { --font-scale: 1.15; }
+  :root.a11y[data-a11y-size="2"] { --font-scale: 1.3; }
+  :root.a11y[data-a11y-size="3"] { --font-scale: 1.45; }
+}
+
+:root.a11y[data-a11y-scheme="white"] {
+  --color-primary: #000000;
+  --color-primary-hover: #333333;
+  --color-primary-active: #000000;
+  --color-primary-tint: #ffffff;
+  --color-primary-tint-hover: #eeeeee;
+  --color-on-primary: #ffffff;
+  --color-on-primary-muted: #ffffff;
+  --color-on-primary-subtle: rgba(255, 255, 255, 0.16);
+  --color-on-primary-line: #ffffff;
+  --color-panel-on-primary: #000000;
+  --color-text: #000000;
+  --color-heading: #000000;
+  --color-text-muted: #000000;
+  --color-disabled-text: #000000;
+  --color-disabled-bg: #dddddd;
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #eeeeee;
+  --color-surface-alt: #000000;
+  --color-border: #000000;
+  --color-border-strong: #000000;
+  --color-overlay-end: rgba(0, 0, 0, 0);
+  --color-media-placeholder: #ffffff;
+  --color-media-placeholder-icon: #000000;
+  --color-focus: #000000;
+  --color-focus-ring: rgba(0, 0, 0, 0.32);
+  --color-error: #b00000;
+  --color-error-tint: #ffffff;
+  --color-success: #005a00;
+  --color-success-tint: #ffffff;
+}
+:root.a11y[data-a11y-scheme="black"] {
+  --color-primary: #ffff00;
+  --color-primary-hover: #ffffaa;
+  --color-primary-active: #ffff00;
+  --color-primary-tint: #000000;
+  --color-primary-tint-hover: #222222;
+  --color-on-primary: #000000;
+  --color-on-primary-muted: #000000;
+  --color-on-primary-subtle: rgba(0, 0, 0, 0.16);
+  --color-on-primary-line: #000000;
+  --color-panel-on-primary: #ffff00;
+  --color-text: #ffffff;
+  --color-heading: #ffffff;
+  --color-text-muted: #ffffff;
+  --color-link: #ffff00;
+  --color-disabled-text: #ffffff;
+  --color-disabled-bg: #444444;
+  --color-bg: #000000;
+  --color-surface: #000000;
+  --color-surface-hover: #222222;
+  --color-surface-alt: #ffffff;
+  --color-border: #ffffff;
+  --color-border-strong: #ffffff;
+  --color-overlay-end: rgba(0, 0, 0, 0);
+  --color-overlay-heading-end: #000000;
+  --color-backdrop: rgba(0, 0, 0, 0.8);
+  --color-media-placeholder: #000000;
+  --color-media-placeholder-icon: #ffffff;
+  --color-focus: #ffff00;
+  --color-focus-ring: rgba(255, 255, 0, 0.4);
+  --color-error: #ff8a80;
+  --color-error-tint: #000000;
+  --color-success: #9be59e;
+  --color-success-tint: #000000;
+}
+:root.a11y[data-a11y-scheme="blue"] {
+  --color-primary: #063462;
+  --color-primary-hover: #0a4a8a;
+  --color-primary-active: #063462;
+  --color-primary-tint: #9dd1ff;
+  --color-primary-tint-hover: #b8deff;
+  --color-on-primary: #9dd1ff;
+  --color-on-primary-muted: #9dd1ff;
+  --color-on-primary-subtle: rgba(157, 209, 255, 0.16);
+  --color-on-primary-line: #9dd1ff;
+  --color-panel-on-primary: #063462;
+  --color-text: #063462;
+  --color-heading: #063462;
+  --color-text-muted: #063462;
+  --color-link: #063462;
+  --color-disabled-text: #063462;
+  --color-disabled-bg: #c4e3ff;
+  --color-bg: #9dd1ff;
+  --color-surface: #9dd1ff;
+  --color-surface-hover: #b8deff;
+  --color-surface-alt: #063462;
+  --color-border: #063462;
+  --color-border-strong: #063462;
+  --color-overlay-end: rgba(0, 0, 0, 0);
+  --color-overlay-heading-end: #063462;
+  --color-media-placeholder: #9dd1ff;
+  --color-media-placeholder-icon: #063462;
+  --color-focus: #063462;
+  --color-focus-ring: rgba(6, 52, 98, 0.32);
+  --color-error: #7a0000;
+  --color-error-tint: #9dd1ff;
+  --color-success: #004400;
+  --color-success-tint: #9dd1ff;
 }
