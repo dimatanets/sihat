@@ -1,0 +1,116 @@
+/*
+  Design tokens. The only file that may contain raw colors, fonts, sizes and radii.
+  Source: РКБ 2.0, Figma b1Lx2dWbxpkNECsxljEZej, section "update 27.10" (home 190:22 desktop, 190:1560 mobile).
+  Values marked "estimate" were not found in Figma and must be confirmed (see docs/research.md).
+  A-01: Сихат is a sub-brand of РКБ 2.0, so the tokens are shared; a separate brand changes only this file.
+*/
+
+:root {
+  /* ---- Color: brand ---- */
+  --color-primary: #1e6bd0;
+  --color-primary-hover: #1a5cb3;          /* estimate: primary darkened */
+  --color-primary-tint: #dbe7f7;           /* "Меню" button background */
+  --color-on-primary: #ffffff;
+  --color-on-primary-muted: rgba(255, 255, 255, 0.72);
+  --color-on-primary-subtle: rgba(255, 255, 255, 0.16);
+
+  /* ---- Color: text ---- */
+  --color-text: #010101;
+  --color-heading: #0f172a;
+  --color-text-muted: #475569;
+  --color-link: var(--color-primary);
+
+  /* ---- Color: surfaces and lines ---- */
+  --color-bg: #ffffff;
+  --color-surface: #f1f5f9;                /* review cards */
+  --color-surface-alt: #e2e8f0;            /* dividers, input lines */
+  --color-border: rgba(15, 23, 42, 0.12);  /* outlined buttons, news cards */
+  --color-overlay-start: rgba(0, 0, 0, 0);
+  --color-overlay-end: rgba(0, 0, 0, 0.64);/* gradient over photos */
+  --color-overlay-heading-end: #0f172a;    /* gradient over the doctor card photo */
+
+  /* ---- Color: states ---- */
+  --color-focus: #1e6bd0;
+  --color-focus-ring: rgba(30, 107, 208, 0.32);
+  --color-error: #c62828;                  /* estimate: no error state in Figma */
+  --color-success: #2e7d32;                /* estimate: no success state in Figma */
+
+  /* ---- Typography: family ---- */
+  /* Gilroy is used in Figma; the font files are not in the repo yet, so fall back to system fonts. */
+  --font-family-base: "Gilroy", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ---- Typography: scale (desktop 1440) ---- */
+  --text-display-size: 56px;  --text-display-line: 64px;  --text-display-weight: var(--font-weight-bold);
+  --text-h1-size: 56px;       --text-h1-line: 64px;       --text-h1-weight: var(--font-weight-bold);
+  --text-h2-size: 40px;       --text-h2-line: 48px;       --text-h2-weight: var(--font-weight-bold);   --text-h2-tracking: -0.4px;
+  --text-h3-size: 32px;       --text-h3-line: 40px;       --text-h3-weight: var(--font-weight-bold);
+  --text-h4-size: 24px;       --text-h4-line: 32px;       --text-h4-weight: var(--font-weight-bold);   --text-h4-tracking: -0.24px;
+  --text-lead-size: 20px;     --text-lead-line: 28px;
+  --text-body-l-size: 18px;   --text-body-l-line: 26px;
+  --text-body-size: 16px;     --text-body-line: 24px;
+  --text-body-s-size: 14px;   --text-body-s-line: 22px;
+  --text-caption-size: 12px;  --text-caption-line: 20px;
+  --text-label-size: 12px;    --text-label-line: 20px;   --text-label-weight: var(--font-weight-medium);  --text-label-transform: uppercase;
+  --text-button-size: 16px;   --text-button-line: 22px;  --text-button-weight: var(--font-weight-medium);
+  --text-button-s-size: 14px; --text-button-s-line: 22px;
+
+  /* ---- Radii ---- */
+  --radius-card: 24px;
+  --radius-input: 8px;
+  --radius-image: 8px;        /* small thumbnails (news list) */
+  --radius-pill: 1000px;      /* buttons, chips */
+  --radius-circle: 50%;
+  --radius-tag: 2px;          /* estimate: smallest radius found in Figma */
+
+  /* ---- Spacing (4px base; 12/24 are the page rhythm in Figma) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-section: 96px;      /* estimate: vertical gap between home sections */
+
+  /* ---- Layout / grid ---- */
+  --container-max: 1440px;
+  --page-gutter: 12px;        /* page margin in both Figma frames */
+  --grid-gap: 12px;           /* gap between hero/tile cards in Figma */
+  --grid-columns: 12;
+  --header-height: 96px;
+  --control-height: 56px;     /* primary buttons, circular arrows */
+  --control-height-s: 48px;   /* "Меню" button, input */
+  --icon-size: 24px;
+  --icon-size-s: 20px;
+
+  /* ---- Shadows / effects ---- */
+  /* Figma has no box-shadows; elevation is done with borders. Kept as tokens for components. */
+  --shadow-none: none;
+  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.12);   /* estimate: uses the Figma border/shadow color */
+  --shadow-primary: 0 8px 24px rgba(30, 107, 208, 0.3);/* estimate: from the blue glow color in Figma */
+  --blur-glass: 16px;         /* chips over photos */
+
+  /* ---- Motion ---- */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --easing-base: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ---- Mobile 360 overrides: estimate, Figma mobile frame shows smaller headings ---- */
+@media (max-width: 767px) {
+  :root {
+    --text-display-size: 32px;  --text-display-line: 40px;
+    --text-h1-size: 32px;       --text-h1-line: 40px;
+    --text-h2-size: 28px;       --text-h2-line: 36px;
+    --text-h3-size: 24px;       --text-h3-line: 32px;
+    --text-h4-size: 20px;       --text-h4-line: 28px;
+    --text-lead-size: 18px;     --text-lead-line: 26px;
+    --space-section: 64px;
+  }
+}
