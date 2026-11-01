@@ -14,6 +14,7 @@
   --color-primary-active: #154c95;         /* estimate */
   --color-primary-tint: #dbe7f7;           /* "Меню" button background */
   --color-primary-tint-hover: #c7daf3;     /* estimate */
+  --color-on-tint: var(--color-primary-active); /* A-33: text on tinted surfaces; primary itself is 4.1:1 on the tint, below AA */
   --color-on-primary: #ffffff;
   --color-on-primary-muted: rgba(255, 255, 255, 0.92); /* estimate: raised from 0.72 in Figma to pass WCAG AA on primary */
   --color-on-primary-subtle: rgba(255, 255, 255, 0.16);
@@ -127,7 +128,8 @@
   --header-height-m: 64px;    /* estimate: mobile bar */
   --control-height: 56px;     /* primary buttons, circular arrows */
   --control-height-s: 48px;   /* "Меню" button, input */
-  --control-height-xs: 40px;  /* estimate: compact bar buttons, chips */
+  --tap-target: 44px;         /* A-32: minimum touch target for every control and link */
+  --control-height-xs: var(--tap-target); /* compact bar buttons and chips (was 40px, raised for touch (A-32)) */
   --check-size: 20px;         /* estimate: checkbox box */
   --textarea-min-height: 128px; /* estimate */
   --badge-height: 28px;       /* estimate: chips like "Новости РКБ" in Figma */
@@ -214,7 +216,6 @@
     --text-step-number-size: calc(24px * var(--font-scale));
     --space-section: 64px;
     --content-gutter: 12px;
-    --datepicker-cell: 40px;
     --scroller-per-view: 1.2;   /* a part of the next card shows that the row scrolls */
     --hero-padding: 24px;
   }

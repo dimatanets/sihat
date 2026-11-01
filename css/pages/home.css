@@ -84,8 +84,6 @@
   .hero__hours { flex-basis: auto; text-align: center; }
   .home-directions { grid-template-columns: minmax(0, 1fr); }
 }
-/* "Send another request" link-like button inside the success message */
-.home-booking .alert .btn--ghost { justify-content: flex-start; margin-inline-start: calc(-1 * var(--space-3)); text-align: left; }
 
 /* Accessibility version with images hidden: the photo card disappears, the offer takes the full width. */
 .a11y[data-a11y-images="off"] .hero { grid-template-columns: minmax(0, 1fr); }

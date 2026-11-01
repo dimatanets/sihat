@@ -132,7 +132,7 @@
       link.setAttribute("aria-current", "true");
       // Keep the active pill visible in the horizontal list without moving the page.
       var left = link.offsetLeft - list.clientWidth / 2 + link.clientWidth / 2;
-      list.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+      list.scrollTo({ left: Math.max(0, left), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     }
 
     var visible = new Set();

@@ -404,13 +404,18 @@
       var req = fieldset.hasAttribute("data-required") ? ' required data-msg-required="Выберите время"' : "";
       var h = "";
       var i = 0;
+      // A-34: on today the times that have already passed cannot be chosen
+      var now = new Date();
+      var isToday = date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
+      var nowMin = now.getHours() * 60 + now.getMinutes();
       for (var m = from * 60; m < to * 60; m += stepMin) {
         var t = Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0");
-        var busy = (date.getDate() * 13 + i * 7 + seed) % 10 < 3; // about 30% booked
+        var past = isToday && m <= nowMin;
+        var busy = past || (date.getDate() * 13 + i * 7 + seed) % 10 < 3; // about 30% booked
         var id = fieldset.id + "-" + i;
         h += '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="' + name +
           '" value="' + t + '"' + (busy ? " disabled" : "") + req + '><span class="slot__text">' + t +
-          (busy ? '<span class="visually-hidden">, занято</span>' : "") + "</span></label>";
+          (busy ? '<span class="visually-hidden">' + (past ? ", время прошло" : ", занято") + "</span>" : "") + "</span></label>";
         i++;
       }
       list.innerHTML = h;
