@@ -9,7 +9,8 @@
     4. Mobile menu                      11. Modal / bottom sheet
     5. Footer                           12. Alerts
     6. Form fields, checkbox             13. Media placeholder
-    7. Date picker, time slots, cards, service row
+    7. Date picker, time slots, cards,   14. Scroller (horizontal card row)
+       service row                       15. Choice chips (radio), form panel
 */
 
 /* =========================================================================
@@ -780,6 +781,14 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
   color: var(--color-primary);
 }
 .dcard:hover .dcard__arrow, .dcard.is-hover .dcard__arrow { background: var(--color-primary); color: var(--color-on-primary); }
+/* Compact on phones: small photo on the left, no arrow row, so a list of cards stays short. */
+@media (max-width: 767px) {
+  .dcard--compact-m { flex-direction: row; align-items: flex-start; }
+  .dcard--compact-m .dcard__media { flex: none; width: var(--card-thumb-m); aspect-ratio: 1 / 1; }
+  .dcard--compact-m .dcard__media .icon { width: var(--icon-size); height: var(--icon-size); }
+  .dcard--compact-m .dcard__body { gap: var(--space-1); padding: var(--space-1) var(--space-2) var(--space-1) 0; }
+  .dcard--compact-m .dcard__foot { display: none; }
+}
 
 /* Doctor card. */
 .doctor-card {
@@ -805,7 +814,8 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .doctor-card__name { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); }
 .doctor-card__name a { color: var(--color-heading); }
 .doctor-card__name a:hover { color: var(--color-primary); }
-.doctor-card__facts { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.doctor-card__role { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+.doctor-card__facts { margin-top: auto; padding-top: var(--space-1); display: flex; flex-wrap: wrap; gap: var(--space-1); }
 .doctor-card__actions { display: flex; gap: var(--space-2); padding: 0 var(--space-2) var(--space-2); }
 
 /* Service row: name, short description, code, price, «Записаться», «Оплатить». A-20: booking is the primary button. */
@@ -889,6 +899,10 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
   color: var(--color-primary);
 }
 .section-head__lead { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-text-muted); }
+/* Right side of the head: "all" link and, for scrollers, prev/next buttons. */
+.section-head__actions { display: flex; align-items: center; gap: var(--space-5); }
+.section-head__controls { display: flex; gap: var(--space-2); }
+@media (max-width: 767px) { .section-head__controls { display: none; } }
 @media (max-width: 767px) { .section-head { margin-bottom: var(--space-5); } }
 
 /* =========================================================================
@@ -1137,3 +1151,68 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .media > img { width: 100%; height: 100%; object-fit: cover; }
 .media--placeholder { display: flex; align-items: center; justify-content: center; color: var(--color-media-placeholder-icon); }
 .media--placeholder .icon { width: var(--icon-size-l); height: var(--icon-size-l); }
+
+/* =========================================================================
+   14. Scroller: one row of cards that scrolls sideways (doctors). Behaviour: js/ui.js.
+   ========================================================================= */
+
+.scroller__track {
+  position: relative; /* keeps visually hidden labels of off-screen cards inside the track */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--focus-ring-width);
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Room for the focus ring of cards and of the track itself. */
+  padding: var(--focus-ring-width);
+  margin: calc(-1 * var(--focus-ring-width));
+  border-radius: var(--radius-card);
+}
+.scroller__track::-webkit-scrollbar { display: none; }
+.scroller__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--scroller-per-view) - 1) * var(--grid-gap)) / var(--scroller-per-view));
+  gap: var(--grid-gap);
+}
+.scroller__list > li { scroll-snap-align: start; min-width: 0; }
+
+/* =========================================================================
+   15. Choice chips (one-of-many radio, e.g. contact method) and form panel
+   ========================================================================= */
+
+/* Reuses the time slot chip (.slot) for each option; the fieldset is also a .field so validation works. */
+.choices > legend { margin-bottom: var(--space-2); }
+.choices__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.choices .slot__text { gap: var(--space-2); padding-inline: var(--space-4); }
+.choices .slot__text .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
+
+/* Blue block with a heading and contacts on the left and a white form card on the right
+   (the "Остались вопросы?" block of РКБ 2.0, with standard fields inside a card). */
+.form-panel {
+  display: grid;
+  grid-template-columns: minmax(0, var(--form-panel-text-width)) minmax(0, 1fr);
+  gap: var(--space-6) var(--space-8);
+  padding: var(--hero-padding);
+  border-radius: var(--radius-card);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.form-panel__text { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+.form-panel__title { color: var(--color-on-primary); }
+.form-panel__lead { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-on-primary-muted); }
+.form-panel__contacts { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-3); }
+.form-panel__card {
+  padding: var(--space-6);
+  border-radius: var(--radius-panel);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.form-panel :focus-visible { outline-color: var(--color-on-primary); }
+.form-panel__card :focus-visible { outline-color: var(--color-focus); }
+@media (max-width: 1099px) {
+  .form-panel { grid-template-columns: 1fr; }
+}
+@media (max-width: 767px) {
+  .form-panel__card { padding: var(--space-4); }
+}

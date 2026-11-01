@@ -1,0 +1,91 @@
+/* Home page (index.html): section rhythm and the hero. Shared parts come from components.css. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; } /* «Записаться на приём» in the hero scrolls to the form */
+}
+
+.home { padding-top: var(--grid-gap); }
+.home-section { margin-top: var(--space-section); }
+/* Headings line up with the text inside the cards, as in РКБ 2.0. */
+.home-section__head { padding-inline: var(--content-gutter); }
+
+/* ---- Hero: blue card with the offer and actions + photo card (РКБ 2.0, 190:22) ---- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--grid-gap);
+}
+.hero__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-7);
+  min-height: var(--hero-min-height);
+  padding: var(--hero-padding);
+  border-radius: var(--radius-card);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.hero__intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+.hero__intro .badge { white-space: normal; }
+.hero__title {
+  max-width: var(--hero-title-measure);
+  color: var(--color-on-primary);
+  font-size: var(--text-display-size);
+  line-height: var(--text-display-line);
+  font-weight: var(--text-display-weight);
+}
+.hero__lead {
+  max-width: var(--text-measure);
+  font-size: var(--text-lead-size);
+  line-height: var(--text-lead-line);
+  color: var(--color-on-primary-muted);
+}
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); margin-top: var(--space-2); }
+.hero__phone { white-space: nowrap; }
+.hero__hours { flex-basis: 100%; font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-on-primary-muted); }
+
+.hero__quick { display: flex; flex-direction: column; gap: var(--space-3); padding-top: var(--space-5); border-top: var(--border-width) solid var(--color-on-primary-line); }
+.hero__quick-title {
+  font-size: var(--text-label-size);
+  line-height: var(--text-label-line);
+  font-weight: var(--text-label-weight);
+  text-transform: var(--text-label-transform);
+  letter-spacing: var(--text-label-tracking);
+  color: var(--color-on-primary-muted);
+}
+.hero__quick-list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.hero__main :focus-visible { outline-color: var(--color-on-primary); }
+
+/* Photo card. A-07: placeholder until the clinic sends photos. */
+.hero__aside { position: relative; min-height: 100%; border-radius: var(--radius-card); }
+.hero__aside > .icon { width: var(--icon-size-l); height: var(--icon-size-l); }
+.hero__place { position: absolute; left: var(--space-5); right: var(--space-5); bottom: var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.hero__place .badge { background: var(--color-bg); white-space: normal; }
+.hero__place .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
+
+/* ---- Directions: three cards in a row ---- */
+.home-directions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--grid-gap); }
+@media (min-width: 768px) { .home-directions .dcard__media { aspect-ratio: var(--card-media-ratio-wide); } }
+
+/* ---- Contact form ---- */
+.home-booking .form-panel { scroll-margin-top: var(--anchor-nav-offset); }
+
+@media (max-width: 1099px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .hero__aside { display: none; }
+  .home-directions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .hero__main { gap: var(--space-6); }
+  .hero__intro { gap: var(--space-4); }
+  .hero__actions { flex-direction: column; align-items: stretch; }
+  .hero__actions .btn { width: 100%; }
+  .hero__hours { flex-basis: auto; text-align: center; }
+  .home-directions { grid-template-columns: minmax(0, 1fr); }
+}
+/* "Send another request" link-like button inside the success message */
+.home-booking .alert .btn--ghost { justify-content: flex-start; margin-inline-start: calc(-1 * var(--space-3)); text-align: left; }
+
+/* Accessibility version with images hidden: the photo card disappears, the offer takes the full width. */
+.a11y[data-a11y-images="off"] .hero { grid-template-columns: minmax(0, 1fr); }

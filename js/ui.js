@@ -9,6 +9,10 @@
   Mobile menu: <dialog class="mnav" id="site-menu">, opened by [data-menu-open]; closes itself on desktop widths.
   Anchor navigation: <nav data-anchor-nav> with links to #ids; the link of the section in view gets aria-current="true".
   Accordion: native <details>/<summary>, no JS.
+  Scroller (horizontal card row): <div class="scroller__track" id="track-id" data-scroller tabindex="0" role="region"
+    aria-label="…"><ul class="scroller__list">…</ul></div> with buttons anywhere on the page:
+    <button data-scroller-prev="track-id"> / <button data-scroller-next="track-id">. Buttons scroll by one view and
+    get aria-disabled="true" at the ends. Swipe, trackpad and arrow keys (track is focusable) work natively.
 */
 (function () {
   "use strict";
@@ -123,10 +127,39 @@
     map.forEach(function (link, section) { io.observe(section); });
   }
 
+  // ---- Scroller ----
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function initScroller(track) {
+    if (track._scroller || !track.id) return;
+    track._scroller = true;
+    var prev = document.querySelectorAll('[data-scroller-prev="' + track.id + '"]');
+    var next = document.querySelectorAll('[data-scroller-next="' + track.id + '"]');
+    function set(btns, off) {
+      Array.prototype.forEach.call(btns, function (b) {
+        if (off) b.setAttribute("aria-disabled", "true"); else b.removeAttribute("aria-disabled");
+      });
+    }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      set(prev, track.scrollLeft <= 1);
+      set(next, track.scrollLeft >= max - 1);
+    }
+    function go(dir) {
+      track.scrollBy({ left: dir * track.clientWidth, behavior: reduceMotion.matches ? "auto" : "smooth" });
+    }
+    Array.prototype.forEach.call(prev, function (b) { b.setAttribute("aria-controls", track.id); b.addEventListener("click", function () { go(-1); }); });
+    Array.prototype.forEach.call(next, function (b) { b.setAttribute("aria-controls", track.id); b.addEventListener("click", function () { go(1); }); });
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
   function init() {
     Array.prototype.forEach.call(document.querySelectorAll("[data-anchor-nav]"), initAnchorNav);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-scroller]"), initScroller);
   }
   window.Sihat.anchorNav = { init: init };
+  window.Sihat.scroller = { init: initScroller };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();

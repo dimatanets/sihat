@@ -39,9 +39,11 @@
           <li><a class="anchor-nav__link" href="#fields">Поля формы</a></li>
           <li><a class="anchor-nav__link" href="#datetime">Дата и время</a></li>
           <li><a class="anchor-nav__link" href="#cards">Карточки</a></li>
+          <li><a class="anchor-nav__link" href="#scroller">Ряд с прокруткой</a></li>
           <li><a class="anchor-nav__link" href="#services">Услуги</a></li>
           <li><a class="anchor-nav__link" href="#navigation">Навигация</a></li>
           <li><a class="anchor-nav__link" href="#content">Этапы и документы</a></li>
+          <li><a class="anchor-nav__link" href="#form-panel">Блок записи</a></li>
           <li><a class="anchor-nav__link" href="#modal">Окна</a></li>
           <li><a class="anchor-nav__link" href="#footer">Подвал</a></li>
         </ul>
@@ -249,6 +251,22 @@
       </div>
 
       <div class="kit-block">
+        <h3>Выбор варианта (способ связи)</h3>
+        <p class="kit-section__note">Радио-чипы на основе слота времени: <code>fieldset.field.choices</code> → <code>.choices__list</code> → <code>label.slot</code>. Один вариант выбран по умолчанию, поэтому поле не обязательное. Стрелки переключают вариант.</p>
+        <fieldset class="field choices">
+          <legend class="field__label">Удобный способ связи</legend>
+          <div class="choices__list">
+            <label class="slot" for="kc-call"><input class="slot__input" type="radio" id="kc-call" name="kit-contact" value="call" checked><span class="slot__text"><span class="icon icon--phone" aria-hidden="true"></span>Звонок</span></label>
+            <label class="slot" for="kc-sms"><input class="slot__input" type="radio" id="kc-sms" name="kit-contact" value="sms"><span class="slot__text"><span class="icon icon--device-mobile-message" aria-hidden="true"></span>Сообщение на мобильный</span></label>
+            <label class="slot is-hover" for="kc-tg"><input class="slot__input" type="radio" id="kc-tg" name="kit-contact" value="telegram"><span class="slot__text"><span class="icon icon--brand-telegram" aria-hidden="true"></span>Telegram</span></label>
+            <label class="slot is-focus" for="kc-wa"><input class="slot__input" type="radio" id="kc-wa" name="kit-contact" value="whatsapp"><span class="slot__text"><span class="icon icon--brand-whatsapp" aria-hidden="true"></span>WhatsApp</span></label>
+            <label class="slot" for="kc-max"><input class="slot__input" type="radio" id="kc-max" name="kit-contact" value="max"><span class="slot__text"><span class="icon icon--message-circle" aria-hidden="true"></span>MAX</span></label>
+          </div>
+        </fieldset>
+        <p class="kit-caption kit-mt">Выбрано: «Звонок»; наведение: Telegram; фокус: WhatsApp.</p>
+      </div>
+
+      <div class="kit-block">
         <h3>Форма с проверкой и сообщения</h3>
         <div class="kit-grid--2 kit-grid">
           <div class="kit-panel kit-panel--bordered">
@@ -339,7 +357,7 @@
     <!-- ============================================================ Cards -->
     <section class="container kit-section" id="cards" aria-labelledby="h-cards">
       <h2 id="h-cards">Карточки</h2>
-      <p class="kit-section__note">Фото временно заменены заглушками (A-07). Карточка направления — целиком ссылка. Врачи и регалии — пример (A-06).</p>
+      <p class="kit-section__note">Фото временно заменены заглушками (A-07). Карточка направления — целиком ссылка. Врачи и регалии — пример (A-06). На страницах карточки строятся из <code>data/directions.js</code> и <code>data/doctors.js</code> скриптом <code>js/render.js</code>; разметка та же, что здесь.</p>
 
       <div class="kit-block">
         <h3>Направление</h3>
@@ -374,6 +392,16 @@
               </div>
             </article>
           </li>
+          <li>
+            <article class="dcard dcard--compact-m">
+              <div class="dcard__media media media--placeholder"><span class="icon icon--test-pipe" aria-hidden="true"></span></div>
+              <div class="dcard__body">
+                <h3 class="dcard__title"><a class="dcard__link" href="#">Анализы</a></h3>
+                <p class="dcard__text">Модификатор <code>dcard--compact-m</code>: на телефоне маленькое фото слева и без стрелки, чтобы список из шести карточек был коротким (главная).</p>
+                <div class="dcard__foot"><span class="dcard__arrow"><span class="icon icon--arrow-up-right" aria-hidden="true"></span></span></div>
+              </div>
+            </article>
+          </li>
         </ul>
       </div>
 
@@ -386,6 +414,7 @@
               <div class="doctor-card__body">
                 <p class="doctor-card__spec">Акушер-гинеколог</p>
                 <h3 class="doctor-card__name"><a href="#">Сафина Алсу Рашидовна</a></h3>
+                <p class="doctor-card__role">Заведующая акушерским отделением</p>
                 <ul class="doctor-card__facts">
                   <li class="badge">Высшая категория</li>
                   <li class="badge">к.м.н.</li>
@@ -425,6 +454,26 @@
             </article>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ Scroller -->
+    <section class="container kit-section" id="scroller" aria-labelledby="h-scroller">
+      <div class="section-head">
+        <div class="section-head__text">
+          <h2 id="h-scroller">Ряд с прокруткой</h2>
+          <p class="kit-section__note">Врачи на главной: один ряд карточек, листается свайпом, тачпадом, стрелками клавиатуры (ряд в фокусе) или кнопками. На десктопе видно 4 карточки, на планшете 2,5, на телефоне 1,2 — край следующей подсказывает, что ряд листается; кнопки на телефоне скрыты. Справа — <code>.section-head__actions</code>: ссылка «Все…» и кнопки.</p>
+        </div>
+        <div class="section-head__actions">
+          <a class="link-arrow" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
+          <div class="section-head__controls">
+            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="kit-track" aria-label="Предыдущие врачи"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
+            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="kit-track" aria-label="Следующие врачи"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="scroller__track" id="kit-track" data-scroller tabindex="0" role="region" aria-label="Пример ряда врачей, прокручивается по горизонтали">
+        <ul class="scroller__list" data-render="doctors" data-filter="home"></ul>
       </div>
     </section>
 
@@ -614,6 +663,46 @@
       </div>
     </section>
 
+    <!-- ============================================================ Form panel -->
+    <section class="container kit-section" id="form-panel" aria-labelledby="h-form-panel">
+      <h2 id="h-form-panel">Блок записи</h2>
+      <p class="kit-section__note">Синий блок с заголовком и телефоном слева и белой карточкой с формой справа (на планшете и телефоне — друг под другом). Внутри обычные поля, поэтому проверка и сообщение об успехе работают как везде. Кнопка <code>[data-form-again]</code> в сообщении возвращает пустую форму. На главной — последняя секция, к ней ведёт «Записаться на приём» из первого экрана.</p>
+      <div class="form-panel">
+        <div class="form-panel__text">
+          <h3 class="form-panel__title">Записаться на приём</h3>
+          <p class="form-panel__lead">Оставьте заявку — администратор свяжется с вами удобным способом.</p>
+          <div class="form-panel__contacts">
+            <a class="phone-link phone-link--inverse" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Или позвоните</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
+          </div>
+        </div>
+        <div class="form-panel__card">
+          <form class="form" data-validate novalidate>
+            <div class="form__row">
+              <div class="field">
+                <label class="field__label" for="kp-name">Имя <span class="field__req" aria-hidden="true">*</span></label>
+                <input class="field__control" id="kp-name" name="name" type="text" autocomplete="off" required>
+                <p class="field__msg" id="kp-name-msg" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="kp-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>
+                <input class="field__control" id="kp-phone" name="phone" type="tel" inputmode="tel" autocomplete="off" placeholder="+7 (___) ___-__-__" data-phone-mask required>
+                <p class="field__msg" id="kp-phone-msg" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label class="check" for="kp-consent"><input class="check__input" id="kp-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a></span></label>
+              <p class="field__msg" id="kp-consent-msg" aria-live="polite"></p>
+            </div>
+            <div><button class="btn btn--primary" type="submit">Отправить заявку</button></div>
+          </form>
+          <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
+            <span class="icon icon--circle-check" aria-hidden="true"></span>
+            <div><p class="alert__title">Заявка отправлена</p><p>Это макет: данные никуда не отправляются.</p><p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ Modal -->
     <section class="container kit-section" id="modal" aria-labelledby="h-modal">
       <h2 id="h-modal">Модальное окно и нижняя панель</h2>
@@ -650,7 +739,10 @@
   <div data-include="footer"><noscript><p class="container">ГАУЗ «РКБ МЗ РТ», платное отделение «Сихат» · <a href="tel:+78432312090">+7 (843) 231-20-90</a></p></noscript></div>
 
   <script src="data/site.js"></script>
+  <script src="data/directions.js"></script>
+  <script src="data/doctors.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/render.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
 </body>

@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Главная — Сихат РКБ (макет)</title>
-  <meta name="description" content="Дизайн-макет сайта платного отделения РКБ «Сихат».">
+  <title>Сихат — платное отделение РКБ, Казань (макет)</title>
+  <meta name="description" content="Платные медицинские услуги Республиканской клинической больницы: консультации врачей, чек-апы, диагностика, хирургия и роды. Запись на приём.">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/placeholder.css">
+  <link rel="stylesheet" href="css/pages/home.css">
   <script src="js/a11y.js"></script>
 </head>
 <body data-page="home">
@@ -18,23 +18,148 @@
   <!-- Shared header (js/layout.js, A-11) -->
   <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><span class="logo__mark" aria-hidden="true"></span><span class="logo__text"><span class="logo__name">Сихат</span><span class="logo__sub">Платное отделение РКБ</span></span></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
 
-  <main id="main" class="container placeholder">
-    <span class="placeholder__label">Сихат РКБ · дизайн-макет</span>
-    <h1>Главная</h1>
-    <p class="placeholder__lead">Здесь будет главная страница (этап P3).</p>
-    <nav class="placeholder__nav" aria-label="Страницы макета">
-      <a class="btn btn--primary" href="index.html" aria-current="page">Главная</a>
-      <a class="btn btn--secondary" href="direction.html">Страница направления</a>
-      <a class="btn btn--secondary" href="kit.html">Компоненты</a>
-    </nav>
-    <p class="placeholder__card">Шапка и подвал общие для всех страниц (этап P2). Компоненты и их состояния — на странице «Компоненты».</p>
+  <main id="main" class="home container">
+
+    <!-- 1. Hero: who we are, «Записаться на приём», call, quick links to priority directions -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__main">
+        <div class="hero__intro">
+          <span class="badge badge--glass">Платное отделение РКБ · Казань</span>
+          <h1 class="hero__title" id="hero-title">Забота о здоровье с врачами клиники экспертного уровня</h1>
+          <p class="hero__lead">Платные медицинские услуги Республиканской клинической больницы Татарстана: консультации врачей, чек-апы, диагностика, хирургия и роды.</p>
+          <div class="hero__actions">
+            <!-- A-23 / P4 hook: for now a plain link to the form below (#booking). P4: point it to the booking flow (e.g. data-modal-open). -->
+            <a class="btn btn--inverse" href="#booking" data-hero-book>Записаться на приём</a>
+            <a class="btn btn--inverse-outline hero__phone" href="tel:+78432312090"><span class="icon icon--phone" aria-hidden="true"></span><span><span class="visually-hidden">Позвонить: </span>+7 (843) 231-20-90</span></a>
+            <p class="hero__hours">Пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span></p>
+          </div>
+        </div>
+        <nav class="hero__quick" aria-labelledby="hero-quick-title">
+          <p class="hero__quick-title" id="hero-quick-title">Популярные направления</p>
+          <!-- A-21: same set and order as the directions section below -->
+          <ul class="hero__quick-list">
+            <li><a class="btn btn--inverse-outline btn--xs" href="#">Роды</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html">Чек-ап программы</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#">Хирургия</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#">Консультации врачей</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#">Диагностика</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#">Анализы</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- A-07: photo of the clinic goes here; placeholder until photos arrive -->
+      <div class="hero__aside media media--placeholder" role="img" aria-label="Здесь будет фото клиники">
+        <span class="icon icon--building-hospital" aria-hidden="true"></span>
+        <p class="hero__place"><span class="badge"><span class="icon icon--map-pin" aria-hidden="true"></span>Казань, Оренбургский тракт, 138</span></p>
+      </div>
+    </section>
+
+    <!-- 2. Priority directions (A-21) -->
+    <section class="home-section" id="directions" aria-labelledby="directions-title">
+      <div class="section-head home-section__head">
+        <div class="section-head__text">
+          <p class="section-head__eyebrow">Направления</p>
+          <h2 id="directions-title">С чем мы помогаем</h2>
+          <p class="section-head__lead">На странице направления — услуги и цены, врачи и порядок записи.</p>
+        </div>
+        <a class="link-arrow" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
+      </div>
+      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="6" data-card-mod="dcard--compact-m"></ul>
+    </section>
+
+    <!-- 3. Doctors (A-22) -->
+    <section class="home-section" id="doctors" aria-labelledby="doctors-title">
+      <div class="section-head home-section__head">
+        <div class="section-head__text">
+          <p class="section-head__eyebrow">Специалисты</p>
+          <h2 id="doctors-title">Врачи</h2>
+          <p class="section-head__lead">Заведующие отделениями и ведущие специалисты Республиканской клинической больницы.</p>
+        </div>
+        <div class="section-head__actions">
+          <a class="link-arrow" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
+          <div class="section-head__controls">
+            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="doctors-track" aria-label="Предыдущие врачи"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
+            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="doctors-track" aria-label="Следующие врачи"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="scroller__track" id="doctors-track" data-scroller tabindex="0" role="region" aria-label="Список врачей, прокручивается по горизонтали">
+        <ul class="scroller__list" data-render="doctors" data-filter="home" data-limit="8"></ul>
+      </div>
+    </section>
+
+    <!-- 4. Contact form (A-24) -->
+    <section class="home-section home-booking" aria-labelledby="booking-title">
+      <div class="form-panel" id="booking">
+        <div class="form-panel__text">
+          <h2 class="form-panel__title" id="booking-title">Записаться на приём</h2>
+          <p class="form-panel__lead">Оставьте заявку — администратор свяжется с вами удобным способом, поможет выбрать врача и время приёма.</p>
+          <div class="form-panel__contacts">
+            <a class="phone-link phone-link--inverse" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Или позвоните</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
+          </div>
+        </div>
+
+        <div class="form-panel__card">
+          <form class="form" data-validate novalidate aria-labelledby="booking-title">
+            <div class="form__row">
+              <div class="field">
+                <label class="field__label" for="hb-name">Имя <span class="field__req" aria-hidden="true">*</span></label>
+                <input class="field__control" id="hb-name" name="name" type="text" autocomplete="name" required data-msg-required="Напишите, как к вам обращаться">
+                <p class="field__msg" id="hb-name-msg" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="hb-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>
+                <input class="field__control" id="hb-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required data-msg-required="Укажите телефон, чтобы мы могли связаться">
+                <p class="field__msg" id="hb-phone-msg" aria-live="polite"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="hb-direction">Направление</label>
+              <div class="field__wrap">
+                <select class="field__control" id="hb-direction" name="direction" data-render="direction-options">
+                  <option value="">Пока не знаю</option>
+                </select>
+                <span class="icon icon--chevron-down field__icon" aria-hidden="true"></span>
+              </div>
+            </div>
+            <fieldset class="field choices">
+              <legend class="field__label">Удобный способ связи</legend>
+              <div class="choices__list">
+                <label class="slot" for="hb-c-call"><input class="slot__input" type="radio" id="hb-c-call" name="contact" value="call" checked><span class="slot__text"><span class="icon icon--phone" aria-hidden="true"></span>Звонок</span></label>
+                <label class="slot" for="hb-c-sms"><input class="slot__input" type="radio" id="hb-c-sms" name="contact" value="sms"><span class="slot__text"><span class="icon icon--device-mobile-message" aria-hidden="true"></span>Сообщение на мобильный</span></label>
+                <label class="slot" for="hb-c-tg"><input class="slot__input" type="radio" id="hb-c-tg" name="contact" value="telegram"><span class="slot__text"><span class="icon icon--brand-telegram" aria-hidden="true"></span>Telegram</span></label>
+                <label class="slot" for="hb-c-wa"><input class="slot__input" type="radio" id="hb-c-wa" name="contact" value="whatsapp"><span class="slot__text"><span class="icon icon--brand-whatsapp" aria-hidden="true"></span>WhatsApp</span></label>
+                <!-- A-15: MAX has no Tabler icon -->
+                <label class="slot" for="hb-c-max"><input class="slot__input" type="radio" id="hb-c-max" name="contact" value="max"><span class="slot__text"><span class="icon icon--message-circle" aria-hidden="true"></span>MAX</span></label>
+              </div>
+            </fieldset>
+            <div class="field">
+              <label class="check" for="hb-consent"><input class="check__input" id="hb-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>
+              <p class="field__msg" id="hb-consent-msg" aria-live="polite"></p>
+            </div>
+            <div><button class="btn btn--primary" type="submit">Отправить заявку</button></div>
+          </form>
+          <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
+            <span class="icon icon--circle-check" aria-hidden="true"></span>
+            <div>
+              <p class="alert__title">Заявка отправлена</p>
+              <p>Администратор свяжется с вами выбранным способом в рабочее время: пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>. Это макет: данные никуда не отправляются.</p>
+              <p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Shared footer (js/layout.js, A-11) -->
   <div data-include="footer"><noscript><p class="container">ГАУЗ «РКБ МЗ РТ», платное отделение «Сихат» · <a href="tel:+78432312090">+7 (843) 231-20-90</a></p></noscript></div>
 
   <script src="data/site.js"></script>
+  <script src="data/directions.js"></script>
+  <script src="data/doctors.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/render.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
 </body>

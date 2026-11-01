@@ -7,6 +7,7 @@
     Custom texts: data-msg-required="…", data-msg-invalid="…".
     On error: .field--error, aria-invalid="true", aria-describedby → message; focus goes to the first error.
     On success: the form is hidden and the next [data-form-success] sibling is shown and focused.
+    A [data-form-again] button inside the success element brings back the empty form.
     After the first submit, fields re-validate as the user types. JS: Sihat.forms.validate(form) → boolean,
     Sihat.forms.reset(form).
 
@@ -194,6 +195,19 @@
   }
   document.addEventListener("input", liveCheck);
   document.addEventListener("change", liveCheck);
+
+  // "Send another request" inside a success message: show the empty form again.
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest("[data-form-again]");
+    if (!btn) return;
+    var ok = btn.closest("[data-form-success]");
+    var form = ok && ok.previousElementSibling;
+    while (form && !form.matches("form[data-validate]")) form = form.previousElementSibling;
+    if (!form) return;
+    reset(form);
+    var first = controlsOf(form)[0];
+    if (first) first.focus();
+  });
 
   // A modal form starts clean every time it is opened.
   document.addEventListener("modal:open", function (e) {

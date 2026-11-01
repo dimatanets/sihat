@@ -51,6 +51,11 @@ button { cursor: pointer; }
   box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
 }
 
+/* Components set display on their root; keep the hidden attribute working (form success swaps). */
+[hidden] { display: none !important; }
+
+.nowrap { white-space: nowrap; }
+
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;

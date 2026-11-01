@@ -142,6 +142,8 @@
   --logo-mark-size: 44px;     /* estimate: placeholder logo mark */
   --logo-mark-size-m: 32px;
   --card-media-ratio: 4 / 3;  /* estimate: direction card photo */
+  --card-media-ratio-wide: 16 / 9; /* estimate: lower photo when six cards sit in a three-column grid (home) */
+  --card-thumb-m: 72px;       /* estimate: photo of a compact direction card on phones */
   --doctor-media-ratio: 1 / 1;/* estimate: doctor card photo */
   --slot-min-width: 88px;     /* estimate: time chip */
   --datepicker-cell: 44px;    /* estimate: day cell, also the minimum touch target */
@@ -152,6 +154,11 @@
   --sheet-handle-height: 4px;
   --doc-icon-box: 48px;       /* estimate: document row icon box */
   --anchor-nav-offset: 96px;  /* estimate: scroll offset for sticky header + anchor bar */
+  --hero-min-height: 560px;   /* estimate: home hero card, close to the 540px hero in РКБ 2.0 (190:22) */
+  --hero-padding: 48px;       /* estimate: inner padding of the hero and the form panel on desktop */
+  --hero-title-measure: 14em; /* estimate: hero heading wraps into about three lines */
+  --scroller-per-view: 4;     /* estimate: cards visible in a horizontal row (doctors) */
+  --form-panel-text-width: 480px; /* estimate: text column of the blue form panel */
 
   /* ---- Layering ---- */
   --z-sticky: 20;
@@ -174,6 +181,15 @@
   --motion-distance: 16px;    /* estimate: slide-in offset for modals */
 }
 
+/* ---- Tablet: fewer cards per row (estimate) ---- */
+@media (max-width: 1099px) {
+  :root {
+    --scroller-per-view: 2.5;
+    --hero-min-height: 0px;
+    --hero-padding: 32px;
+  }
+}
+
 /* ---- Mobile 360 overrides: estimate, Figma mobile frame shows smaller headings ---- */
 @media (max-width: 767px) {
   :root {
@@ -189,6 +205,8 @@
     --space-section: 64px;
     --content-gutter: 12px;
     --datepicker-cell: 40px;
+    --scroller-per-view: 1.2;   /* a part of the next card shows that the row scrolls */
+    --hero-padding: 24px;
   }
 }
 
