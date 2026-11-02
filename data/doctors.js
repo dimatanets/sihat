@@ -24,7 +24,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующий хирургическим отделением № 1",
     position: "Заведующий хирургическим отделением № 1. Врач-хирург",
     regalia: [],
-    directions: ["khirurgiya", "abdominalnaya", "konsultacii"],
+    directions: ["khirurgiya", "konsultacii"],
     href: "#",
     photo: "assets/img/doctors/sagdiev-azat-ildusovich.jpg",
     home: 1
@@ -36,7 +36,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующий отделением гематологии",
     position: "Заведующий отделением гематологии, врач-гематолог",
     regalia: [],
-    directions: ["konsultacii", "chek-ap", "analizy"],
+    directions: ["konsultacii", "chek-ap"],
     href: "#",
     photo: "assets/img/doctors/kunst-mikhail-aleksandrovich.jpg",
     home: 2
@@ -48,7 +48,7 @@ window.SIHAT_DOCTORS = [
     role: "Руководитель Центра клинической иммунологии",
     position: "Руководитель Центра клинической иммунологии, врач аллерголог-иммунолог высшей категории, кандидат медицинских наук, член Российской Ассоциации аллергологов и клинических иммунологов, член Европейской академии аллергологии и клинической иммунологии",
     regalia: ["Высшая категория", "к.м.н."],
-    directions: ["allergologiya", "konsultacii", "analizy"],
+    directions: ["konsultacii"],
     href: "#",
     photo: "assets/img/doctors/luntsov-aleksey-vladimirovich.jpg",
     home: 3
@@ -120,7 +120,7 @@ window.SIHAT_DOCTORS = [
     role: "Заведующая медико-генетической консультацией",
     position: "Заведующая медико-генетической консультацией, врач-генетик высшей категории, Заслуженный врач РТ",
     regalia: ["Высшая категория", "Заслуженный врач РТ"],
-    directions: ["konsultacii", "analizy"],
+    directions: ["konsultacii"],
     href: "#",
     photo: "assets/img/doctors/vafina-zulfiya-ilsurovna.jpg",
     home: null

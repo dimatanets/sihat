@@ -26,9 +26,6 @@
   }
   function current(link) {
     if (!link.page || link.page !== page) return "";
-    // One template for several directions (direction.html?d=…): only the link with the same ?d is current.
-    var q = link.href.split("?")[1];
-    if (q && "?" + q !== (location.search || "?d=checkup")) return "";
     return ' aria-current="page"';
   }
   var mainPhone = D.phones[0];

@@ -1,4 +1,4 @@
-/* Direction page (direction.html): page head, section rhythm, description, services tools. Shared parts: components.css. */
+/* Direction page (direction.html): page head, section rhythm, description. Shared parts: components.css. */
 
 /* Anchors land below the sticky header and the sticky anchor bar. */
 html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) + var(--space-4)); }
@@ -52,13 +52,6 @@ html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) 
 .about__aside-title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); }
 .about__features { margin-top: var(--space-6); }
 
-/* ---- 5. Services: tools above the long list ---- */
-.services__tools { display: flex; flex-direction: column; gap: var(--space-4); margin-bottom: var(--space-6); }
-.services__search { max-width: var(--text-measure); }
-.services .service-list > li > .service-row { height: 100%; }
-.services .empty { margin-top: var(--space-4); }
-.services .service-group__more .btn { margin-inline-start: calc(-1 * var(--space-3)); }
-
 /* ---- 7–8. Documents and «что взять с собой» side by side ---- */
 .direction-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-8); }
 .bring { padding-inline: var(--content-gutter); }
@@ -80,12 +73,6 @@ html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) 
 /* Accessibility version with images hidden: the head takes the full width. */
 .a11y[data-a11y-images="off"] .page-head { grid-template-columns: minmax(0, 1fr); }
 
-
-/* Tools, group headings and «Показать все» line up with the text inside the service rows. */
-.services__tools, .service-group__head, .service-group__more { padding-inline: var(--space-4); }
-@media (max-width: 767px) {
-  .services__tools, .service-group__head, .service-group__more { padding-inline: 0; }
-}
 @media (max-width: 767px) {
   .about__features .feature { padding: var(--space-4); }
 }

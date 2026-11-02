@@ -1,11 +1,9 @@
 /*
-  Content of the direction page (direction.html), one entry per mock direction (A-02).
-  The page is picked by the URL parameter: direction.html?d=checkup | direction.html?d=analyses (default: checkup).
+  Content of the direction page (direction.html). Stage 1 has one direction, «Чек-ап программы» (A-02, A-27).
   Rendered by js/direction.js; services come from data/services.js (direction id), doctors from data/doctors.js.
   In Bitrix every key below is a field (or a linked element list) of the direction info block.
 
-  A-06: texts of «Чек-ап программы» (lead, about, includes, features, steps) and the description of «Анализы»
-  are real, from rkb-sihat.ru. Marked "placeholder" below: written for the prototype, to be replaced by the clinic.
+  A-06: texts of «Чек-ап программы» (lead, about, includes, features, steps) are real, from rkb-sihat.ru. Marked "placeholder" below: written for the prototype, to be replaced by the clinic.
 
   Fields:
     direction   id from data/directions.js (services and doctors are filtered by it)
@@ -69,51 +67,5 @@ window.SIHAT_DIRECTION_PAGES = {
       { text: "Прийти натощак", note: "Не есть 8–12 часов, можно пить воду" }
     ],
     formLead: "Оставьте заявку на чек-ап: администратор свяжется с вами, поможет выбрать программу, подберёт удобную дату и подтвердит запись."
-  },
-
-  analyses: {
-    direction: "analizy",
-    title: "Анализы",
-    lead: "Не забывайте, что забота о себе включает регулярную диагностику функционирования органов с помощью лабораторных методов исследования.",
-    icon: "test-pipe",
-    image: "assets/img/directions/analizy.jpg",
-    facts: ["Собственная лаборатория", "Будни 8:00–12:00"],
-    about: [
-      "Благодаря собственной лаборатории, квалифицированным кадрам и передовым технологиям в кратчайшие сроки выполняются широкий спектр генетических, микробиологических исследований, диагностика инфекций и реакций на аллергены, осуществляется лекарственный мониторинг.",
-      "Лабораторные анализы можно сдать каждый будний день с 8:00 до 12:00. Некоторые их виды требуют подготовки."
-    ],
-    includesTitle: "",
-    includes: [],
-    // placeholder (A-06), built from the facts of the description above
-    features: [
-      { title: "Собственная лаборатория", text: "Анализы выполняются в лаборатории РКБ, без пересылки в сторонние лаборатории." },
-      { title: "Широкий спектр", text: "Общеклинические, биохимические, гормональные, бактериологические исследования, инфекции и аллергены." },
-      { title: "Заявка без звонков", text: "Оставьте заявку на сайте: администратор перезвонит, подберёт день и подтвердит запись. Кабинет работает в будни с 8:00 до 12:00." }
-    ],
-    // placeholder (A-06)
-    stepsLead: "Оставьте заявку, администратор подберёт день и подтвердит запись. Подготовка к анализу указана в памятке.",
-    steps: [
-      { title: "Заявка и подтверждение", text: "Выберите анализ и оставьте заявку на сайте или по телефону. Администратор перезвонит и подтвердит запись." },
-      { title: "Подготовка", text: "Некоторые анализы сдают натощак или утром: смотрите памятку по подготовке." },
-      { title: "Сдача анализа", text: "Процедурный кабинет в будни с 8:00 до 12:00. Возьмите паспорт." },
-      { title: "Результаты", text: "Срок указан у каждого анализа. Результаты выдаются в регистратуре или на почту." }
-    ],
-    // A-39 (R-10)
-    servicesLead: "Срок выполнения указан у каждого анализа. Цены справочные, точную стоимость подтвердит администратор.",
-    priceList: { label: "Полный прайс платных медицинских услуг", meta: "XLS, от 01.11.2026", href: "#" },
-    doctorsLead: "Врачи, которые назначают и расшифровывают анализы.",
-    documents: [
-      { title: "Памятка: подготовка к сдаче анализов", meta: "PDF, 310 КБ", type: "pdf", href: "#" },
-      { title: "Договор-оферта на оказание платных медицинских услуг", meta: "DOC, 1,2 МБ", type: "doc", href: "#" },
-      { title: "Согласие на обработку персональных данных", meta: "PDF, 120 КБ", type: "pdf", href: "#" },
-      { title: "Прейскурант платных медицинских услуг от 01.11.2026", meta: "XLS, 380 КБ", type: "xls", href: "#" }
-    ],
-    bring: [
-      { text: "Паспорт" },
-      { text: "Направление врача, если есть" },
-      { text: "Для анализов натощак — не есть 8–12 часов", note: "Можно пить негазированную воду" },
-      { text: "Для анализа мочи — стерильный контейнер", note: "Можно купить в аптеке" }
-    ],
-    formLead: "Не знаете, какие анализы сдать? Оставьте заявку: администратор перезвонит, поможет выбрать и подтвердит запись."
   }
 };

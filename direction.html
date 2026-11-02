@@ -14,8 +14,7 @@
   <script src="js/a11y.js"></script>
 </head>
 <!--
-  One template for every direction (A-02). js/direction.js fills the [data-dir-…] slots from
-  data/direction-pages.js by the URL parameter: direction.html?d=checkup | direction.html?d=analyses.
+  One template for every direction (A-02, A-27). js/direction.js fills the [data-dir-…] slots from data/direction-pages.js.
   In Bitrix this is the detail template of the directions info block; the slots are its fields.
 -->
 <body data-page="direction">
@@ -42,7 +41,7 @@
           <ul class="page-head__facts" data-dir-facts aria-label="Коротко о направлении"></ul>
         </div>
         <div class="page-head__actions">
-          <!-- The scenario comes from the services of the direction: both built directions open a request (answer 4) -->
+          <!-- The scenario comes from the services of the direction: check-ups open a request (answer 4) -->
           <button class="btn btn--primary" type="button" data-book data-dir-book>Записаться</button>
           <a class="phone-link" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
         </div>

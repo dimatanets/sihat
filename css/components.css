@@ -1,6 +1,6 @@
 /*
   Shared components. Every value comes from tokens.css. Each component is shown with its states on kit.html.
-  State classes .is-hover / .is-focus / .is-disabled exist only so kit.html can show a state statically;
+  State classes .is-hover / .is-focus exist only so kit.html can show a state statically;
   real pages rely on :hover, :focus-visible and the disabled attribute.
   Contents:
     1. Buttons, links, phone link        8. Badges, breadcrumbs, section head
@@ -79,7 +79,7 @@
 .btn--icon.btn--s { width: var(--control-height-s); min-width: var(--control-height-s); }
 .btn--icon.btn--xs { width: var(--control-height-xs); min-width: var(--control-height-xs); }
 
-.btn:disabled, .btn[aria-disabled="true"], .btn.is-disabled {
+.btn:disabled, .btn[aria-disabled="true"] {
   background: var(--color-disabled-bg);
   border-color: var(--color-disabled-bg);
   color: var(--color-disabled-text);
@@ -776,7 +776,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .dcard:hover .dcard__link, .dcard.is-hover .dcard__link { color: var(--color-primary); }
 .dcard__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
 .dcard__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: auto; padding-top: var(--space-2); }
-.dcard__price { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
 .dcard__arrow {
   display: inline-flex;
   align-items: center;
@@ -1121,7 +1120,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .modal__handle { display: none; }
 .modal__head { display: flex; align-items: flex-start; gap: var(--space-4); padding: var(--space-6) var(--space-6) var(--space-4); }
 .modal__title { flex: 1; font-size: var(--text-h4-size); line-height: var(--text-h4-line); font-weight: var(--text-h4-weight); letter-spacing: var(--text-h4-tracking); }
-.modal__lead { margin-top: var(--space-2); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
 .modal__body { padding: 0 var(--space-6) var(--space-6); overflow-y: auto; overscroll-behavior: contain; }
 
 @media (max-width: 767px) {
@@ -1323,7 +1321,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .flow__aside .btn { margin-top: var(--space-1); }
 /* Date and time step: calendar and slots side by side on desktop. */
 .flow__datetime { display: grid; grid-template-columns: minmax(0, var(--datepicker-width)) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
-.flow__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 /* Desktop: the main button sits on the right at its own width; phones keep it full width. */
 @media (min-width: 768px) {
   .modal--flow .modal__foot { justify-content: flex-end; }
@@ -1396,7 +1393,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .option__body { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 0; }
 .option__title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
 .option__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-.option__tags { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 /* Nearest free date and price of a doctor (R-3). */
 .option__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
 .option__meta strong { font-weight: var(--font-weight-semibold); color: var(--color-heading); }
@@ -1478,7 +1474,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 
 
 /* =========================================================================
-   19. Search field, filter chips, grouped service list, empty state (long lists, e.g. «Анализы»)
+   19. Search field, filter chips, grouped service list, empty state (long lists, shown on kit.html; the search and the chips also work in the booking flow)
    ========================================================================= */
 
 .search { position: relative; display: flex; }
@@ -1506,7 +1502,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .service-group__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
 .service-group__count { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
 .service-group__more { margin-top: var(--space-3); }
-.service-list__status { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
 
 /* Compact row for long lists, reads as a price list: code, name, price (R-9). On phones the price and the button share one line. */
 .service-row--compact { padding-block: var(--space-3); }

@@ -1,14 +1,12 @@
 /*
   Direction page (direction.html): fills the [data-dir-…] slots from data/direction-pages.js.
-  The direction is picked by ?d=checkup | ?d=analyses; an unknown or missing value shows «Чек-ап программы» (A-27).
+  Stage 1 has one direction, «Чек-ап программы» (A-02, A-27).
   Load after js/render.js (the doctor cards are rendered with Sihat.render) and before js/ui.js (scroller, anchor nav).
 
-  Services list (data/services.js, filtered by direction):
-    up to SHORT_LIST services: a plain .service-list;
-    longer lists (A-28): search by name, code and description, filter chips by group, grouped rows
-    (.service-group + .service-row--compact), the first GROUP_LIMIT rows of each group with «Показать все».
+  Services list (data/services.js, filtered by direction): a plain .service-list. The long list of A-28 (search, chips,
+  groups) stays as a component on kit.html; its behaviour was removed with «Анализы», see js/direction.js at tag answers-1.
   Row button: «Записаться» = [data-book data-service] (js/booking.js). No payment here: only doctor visits are paid (answer 5).
-  JS: Sihat.direction.page (the current entry), Sihat.direction.serviceRow(service, heading, compact).
+  JS: Sihat.direction.page (the current entry), Sihat.direction.serviceRow(service, heading).
 */
 (function () {
   "use strict";
@@ -18,12 +16,7 @@
   var root = document.querySelector("main.direction");
   if (!root) return;
 
-  var SHORT_LIST = 8;
-  var GROUP_LIMIT = 6;
-
-  var key = new URLSearchParams(location.search).get("d");
-  if (!PAGES[key]) key = "checkup"; // A-27
-  var P = PAGES[key];
+  var P = PAGES.checkup; // A-27
   var services = SERVICES.filter(function (s) { return s.direction === P.direction; });
 
   function esc(s) {
@@ -35,14 +28,6 @@
     return '<span class="icon icon--' + name + (extra ? " " + extra : "") + '" aria-hidden="true"></span>';
   }
   function rub(n) { return Number(n).toLocaleString("ru-RU") + " ₽"; }
-  function plural(n, one, few, many) {
-    var m10 = n % 10, m100 = n % 100;
-    if (m10 === 1 && m100 !== 11) return one;
-    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
-    return many;
-  }
-  function services_(n) { return n + " " + plural(n, "услуга", "услуги", "услуг"); }
-  function norm(s) { return String(s).toLowerCase().replace(/ё/g, "е"); }
   function slot(name) { return root.querySelector("[data-dir-" + name + "]"); }
 
   /* ---- texts ---- */
@@ -113,9 +98,9 @@
   if (window.Sihat && window.Sihat.render) window.Sihat.render.all(root);
 
   /* ---- services ---- */
-  function serviceRow(s, h, compact) {
+  function serviceRow(s, h) {
     return (
-      '<li><article class="service-row' + (compact ? " service-row--compact" : "") + '">' +
+      '<li><article class="service-row">' +
       '<div class="service-row__main">' +
       "<" + h + ' class="service-row__title">' + esc(s.title) + "</" + h + ">" +
       (s.text ? '<p class="service-row__text">' + esc(s.text) + "</p>" : "") +
@@ -127,123 +112,8 @@
     );
   }
 
-  var box = slot("services");
-  if (services.length <= SHORT_LIST) {
-    box.innerHTML = '<ul class="service-list">' + services.map(function (s) { return serviceRow(s, "h3", false); }).join("") + "</ul>";
-  } else {
-    renderLong();
-  }
-
-  function renderLong() {
-    var groups = [];
-    services.forEach(function (s) { if (groups.indexOf(s.group) === -1) groups.push(s.group); });
-    function inGroup(g) { return services.filter(function (s) { return s.group === g; }); }
-
-    box.innerHTML =
-      '<div class="services__tools">' +
-      '<div class="field services__search"><label class="field__label" for="svc-search">Поиск по услугам</label>' +
-      '<div class="search">' + icon("search") +
-      '<input class="field__control" id="svc-search" type="search" placeholder="Название или код услуги" autocomplete="off" aria-describedby="svc-status"></div></div>' +
-      '<fieldset class="filter-chips"><legend class="visually-hidden">Группа услуг</legend><div class="filter-chips__list">' +
-      chip("all", "Все", services.length, true) +
-      groups.map(function (g, i) { return chip("g" + i, g, inGroup(g).length, false); }).join("") +
-      "</div></fieldset>" +
-      '<p class="service-list__status" id="svc-status" role="status" aria-live="polite"></p>' +
-      "</div>" +
-      groups.map(function (g, i) {
-        var list = inGroup(g);
-        return '<section class="service-group" data-group="g' + i + '" aria-labelledby="svc-g' + i + '">' +
-          '<div class="service-group__head"><h3 class="service-group__title" id="svc-g' + i + '">' + esc(g) + "</h3>" +
-          '<span class="service-group__count" data-group-count></span></div>' +
-          '<ul class="service-list" id="svc-list-g' + i + '">' + list.map(function (s) { return serviceRow(s, "h4", true); }).join("") + "</ul>" +
-          (list.length > GROUP_LIMIT
-            ? '<div class="service-group__more"><button class="btn btn--ghost btn--s" type="button" data-group-more aria-expanded="false" aria-controls="svc-list-g' + i + '"></button></div>'
-            : "") +
-          "</section>";
-      }).join("") +
-      '<div class="empty" data-services-empty hidden><p class="empty__title">Ничего не нашли</p>' +
-      '<p class="empty__text">Проверьте написание или поищите по коду услуги. Администратор подскажет по телефону <a class="nowrap" href="tel:+78432312090">+7 (843) 231-20-90</a>.</p>' +
-      '<button class="btn btn--secondary btn--s" type="button" data-services-reset>Сбросить поиск</button></div>';
-
-    function chip(value, label, n, checked) {
-      var id = "svc-f-" + value;
-      return '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="svc-group" value="' + value + '"' +
-        (checked ? " checked" : "") + '><span class="slot__text">' + esc(label) + ' <span class="filter-chips__count">' + n + "</span></span></label>";
-    }
-
-    // Index rows once: text to search in.
-    var rows = Array.prototype.map.call(box.querySelectorAll(".service-group"), function (sec) {
-      var g = groups[+sec.getAttribute("data-group").slice(1)];
-      return {
-        sec: sec,
-        items: Array.prototype.map.call(sec.querySelectorAll(".service-list > li"), function (li, n) {
-          var s = inGroup(g)[n];
-          return { li: li, text: norm(s.title + " " + s.code + " " + s.text) };
-        }),
-        more: sec.querySelector("[data-group-more]"),
-        count: sec.querySelector("[data-group-count]"),
-        open: false
-      };
-    });
-    var search = box.querySelector("#svc-search");
-    var status = box.querySelector("#svc-status");
-    var empty = box.querySelector("[data-services-empty]");
-
-    function apply() {
-      var q = norm(search.value.trim());
-      var words = q ? q.split(/\s+/) : [];
-      var g = (box.querySelector('input[name="svc-group"]:checked') || {}).value || "all";
-      var total = 0;
-      rows.forEach(function (r) {
-        var groupOn = g === "all" || r.sec.getAttribute("data-group") === g;
-        var matched = r.items.filter(function (it) {
-          return words.every(function (w) { return it.text.indexOf(w) !== -1; });
-        });
-        // Collapse long groups only in the default view (all groups, no search).
-        var limit = !q && g === "all" && !r.open ? GROUP_LIMIT : Infinity;
-        r.items.forEach(function (it) { it.li.hidden = true; });
-        matched.forEach(function (it, n) { it.li.hidden = n >= limit; });
-        r.sec.hidden = !groupOn || !matched.length;
-        r.count.textContent = services_(matched.length);
-        if (r.more) {
-          var hiddenN = matched.length - Math.min(matched.length, limit);
-          r.more.parentNode.hidden = r.sec.hidden || (!r.open && hiddenN <= 0) || !!q || g !== "all";
-          r.more.textContent = r.open ? "Свернуть" : "Показать все " + services_(matched.length);
-          r.more.setAttribute("aria-expanded", r.open ? "true" : "false");
-        }
-        if (groupOn) total += matched.length;
-      });
-      empty.hidden = total > 0;
-      status.textContent = q || g !== "all" ? (total ? "Найдено: " + services_(total) : "Ничего не найдено") : "Всего " + services_(total);
-    }
-
-    search.addEventListener("input", apply);
-    box.addEventListener("change", function (e) {
-      if (e.target.name !== "svc-group") return;
-      apply();
-      // Keep the chosen chip visible in the sideways row on phones.
-      e.target.closest(".slot").scrollIntoView({ block: "nearest", inline: "nearest" });
-    });
-    box.addEventListener("click", function (e) {
-      var more = e.target.closest("[data-group-more]");
-      if (more) {
-        var r = rows.filter(function (x) { return x.more === more; })[0];
-        r.open = !r.open;
-        apply();
-        // After collapsing, keep the group heading in view.
-        if (!r.open) r.sec.scrollIntoView({ block: "nearest" });
-        return;
-      }
-      if (e.target.closest("[data-services-reset]")) {
-        search.value = "";
-        box.querySelector("#svc-f-all").checked = true;
-        apply();
-        search.focus();
-      }
-    });
-    apply();
-  }
+  slot("services").innerHTML = '<ul class="service-list">' + services.map(function (s) { return serviceRow(s, "h3"); }).join("") + "</ul>";
 
   window.Sihat = window.Sihat || {};
-  window.Sihat.direction = { page: P, key: key, serviceRow: serviceRow };
+  window.Sihat.direction = { page: P, serviceRow: serviceRow };
 })();
