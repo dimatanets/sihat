@@ -91,7 +91,7 @@ function readTokenNames() {
   const root = css.slice(css.indexOf(":root {"));
   const names = [...new Set([...root.matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]))];
   return {
-    space: names.filter((n) => /^--space-/.test(n)).concat(["--page-gutter", "--content-gutter", "--grid-gap", "--hero-padding"]),
+    space: names.filter((n) => /^--space-/.test(n)).concat(["--page-gutter", "--content-gutter", "--content-edge", "--grid-gap", "--hero-padding"]),
     text: [...new Set(names.filter((n) => /^--text-[\w-]+-size$/.test(n)).map((n) => n.replace(/^--text-|-size$/g, "")))],
     control: ["--control-height", "--control-height-s", "--control-height-xs"],
     icon: names.filter((n) => /^--icon-size/.test(n))
@@ -941,7 +941,7 @@ function summarize(list) {
 
 /* ------------------------------------------------------------------ reports */
 
-const STATUS = { fixed: "исправлено автоматически", decide: "нужно решение", fresh: "новое нарушение" };
+const STATUS = { fixed: "исправлено автоматически", resolved: "исправлено по решению", decide: "нужно решение", fresh: "новое нарушение" };
 
 function pagesOf(it) { return [...new Set(it.occurrences.map((o) => o.page))]; }
 function widthsOf(it) { return [...new Set(it.occurrences.map((o) => o.width))].sort((a, b) => b - a); }
@@ -957,16 +957,17 @@ function writeMarkdown(meta, issues) {
   L.push("Создано скриптом `tools/audit-layout.mjs`, вручную не править. Наглядная версия со скриншотами: [audit/report.html](../../audit/report.html).", "");
   L.push("Проверено: главная, «Чек-ап программы», все шаги записи обоих сценариев, оплата, открытое мобильное меню. Ширины: " + WIDTHS.join(", ") + ". Одно нарушение на нескольких ширинах и страницах считается одним номером.", "");
   L.push("## Итог", "");
-  L.push("| | Было до правок | Исправлено | Осталось: нужно решение | Новых |", "|---|---|---|---|---|");
+  L.push("| | Было до правок | Исправлено автоматически | Исправлено по решению | Осталось: нужно решение | Новых |", "|---|---|---|---|---|---|");
   for (const [n, name] of Object.entries(RULES)) {
     const inRule = issues.filter((i) => String(i.rule) === n);
     const fixed = inRule.filter((i) => i.status === "fixed").length;
+    const resolved = inRule.filter((i) => i.status === "resolved").length;
     const decide = inRule.filter((i) => i.status === "decide").length;
     const fresh = inRule.filter((i) => i.status === "fresh").length;
-    L.push(`| ${n}. ${name} | ${fixed + decide} | ${fixed} | ${decide} | ${fresh} |`);
+    L.push(`| ${n}. ${name} | ${fixed + resolved + decide} | ${fixed} | ${resolved} | ${decide} | ${fresh} |`);
   }
-  const fx = issues.filter((i) => i.status === "fixed").length, dc = issues.filter((i) => i.status === "decide").length, fr = issues.filter((i) => i.status === "fresh").length;
-  L.push(`| **Всего** | **${fx + dc}** | **${fx}** | **${dc}** | **${fr}** |`, "");
+  const fx = issues.filter((i) => i.status === "fixed").length, rs = issues.filter((i) => i.status === "resolved").length, dc = issues.filter((i) => i.status === "decide").length, fr = issues.filter((i) => i.status === "fresh").length;
+  L.push(`| **Всего** | **${fx + rs + dc}** | **${fx}** | **${rs}** | **${dc}** | **${fr}** |`, "");
   L.push(`Измерений отступов, размеров и шрифтов: ${meta.measurements}. Экранов: ${meta.scenes}. Внешние запросы и ошибки в консоли: ${meta.problems.length ? meta.problems.length + " (см. ниже)" : "нет"}.`, "");
   if (meta.problems.length) L.push(...meta.problems.slice(0, 20).map((p) => "- " + p), "");
   L.push("## Нарушения", "");
@@ -1087,8 +1088,8 @@ async function main() {
     const now = byKey.get(old.key);
     if (now) { now.num = old.num; now.status = "decide"; now.proposal = proposalFor(now); merged.push(now); byKey.delete(old.key); }
     else {
-      const fixInfo = PROPOSALS.find((x) => x.fixed && (x.key instanceof RegExp ? x.key.test(old.key) : x.key === old.key));
-      merged.push({ ...old, status: "fixed", fix: fixInfo ? fixInfo.fixed : "", was: true });
+      const info = PROPOSALS.find((x) => (x.fixed || x.resolved) && (x.key instanceof RegExp ? x.key.test(old.key) : x.key === old.key));
+      merged.push({ ...old, status: info && info.resolved ? "resolved" : "fixed", fix: info ? info.fixed || info.resolved : "", was: true });
     }
   }
   for (const it of byKey.values()) { it.num = ++maxNum; it.status = "fresh"; it.proposal = proposalFor(it); merged.push(it); }
@@ -1100,6 +1101,7 @@ async function main() {
     before: { total: before.issues.length, byRule: summarize(before.issues).byRule },
     after: { total: current.length, byRule: summarize(current).byRule },
     fixed: merged.filter((i) => i.status === "fixed").length,
+    resolved: merged.filter((i) => i.status === "resolved").length,
     decide: merged.filter((i) => i.status === "decide").length,
     fresh: merged.filter((i) => i.status === "fresh").length
   };
@@ -1113,7 +1115,7 @@ async function main() {
     writeReport(meta, merged, withBefore);
   }
   printSummary(current);
-  console.log(`\nБыло ${meta.before.total}, исправлено ${meta.fixed}, нужно решение ${meta.decide}, новых ${meta.fresh}.`);
+  console.log(`\nБыло ${meta.before.total}, исправлено автоматически ${meta.fixed}, по решению ${meta.resolved}, нужно решение ${meta.decide}, новых ${meta.fresh}.`);
   if (problems.length) console.log("Ошибки страниц:\n" + [...new Set(problems)].slice(0, 20).join("\n"));
   if (meta.fresh) {
     console.log("\nНОВЫЕ НАРУШЕНИЯ:");

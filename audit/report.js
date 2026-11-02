@@ -14,11 +14,13 @@
     if (pageIds.indexOf(s.id) === -1) { pageIds.push(s.id); pageNames[s.id] = s.page; }
   });
 
-  var state = { status: "open", rule: "all", page: "all", scene: pageIds[0], width: DATA.widths[0], version: "after", selected: null };
+  var anyOpen = DATA.issues.some(function (it) { return it.status === "decide" || it.status === "fresh"; });
+  var state = { status: anyOpen ? "open" : "all", rule: "all", page: "all", scene: pageIds[0], width: DATA.widths[0], version: anyOpen ? "after" : "before", selected: null };
 
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-  function isOpen(it) { return it.status !== "fixed"; }
-  function statusMod(it) { return it.status === "fixed" ? "fixed" : it.status === "fresh" ? "fresh" : "decide"; }
+  function isDone(it) { return it.status === "fixed" || it.status === "resolved"; }
+  function isOpen(it) { return !isDone(it); }
+  function statusMod(it) { return isDone(it) ? "fixed" : it.status === "fresh" ? "fresh" : "decide"; }
 
   function filtered() {
     return DATA.issues.filter(function (it) {
@@ -42,9 +44,10 @@
     var rows = Object.keys(RULES).map(function (n) {
       var inRule = DATA.issues.filter(function (i) { return String(i.rule) === n; });
       var fixed = inRule.filter(function (i) { return i.status === "fixed"; }).length;
+      var resolved = inRule.filter(function (i) { return i.status === "resolved"; }).length;
       var decide = inRule.filter(function (i) { return i.status === "decide"; }).length;
       var fresh = inRule.filter(function (i) { return i.status === "fresh"; }).length;
-      return "<tr><th scope=\"row\">" + n + ". " + esc(RULES[n]) + "</th><td>" + (fixed + decide) + "</td><td>" + fixed + "</td><td>" + decide + "</td><td>" + fresh + "</td></tr>";
+      return "<tr><th scope=\"row\">" + n + ". " + esc(RULES[n]) + "</th><td>" + (fixed + resolved + decide) + "</td><td>" + fixed + "</td><td>" + resolved + "</td><td>" + decide + "</td><td>" + fresh + "</td></tr>";
     }).join("");
     return (
       '<header class="report__head">' +
@@ -56,10 +59,11 @@
       '<ul class="report__stats">' +
       stat(m.before.total, "было до правок", "") +
       stat(m.fixed, "исправлено автоматически", "fixed") +
+      stat(m.resolved, "исправлено по решению", "fixed") +
       stat(m.decide, "нужно решение", "decide") +
       stat(m.fresh, "новых нарушений", m.fresh ? "fresh" : "") +
       "</ul>" +
-      '<div class="report__table-wrap" tabindex="0" role="region" aria-label="Итог по правилам"><table class="report__table"><thead><tr><th scope="col">Правило</th><th scope="col">Было</th><th scope="col">Исправлено</th><th scope="col">Нужно решение</th><th scope="col">Новых</th></tr></thead><tbody>' + rows + "</tbody></table></div>"
+      '<div class="report__table-wrap" tabindex="0" role="region" aria-label="Итог по правилам"><table class="report__table"><thead><tr><th scope="col">Правило</th><th scope="col">Было</th><th scope="col">Автоматически</th><th scope="col">По решению</th><th scope="col">Нужно решение</th><th scope="col">Новых</th></tr></thead><tbody>' + rows + "</tbody></table></div>"
     );
   }
   function stat(value, label, mod) {
@@ -67,7 +71,7 @@
   }
 
   function renderFilters() {
-    var statuses = option("open", "Открытые", state.status) + option("all", "Все", state.status) + option("fixed", STATUS.fixed, state.status) + option("decide", STATUS.decide, state.status) + option("fresh", STATUS.fresh, state.status);
+    var statuses = option("open", "Открытые", state.status) + option("all", "Все", state.status) + option("fixed", STATUS.fixed, state.status) + option("resolved", STATUS.resolved, state.status) + option("decide", STATUS.decide, state.status) + option("fresh", STATUS.fresh, state.status);
     var rules = option("all", "Все правила", state.rule) + Object.keys(RULES).map(function (n) { return option(n, n + ". " + RULES[n], state.rule); }).join("");
     var pages = option("all", "Все страницы", state.page) + pageIds.map(function (id) { return option(id, pageNames[id], state.page); }).join("");
     return '<form class="report__filters" onsubmit="return false">' + select("f-status", "Статус", "status", statuses) + select("f-rule", "Правило", "rule", rules) + select("f-page", "Страница", "page", pages) + "</form>";
@@ -170,13 +174,13 @@
     var it = DATA.issues.filter(function (x) { return x.num === num; })[0];
     if (!it) return;
     state.selected = num;
-    if (it.status === "fixed") state.version = "before";
+    if (isDone(it)) state.version = "before";
     else if (state.version === "before") state.version = "after";
     var here = it.occ.filter(function (o) { return o[0] === state.scene && o[1] === state.width; })[0];
     var first = here || it.occ.filter(function (o) { return o[0] === state.scene; })[0] || it.occ[0];
     if (first) { state.scene = first[0]; state.width = first[1]; }
     // A fixed issue is only visible with its filter on.
-    if (it.status === "fixed" && state.status === "open") state.status = "all";
+    if (isDone(it) && state.status === "open") state.status = "all";
     render();
     var box = root.querySelector(".report-box--selected");
     if (scrollToViewer && box) box.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });

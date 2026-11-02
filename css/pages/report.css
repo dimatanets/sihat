@@ -5,7 +5,7 @@
 .report__lead { max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-text-muted); }
 .report__links { display: flex; flex-wrap: wrap; gap: 0 var(--space-5); }
 
-.report__stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--grid-gap); }
+.report__stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--grid-gap); }
 .report__stat { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-5); border-radius: var(--radius-card); background: var(--color-surface); }
 .report__stat--fixed { background: var(--color-success-tint); }
 .report__stat--decide { background: var(--color-primary-tint); }

@@ -10,7 +10,7 @@
 
   if (new URLSearchParams(location.search).get("debug") !== "layout") return;
 
-  var TOKENS = ["--space-0", "--space-1", "--space-2", "--space-3", "--space-4", "--space-5", "--space-6", "--space-7", "--space-8", "--space-9", "--space-section", "--page-gutter", "--content-gutter", "--grid-gap", "--hero-padding"];
+  var TOKENS = ["--space-0", "--space-1", "--space-2", "--space-3", "--space-4", "--space-5", "--space-6", "--space-7", "--space-8", "--space-9", "--space-section", "--page-gutter", "--content-gutter", "--content-edge", "--grid-gap", "--hero-padding"];
   var SECTIONS = "main > *, main section, .section-head, .site-header__inner, .site-footer__inner, .site-top__inner, .modal__head, .flow__bar, .modal__body, .modal__foot, .mnav__bar, .mnav__body";
   var SKIP = "script,style,link,noscript,svg,svg *,.icon,.visually-hidden,.skip-link,.dbg,.dbg *";
   var LONGHANDS = {

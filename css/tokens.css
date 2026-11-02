@@ -100,7 +100,7 @@
   --text-button-s-size: calc(14px * var(--font-scale)); --text-button-s-line: calc(22px * var(--font-scale));
   --text-price-size: calc(20px * var(--font-scale));    --text-price-line: calc(28px * var(--font-scale));   --text-price-weight: var(--font-weight-bold);
   --text-menu-size: calc(18px * var(--font-scale));     --text-menu-line: calc(26px * var(--font-scale));    /* mobile menu links */
-  --text-step-number-size: calc(32px * var(--font-scale));
+  --text-step-number-size: calc(32px * var(--font-scale));  --text-step-number-line: calc(32px * var(--font-scale));
 
   /* ---- Radii: small cards and pill buttons, as on rkb-sihat.ru (estimate) ---- */
   --radius-card: 16px;
@@ -135,10 +135,13 @@
   /* ---- Layout / grid ---- */
   --container-max: 1440px;
   --page-gutter: 12px;        /* page margin */
-  --content-gutter: 24px;     /* estimate: inner padding of header/footer rows on desktop */
+  --content-gutter: 24px;     /* estimate: text inside the container, the line of the section headings */
+  --content-edge: calc(var(--page-gutter) + var(--content-gutter)); /* A-43: the same line for rows without a container gutter: header, footer, menu */
   --grid-gap: 12px;           /* gap between hero/tile cards */
   --grid-columns: 12;
   --text-measure: 720px;      /* estimate: max width of running text */
+  --text-measure-s: 600px;    /* A-43: about 75 characters of 14px text */
+  --text-measure-xs: 520px;   /* A-43: about 75 characters of 12px text */
   --header-top-height: 40px;  /* estimate: utility row (address, languages, accessibility) */
   --header-height: 80px;      /* estimate */
   --header-height-m: 64px;    /* estimate: mobile bar */
@@ -250,9 +253,10 @@
     --text-h4-size: calc(19px * var(--font-scale));       --text-h4-line: calc(27px * var(--font-scale));
     --text-h5-size: calc(17px * var(--font-scale));       --text-h5-line: calc(24px * var(--font-scale));
     --text-lead-size: calc(16px * var(--font-scale));     --text-lead-line: calc(24px * var(--font-scale));
-    --text-step-number-size: calc(24px * var(--font-scale));
+    --text-step-number-size: calc(24px * var(--font-scale));  --text-step-number-line: calc(24px * var(--font-scale));
     --space-section: 64px;
     --content-gutter: 12px;
+    --logo-width-m: 88px;       /* A-43: the phone bar has to fit 360px with the 24px edge */
     --scroller-per-view: 1.2;   /* a part of the next card shows that the row scrolls */
     --hero-padding: 24px;
   }

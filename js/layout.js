@@ -154,7 +154,7 @@
       '" aria-label="Позвонить: ' + esc(mainPhone.number) + '">' + icon("phone") + "</a>" +
       // A-16: «Записаться» opens the booking flow at the choice of a scenario (js/booking.js).
       '<button class="btn btn--primary btn--book" type="button" data-book>Записаться</button>' +
-      '<button class="btn btn--tint btn--xs site-header__menu" type="button" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">' +
+      '<button class="btn btn--tint btn--xs site-header__menu" type="button" data-menu-open aria-label="Меню" aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">' +
       icon("menu-2") + '<span class="site-header__menu-text">Меню</span></button>' +
       "</div></div></header>" +
       mobileMenu()
@@ -244,7 +244,7 @@
       "</div>" +
       '<div class="site-footer__bottom">' +
       '<p class="site-footer__warning">' + esc(L.warning) + "</p>" +
-      "<p>© " + new Date().getFullYear() + " " + esc(L.short) + ". " + esc(L.priceNote) + "</p>" +
+      '<p class="site-footer__copy">© ' + new Date().getFullYear() + " " + esc(L.short) + ". " + esc(L.priceNote) + "</p>" +
       a11yToggle() +
       "</div>" +
       "</div></footer>"

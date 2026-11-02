@@ -1,11 +1,11 @@
 /* kit.html only: layout of the component showcase. Not used on real pages. */
 
-.kit__intro { padding: var(--space-6) var(--content-gutter) var(--space-5); }
+.kit__intro { padding: var(--space-6) var(--content-edge) var(--space-5); }
 .kit__intro h1 { margin-top: var(--space-4); }
 .kit__lead { margin-top: var(--space-3); max-width: var(--text-measure); font-size: var(--text-lead-size); line-height: var(--text-lead-line); color: var(--color-text-muted); }
-.kit__nav { padding-inline: var(--content-gutter); }
+.kit__nav { padding-inline: var(--content-edge); }
 
-.kit-section { padding: var(--space-8) var(--content-gutter) 0; }
+.kit-section { padding: var(--space-8) var(--content-edge) 0; }
 .kit-section > h2 { margin-bottom: var(--space-2); }
 .kit-section__note { max-width: var(--text-measure); margin-bottom: var(--space-6); color: var(--color-text-muted); }
 .kit-section__note code { font-size: var(--text-body-s-size); color: var(--color-heading); }

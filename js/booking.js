@@ -60,7 +60,7 @@
 
   var CONTACTS = [
     { value: "call", label: "Звонок", done: "по телефону", icon: "phone" },
-    { value: "sms", label: "Сообщение на мобильный", done: "сообщением на мобильный", icon: "device-mobile-message" },
+    { value: "sms", label: "SMS", done: "по SMS", icon: "device-mobile-message" },
     { value: "telegram", label: "Telegram", done: "в Telegram", icon: "brand-telegram" },
     { value: "whatsapp", label: "WhatsApp", done: "в WhatsApp", icon: "brand-whatsapp" },
     // A-15: MAX has no Tabler icon
