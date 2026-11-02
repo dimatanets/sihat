@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/pages/home.css">
-  <script src="js/a11y.js"></script>
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -25,12 +24,11 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__main">
         <div class="hero__intro">
-          <span class="badge badge--glass">Платное отделение РКБ · Казань</span>
           <h1 class="hero__title" id="hero-title">Забота о здоровье с&nbsp;врачами клиники экспертного уровня</h1>
           <p class="hero__lead">Платные медицинские услуги Республиканской клинической больницы Татарстана: консультации врачей, чек-апы, диагностика, хирургия и роды.</p>
           <div class="hero__actions">
-            <!-- A-23: opens the booking flow (js/booking.js); without JS the link still leads to the form below. -->
-            <a class="btn btn--inverse" href="#booking" data-hero-book data-book>Записаться на приём</a>
+            <!-- A-23: leads to the contact form below -->
+            <a class="btn btn--inverse" href="#booking">Записаться на приём</a>
             <a class="btn btn--inverse-outline hero__phone" href="tel:+78432312090"><span class="icon icon--phone" aria-hidden="true"></span><span><span class="visually-hidden">Позвонить: </span>+7 (843) 231-20-90</span></a>
             <p class="hero__hours">Пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span></p>
           </div>
@@ -56,25 +54,22 @@
     <section class="home-section" id="directions" aria-labelledby="directions-title">
       <div class="section-head home-section__head">
         <div class="section-head__text">
-          <p class="section-head__eyebrow">Направления</p>
           <h2 id="directions-title">С чем мы помогаем</h2>
           <p class="section-head__lead">На странице направления — услуги и цены, врачи и порядок записи.</p>
         </div>
         <a class="link-arrow" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
       </div>
-      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="3" data-card-mod="dcard--compact-m"></ul>
+      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="3"></ul>
     </section>
 
     <!-- 3. Doctors: the first of the catalogue on the current site (answer 7, A-22) -->
     <section class="home-section" id="doctors" aria-labelledby="doctors-title">
       <div class="section-head home-section__head">
         <div class="section-head__text">
-          <p class="section-head__eyebrow">Специалисты</p>
           <h2 id="doctors-title">Врачи</h2>
-          <p class="section-head__lead">Заведующие отделениями и ведущие специалисты Республиканской клинической больницы. Выберите врача, удобный день и время: приём подтвердит администратор.</p>
+          <p class="section-head__lead">Заведующие отделениями и ведущие специалисты Республиканской клинической больницы. Оставьте заявку: администратор подберёт время приёма и подтвердит запись.</p>
         </div>
         <div class="section-head__actions">
-          <a class="link-arrow" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
           <div class="section-head__controls">
             <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="doctors-track" aria-label="Предыдущие врачи"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
             <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="doctors-track" aria-label="Следующие врачи"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
@@ -84,69 +79,12 @@
       <div class="scroller__track" id="doctors-track" data-scroller tabindex="0" role="region" aria-label="Список врачей, прокручивается по горизонтали">
         <ul class="scroller__list" data-render="doctors" data-filter="home" data-limit="8"></ul>
       </div>
+      <div class="section-more"><a class="btn btn--secondary" href="#">Все врачи</a></div>
     </section>
 
-    <!-- 4. Contact form (A-24) -->
+    <!-- 4. Contact form, shared by both pages (js/layout.js, A-24, A-48) -->
     <section class="home-section home-booking" aria-labelledby="booking-title">
-      <div class="form-panel" id="booking">
-        <div class="form-panel__text">
-          <h2 class="form-panel__title" id="booking-title">Записаться на приём</h2>
-          <p class="form-panel__lead">Оставьте заявку: администратор свяжется с вами удобным способом, поможет выбрать врача и время приёма и подтвердит запись.</p>
-          <div class="form-panel__contacts">
-            <a class="phone-link phone-link--inverse" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Или позвоните</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
-          </div>
-        </div>
-
-        <div class="form-panel__card">
-          <form class="form" data-validate novalidate aria-labelledby="booking-title">
-            <div class="form__row">
-              <div class="field">
-                <label class="field__label" for="hb-name">Имя <span class="field__req" aria-hidden="true">*</span></label>
-                <input class="field__control" id="hb-name" name="name" type="text" autocomplete="name" required data-msg-required="Напишите, как к вам обращаться">
-                <p class="field__msg" id="hb-name-msg" aria-live="polite"></p>
-              </div>
-              <div class="field">
-                <label class="field__label" for="hb-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>
-                <input class="field__control" id="hb-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required data-msg-required="Укажите телефон, чтобы мы могли связаться">
-                <p class="field__msg" id="hb-phone-msg" aria-live="polite"></p>
-              </div>
-            </div>
-            <div class="field">
-              <label class="field__label" for="hb-direction">Направление</label>
-              <div class="field__wrap">
-                <select class="field__control" id="hb-direction" name="direction" data-render="direction-options">
-                  <option value="">Пока не знаю</option>
-                </select>
-                <span class="icon icon--chevron-down field__icon" aria-hidden="true"></span>
-              </div>
-            </div>
-            <fieldset class="field choices">
-              <legend class="field__label">Удобный способ связи</legend>
-              <div class="choices__list">
-                <label class="slot" for="hb-c-call"><input class="slot__input" type="radio" id="hb-c-call" name="contact" value="call" checked><span class="slot__text"><span class="icon icon--phone" aria-hidden="true"></span>Звонок</span></label>
-                <label class="slot" for="hb-c-sms"><input class="slot__input" type="radio" id="hb-c-sms" name="contact" value="sms"><span class="slot__text"><span class="icon icon--device-mobile-message" aria-hidden="true"></span>SMS</span></label>
-                <label class="slot" for="hb-c-tg"><input class="slot__input" type="radio" id="hb-c-tg" name="contact" value="telegram"><span class="slot__text"><span class="icon icon--brand-telegram" aria-hidden="true"></span>Telegram</span></label>
-                <label class="slot" for="hb-c-wa"><input class="slot__input" type="radio" id="hb-c-wa" name="contact" value="whatsapp"><span class="slot__text"><span class="icon icon--brand-whatsapp" aria-hidden="true"></span>WhatsApp</span></label>
-                <!-- A-15: MAX has no Tabler icon -->
-                <label class="slot" for="hb-c-max"><input class="slot__input" type="radio" id="hb-c-max" name="contact" value="max"><span class="slot__text"><span class="icon icon--message-circle" aria-hidden="true"></span>MAX</span></label>
-              </div>
-            </fieldset>
-            <div class="field">
-              <label class="check" for="hb-consent"><input class="check__input" id="hb-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку"><span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>
-              <p class="field__msg" id="hb-consent-msg" aria-live="polite"></p>
-            </div>
-            <div><button class="btn btn--primary" type="submit">Отправить заявку</button></div>
-          </form>
-          <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
-            <span class="icon icon--circle-check" aria-hidden="true"></span>
-            <div>
-              <p class="alert__title">Заявка отправлена</p>
-              <p>Запись ещё не подтверждена. Администратор свяжется с вами выбранным способом в рабочее время (пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>) и подтвердит её. Это макет: данные никуда не отправляются.</p>
-              <p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div data-include="contact"></div>
     </section>
   </main>
 
@@ -157,12 +95,10 @@
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
   <script src="data/services.js"></script>
-  <script src="data/schedule.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
-  <script src="js/booking.js"></script>
   <script src="js/debug-layout.js"></script>
 </body>
 </html>

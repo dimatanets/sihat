@@ -22,6 +22,10 @@ Static design prototype of the redesigned site of the paid department of the Rep
 - The user doesn't use the terminal. Never ask them to run commands; if you need their action, give steps in the Claude app, the GitHub website, Vercel or Finder.
 - Always work in the main project folder on the main branch, even if the session starts in a worktree. If you find yourself in a worktree, tell the user before doing anything.
 
+## Scope rule (stage 1)
+
+Stage 1 is only two pages: the home page (index.html) and the direction page «Чек-ап программы» (direction.html). Do not add screens, sections, flows, modes or features the user did not ask for. Do not change anything that is not in the user's list. If something seems needed, write it in PROJECT_LOG.md under «Предложения» and do not build it.
+
 ## Git sync (worked on locally and sometimes in cloud sessions)
 
 - GitHub is the main copy. Pull at the start of every session. Commit and push at the end of every task.

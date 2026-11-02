@@ -1,13 +1,14 @@
 /*
-  Shared layout: header (with accessibility panel), mobile menu and footer.
-  Every «Записаться» here is a [data-book] button: js/booking.js opens the booking flow (A-03, A-16).
+  Shared layout: header, mobile menu, contact form and footer.
+  Every «Записаться» here is a link to the contact form on the same page, #booking (round 1, A-16).
   A-11: one source for every page without network requests. Each page has placeholders:
     <div data-include="header"><noscript>…fallback…</noscript></div>
+    <div data-include="contact"></div>
     <div data-include="footer"><noscript>…fallback…</noscript></div>
-  and loads, at the end of <body>: data/site.js, data/directions.js, data/doctors.js, data/services.js, data/schedule.js, js/layout.js,
-  js/render.js, js/ui.js, js/forms.js, js/booking.js.
+  and loads, at the end of <body>: data/site.js, data/directions.js, data/doctors.js, data/services.js, js/layout.js,
+  js/render.js, js/ui.js, js/forms.js.
   The placeholder is replaced by the markup below. The current page is marked from <body data-page="…">.
-  For Bitrix: each function below returns the exact HTML of one template part (header.php / footer.php).
+  For Bitrix: each function below returns the exact HTML of one template part (header.php / footer.php, the form component).
 */
 (function () {
   "use strict";
@@ -31,7 +32,7 @@
   var mainPhone = D.phones[0];
 
   // Answer 1: the original logo from the header of rkb-sihat.ru (same as assets/img/logo-sihat.svg), inline so that
-  // its two colors come from tokens: inverse on the blue menu, the scheme colors in the accessibility version.
+  // its two colors come from tokens: inverse on the blue menu.
   var LOGO =
     '<svg class="logo__svg" viewBox="0 0 161 58" aria-hidden="true" focusable="false"><g class="logo__main">' +
     '<path d="M0.34375 24.709V54.254C0.34375 55.9201 1.47226 57.2755 2.86551 57.2755H41.5183V51.1909H5.44343V27.6535H41.5183V21.6875H2.86551C1.47226 21.6875 0.34375 23.0396 0.34375 24.709Z"/>' +
@@ -68,7 +69,7 @@
       '<ul class="social-links' + (mod ? " " + mod : "") + '">' +
       list.map(function (s) {
         return '<li><a class="social-link" href="' + s.href + '" aria-label="' + esc(s.name) + '" title="' +
-          esc(s.name) + '">' + icon(s.icon) + "</a></li>";
+          esc(s.name) + '"><img class="social-link__img" src="assets/icons/brand/' + s.logo + '.svg" alt="" width="40" height="40"></a></li>';
       }).join("") + "</ul>"
     );
   }
@@ -87,59 +88,26 @@
     );
   }
 
-  function a11yToggle(extraClass) {
-    return (
-      '<button class="a11y-toggle' + (extraClass ? " " + extraClass : "") +
-      '" type="button" data-a11y-toggle aria-pressed="false">' + icon("eye") +
-      '<span class="a11y-toggle__off">Версия для слабовидящих</span>' +
-      '<span class="a11y-toggle__on">Обычная версия</span></button>'
-    );
+  // A-08: required by law, does nothing yet.
+  function a11yLink() {
+    return '<a class="a11y-link" href="#" data-inert>' + icon("eye") + "Версия для слабовидящих</a>";
   }
 
-  // Accessibility panel (A-08): visible only when <html> has the class "a11y".
-  function a11yPanel() {
-    function opt(option, value, label, cls, aria) {
-      return '<button class="a11y-panel__btn ' + cls + '" type="button" data-a11y-option="' + option +
-        '" data-a11y-value="' + value + '" aria-pressed="false"' + (aria ? ' aria-label="' + aria + '"' : "") +
-        ">" + label + "</button>";
-    }
-    return (
-      '<section class="a11y-panel" aria-label="Настройки версии для слабовидящих" id="a11y-panel" tabindex="-1">' +
-      '<div class="a11y-panel__inner container">' +
-      '<div class="a11y-panel__group" role="group" aria-labelledby="a11y-size-label">' +
-      '<span class="a11y-panel__label" id="a11y-size-label">Размер шрифта</span>' +
-      opt("size", "1", "А", "a11y-panel__btn--size-1", "Крупный шрифт") +
-      opt("size", "2", "А+", "a11y-panel__btn--size-2", "Очень крупный шрифт") +
-      opt("size", "3", "А++", "a11y-panel__btn--size-3", "Самый крупный шрифт") +
-      "</div>" +
-      '<div class="a11y-panel__group" role="group" aria-labelledby="a11y-scheme-label">' +
-      '<span class="a11y-panel__label" id="a11y-scheme-label">Цвет</span>' +
-      opt("scheme", "white", "Ц", "a11y-panel__btn--white", "Чёрным по белому") +
-      opt("scheme", "black", "Ц", "a11y-panel__btn--black", "Белым по чёрному") +
-      opt("scheme", "blue", "Ц", "a11y-panel__btn--blue", "Тёмно-синим по голубому") +
-      "</div>" +
-      '<div class="a11y-panel__group" role="group" aria-labelledby="a11y-img-label">' +
-      '<span class="a11y-panel__label" id="a11y-img-label">Изображения</span>' +
-      opt("images", "on", "Показать", "") +
-      opt("images", "off", "Скрыть", "") +
-      "</div>" +
-      '<button class="btn btn--secondary btn--s a11y-panel__exit" type="button" data-a11y-toggle>' +
-      icon("eye-off") + "Обычная версия</button>" +
-      "</div></section>"
-    );
+  // Answer: «Записаться» leads to the contact form of this page (round 1, A-16).
+  function bookLink(cls, text) {
+    return '<a class="btn ' + cls + '" href="#booking">' + esc(text) + "</a>";
   }
 
   function header() {
     return (
-      a11yPanel() +
       '<div class="site-top"><div class="site-top__inner container">' +
       '<p class="site-top__item">' + icon("map-pin", "icon--s") + esc(D.address.city + ", " + D.address.street) + "</p>" +
       '<div class="site-top__end">' +
-      socialLinks(D.messengers, "social-links--s") +
+      socialLinks(D.messengers) +
       '<span class="site-top__sep" aria-hidden="true"></span>' +
       lang(false) +
       '<span class="site-top__sep" aria-hidden="true"></span>' +
-      a11yToggle() +
+      a11yLink() +
       "</div></div></div>" +
       '<header class="site-header"><div class="site-header__inner container">' +
       logo(false) +
@@ -152,8 +120,7 @@
       '<div class="site-header__actions">' +
       '<a class="btn btn--tint btn--xs btn--icon site-header__call" href="' + mainPhone.href +
       '" aria-label="Позвонить: ' + esc(mainPhone.number) + '">' + icon("phone") + "</a>" +
-      // A-16: «Записаться» opens the booking flow at the choice of a scenario (js/booking.js).
-      '<button class="btn btn--primary btn--book" type="button" data-book>Записаться</button>' +
+      bookLink("btn--primary btn--xs btn--book", "Записаться") +
       '<button class="btn btn--tint btn--xs site-header__menu" type="button" data-menu-open aria-label="Меню" aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">' +
       icon("menu-2") + '<span class="site-header__menu-text">Меню</span></button>' +
       "</div></div></header>" +
@@ -173,7 +140,7 @@
       D.phones.map(function (p) { return phoneLink(p, { inverse: true, label: true }); }).join("") +
       '<p class="mnav__text">' + esc(D.hours) + "</p>" +
       "</div>" +
-      '<button class="btn btn--inverse btn--block" type="button" data-book>Записаться на приём</button>' +
+      bookLink("btn--inverse btn--block", "Записаться на приём") +
       '<nav aria-label="Меню сайта">' +
       D.nav.groups.map(function (g) {
         return '<div class="mnav__group"><p class="mnav__label">' + esc(g.title) + '</p><ul class="mnav__list">' +
@@ -192,66 +159,106 @@
       socialLinks(D.messengers.concat(D.socials), "social-links--inverse") +
       "</div>" +
       '<div class="mnav__tiles">' +
-      '<button class="mnav__tile" type="button" data-a11y-toggle aria-pressed="false">' +
-      '<span class="mnav__tile-icon">' + icon("eye") + "</span>" +
-      '<span><span class="a11y-toggle__off">Версия для слабовидящих</span><span class="a11y-toggle__on">Обычная версия</span></span></button>' +
+      '<a class="mnav__tile" href="#" data-inert>' +
+      '<span class="mnav__tile-icon">' + icon("eye") + "</span>Версия для слабовидящих</a>" +
       "</div>" +
       lang(true) +
       "</div></dialog>"
     );
   }
 
+  /*
+    A-48: the one contact form of the site, on both pages. id="booking" is the target of every «Записаться».
+    Fields: A-24. The direction list is filled by js/render.js; js/direction.js preselects the direction of its page.
+  */
+  function contactChoice(value, label, mark, checked) {
+    var id = "cf-c-" + value;
+    return '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="contact" value="' + value + '"' +
+      (checked ? " checked" : "") + '><span class="slot__text">' + mark + esc(label) + "</span></label>";
+  }
+  function brandMark(name) {
+    return '<img class="slot__brand" src="assets/icons/brand/' + name + '.svg" alt="" width="20" height="20">';
+  }
+  function contact() {
+    return (
+      '<div class="form-panel" id="booking">' +
+      '<div class="form-panel__text">' +
+      '<h2 class="form-panel__title" id="booking-title">Остались вопросы?<br>Свяжитесь с&nbsp;нами</h2>' +
+      '<p class="form-panel__lead">Мы всегда готовы помочь разобраться в услугах клиники. Свяжитесь с нами, и мы подскажем, к какому врачу лучше обратиться и как быстро записаться на приём.</p>' +
+      "</div>" +
+      '<div class="form-panel__form">' +
+      '<form class="form" data-validate novalidate aria-labelledby="booking-title">' +
+      '<div class="field"><label class="field__label" for="cf-name">Имя <span class="field__req" aria-hidden="true">*</span></label>' +
+      '<input class="field__control" id="cf-name" name="name" type="text" autocomplete="name" required data-msg-required="Напишите, как к вам обращаться">' +
+      '<p class="field__msg" id="cf-name-msg" aria-live="polite"></p></div>' +
+      '<div class="field"><label class="field__label" for="cf-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>' +
+      '<input class="field__control" id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required data-msg-required="Укажите телефон, чтобы мы могли связаться">' +
+      '<p class="field__msg" id="cf-phone-msg" aria-live="polite"></p></div>' +
+      '<div class="field"><label class="field__label" for="cf-direction">Направление</label>' +
+      '<div class="field__wrap"><select class="field__control" id="cf-direction" name="direction" data-render="direction-options"><option value="">Пока не знаю</option></select>' +
+      icon("chevron-down", "field__icon") + "</div></div>" +
+      '<fieldset class="field choices"><legend class="field__label">Удобный способ связи</legend><div class="choices__list">' +
+      contactChoice("call", "Звонок", icon("phone"), true) +
+      contactChoice("sms", "SMS", icon("device-mobile-message")) +
+      contactChoice("telegram", "Telegram", brandMark("telegram")) +
+      contactChoice("whatsapp", "WhatsApp", brandMark("whatsapp")) +
+      contactChoice("max", "MAX", brandMark("max")) +
+      "</div></fieldset>" +
+      '<div class="field"><label class="check" for="cf-consent"><input class="check__input" id="cf-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку">' +
+      '<span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>' +
+      '<p class="field__msg" id="cf-consent-msg" aria-live="polite"></p></div>' +
+      '<button class="btn btn--inverse form__submit" type="submit">Отправить</button>' +
+      "</form>" +
+      '<div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>' + icon("circle-check") +
+      '<div><p class="alert__title">Заявка отправлена</p>' +
+      "<p>Запись ещё не подтверждена. Администратор свяжется с вами выбранным способом в рабочее время (" + esc(D.hours) + ") и подтвердит её. Это макет: данные никуда не отправляются.</p>" +
+      '<p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p></div></div>' +
+      "</div></div>"
+    );
+  }
+
+  // A-47: the compact footer. Rows: contacts, sections and documents; socials and payments; legal text.
   function footer() {
     var L = D.legal;
     return (
       '<footer class="site-footer"><div class="site-footer__inner container">' +
       '<div class="site-footer__main">' +
-      '<div class="site-footer__brand">' + logo(false) +
-      '<p class="site-footer__about">' + esc(D.brand.about) + "</p>" +
-      '<button class="btn btn--primary btn--s" type="button" data-book>Записаться на приём</button>' +
+      '<div class="site-footer__contacts">' + logo(false) +
+      '<div class="footer-phones">' + D.phones.map(function (p) { return '<a class="footer-phone" href="' + p.href + '">' + esc(p.number) + "</a>"; }).join("") + "</div>" +
+      '<p class="footer-text">' + esc(D.hours) + "</p>" +
+      '<p class="footer-text">' + esc(D.address.full) + "</p>" +
       "</div>" +
       '<nav class="site-footer__nav" aria-label="Разделы сайта">' +
       D.nav.groups.map(function (g) {
         return '<div><p class="footer-title">' + esc(g.title) + '</p><ul class="footer-list">' +
           g.links.map(function (l) {
-            return '<li><a href="' + l.href + '"' + current(l) + ">" + esc(l.label) + "</a></li>";
+            return '<li><a class="footer-link" href="' + l.href + '"' + current(l) + ">" + esc(l.label) + "</a></li>";
           }).join("") + "</ul></div>";
       }).join("") +
       "</nav>" +
-      '<div class="footer-contacts">' +
-      '<p class="footer-title">Контакты</p>' +
-      D.phones.map(function (p) { return '<a class="footer-phone" href="' + p.href + '">' + esc(p.number) + "</a>"; }).join("") +
-      '<p class="footer-text footer-text--muted">' + esc(D.hours) + "</p>" +
-      '<p class="footer-text">' + esc(D.address.full) + "</p>" +
-      '<ul class="footer-text footer-text--muted">' + D.address.buildings.map(function (b) {
-        return "<li>" + esc(b.name) + ": " + esc(b.place) + "</li>";
-      }).join("") + "</ul>" +
-      '<p class="footer-title">Мессенджеры и соцсети</p>' +
-      socialLinks(D.messengers.concat(D.socials)) +
-      "</div>" +
-      "</div>" +
-      '<div class="site-footer__legal">' +
-      "<div>" +
-      '<p class="site-footer__org">' + esc(L.org) + "</p>" +
-      L.requisites.map(function (r) { return '<p class="site-footer__req">' + esc(r) + "</p>"; }).join("") +
-      '<ul class="site-footer__docs">' +
-      '<li><a href="' + L.licence.href + '">' + icon("certificate", "icon--s") + esc(L.licence.label) + "</a></li>" +
-      L.docs.map(function (d) { return '<li><a href="' + d.href + '">' + esc(d.label) + "</a></li>"; }).join("") +
+      '<div class="site-footer__docs"><p class="footer-title">Документы</p><ul class="footer-list">' +
+      '<li><a class="footer-link" href="' + L.licence.href + '">' + esc(L.licence.label) + "</a></li>" +
+      L.docs.map(function (d) { return '<li><a class="footer-link" href="' + d.href + '">' + esc(d.label) + "</a></li>"; }).join("") +
       "</ul></div>" +
-      '<div class="payments"><p class="footer-title">Принимаем к оплате</p><ul class="payments__list">' +
-      D.payments.map(function (p) { return '<li class="payments__item">' + esc(p) + "</li>"; }).join("") +
-      '</ul><p class="footer-text footer-text--muted">Приём врача можно оплатить онлайн при записи или в клинике.</p></div>' +
       "</div>" +
-      '<div class="site-footer__bottom">' +
+      '<div class="site-footer__strip">' +
+      socialLinks(D.messengers.concat(D.socials), "social-links--s") +
+      '<div class="payments"><p class="payments__title">Принимаем к оплате</p><ul class="payments__list">' +
+      D.payments.map(function (p) {
+        return '<li class="payments__item"><img class="payments__logo" src="assets/img/pay/' + p.logo + '.svg" alt="' + esc(p.name) + '"></li>';
+      }).join("") +
+      "</ul></div></div>" +
+      '<div class="site-footer__legal">' +
       '<p class="site-footer__warning">' + esc(L.warning) + "</p>" +
-      '<p class="site-footer__copy">© ' + new Date().getFullYear() + " " + esc(L.short) + ". " + esc(L.priceNote) + "</p>" +
-      a11yToggle() +
+      "<p>" + esc(L.org) + "</p>" +
+      "<p>" + L.requisites.map(esc).join(". ") + "</p>" +
+      "<p>© " + new Date().getFullYear() + " " + esc(L.short) + ". " + esc(L.priceNote) + "</p>" +
       "</div>" +
       "</div></footer>"
     );
   }
 
-  var parts = { header: header, footer: footer };
+  var parts = { header: header, contact: contact, footer: footer };
   Array.prototype.forEach.call(document.querySelectorAll("[data-include]"), function (slot) {
     var render = parts[slot.getAttribute("data-include")];
     if (render) slot.outerHTML = render();

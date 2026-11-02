@@ -5,17 +5,13 @@
   Contents:
     1. Buttons, links, phone link        8. Badges, breadcrumbs, section head
     2. Logo, language, social links      9. Accordion, anchor navigation
-    3. Header, accessibility panel      10. Steps, document row, checklist
-    4. Mobile menu                      11. Modal / bottom sheet
-    5. Footer                           12. Alerts
-    6. Form fields, checkbox             13. Media placeholder
-    7. Date picker, time slots, cards,   14. Scroller (horizontal card row)
-       service row                       15. Choice chips (radio), form panel
-                                        16. Flow modal (booking, payment), close confirmation
-                                        17. Option card (radio)
-                                        18. Summary, result, payment total
-                                        19. Search, filter chips, service groups, empty state
-                                        20. Feature cards
+    3. Header                           10. Steps, document row, checklist
+    4. Mobile menu                      11. Alerts
+    5. Footer                           12. Media placeholder
+    6. Form fields, checkbox            13. Scroller (horizontal card row)
+    7. Choice chips, cards,             14. Choice chips (radio), contact form panel
+       service row                      15. Search, filter chips, service groups, empty state
+                                        16. Feature cards
 */
 
 /* =========================================================================
@@ -157,16 +153,16 @@
 .logo__accent { fill: var(--color-logo-accent); }
 .logo--inverse .logo__main, .logo--inverse .logo__accent { fill: var(--color-on-primary); }
 
-/* A-09: the language switch is visual only, all content stays in Russian. */
-.lang { display: inline-flex; align-items: center; gap: var(--space-1); }
+/* A-09: the language switch is visual only, all content stays in Russian. A-44: active item is coloured text with a short underline. */
+.lang { display: inline-flex; align-items: center; gap: var(--space-2); }
 .lang__link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: var(--control-height-xs);
   min-height: var(--control-height-xs);
-  padding-inline: var(--space-2);
-  border-radius: var(--radius-pill);
+  padding-inline: var(--space-1);
   color: var(--color-text-muted);
   font-size: var(--text-button-s-size);
   line-height: var(--text-button-s-line);
@@ -174,32 +170,39 @@
   text-decoration: none;
 }
 .lang__link:hover { color: var(--color-primary); text-decoration: none; }
-.lang__link[aria-current="true"] { background: var(--color-primary-tint); color: var(--color-on-tint); }
-.lang--inverse .lang__link { color: var(--color-on-primary); }
-.lang--inverse .lang__link[aria-current="true"] { background: var(--color-on-primary); color: var(--color-primary); }
+.lang__link[aria-current="true"] { color: var(--color-primary); }
+.lang__link[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-1);
+  width: var(--lang-mark-width);
+  height: var(--border-width-strong);
+  margin-left: calc(var(--lang-mark-width) / -2);
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+.lang--inverse .lang__link, .lang--inverse .lang__link[aria-current="true"] { color: var(--color-on-primary); }
 
-/* Messengers and socials. A-15: MAX and RuTube have no Tabler icon, the label is always announced. */
-.social-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* Messengers and socials. A-45: real brand tiles (assets/icons/brand), style of the Figma file n8zlCpOn5jTxyppRO0UFba:
+   a filled rounded tile without a border, 40 px in the header and 32 px in the footer. The link stays a 44 px tap target. */
+.social-links { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--control-height-s);
-  height: var(--control-height-s);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-circle);
-  color: var(--color-heading);
+  width: var(--tap-target);
+  height: var(--tap-target);
   text-decoration: none;
-  transition: border-color var(--duration-fast) var(--easing-base), color var(--duration-fast) var(--easing-base);
+  transition: opacity var(--duration-fast) var(--easing-base);
 }
-.social-link:hover { border-color: var(--color-primary); color: var(--color-primary); text-decoration: none; }
-.social-links--s .social-link { width: var(--control-height-xs); height: var(--control-height-xs); border-color: transparent; }
-.social-links--s .social-link .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
-.social-links--inverse .social-link { border-color: var(--color-on-primary-line); color: var(--color-on-primary); }
-.social-links--inverse .social-link:hover { background: var(--color-on-primary-subtle); color: var(--color-on-primary); }
+.social-link:hover { opacity: var(--social-hover-opacity); text-decoration: none; }
+.social-link__img { width: var(--social-tile); height: var(--social-tile); }
+.social-links--s { gap: var(--space-1); }
+.social-links--s .social-link__img { width: var(--social-tile-s); height: var(--social-tile-s); }
 
 /* =========================================================================
-   3. Header (A-05, A-17) and accessibility panel (A-08)
+   3. Header (A-05, A-17)
    ========================================================================= */
 
 /* Utility row: address, messengers, languages, accessibility toggle. Desktop only. */
@@ -223,25 +226,22 @@
 .site-top__end { display: flex; align-items: center; gap: var(--space-4); margin-left: auto; }
 .site-top__sep { width: var(--border-width); align-self: stretch; margin-block: var(--space-2); background: var(--color-border); }
 
-.a11y-toggle {
+/* A-08: a link only, required by law; it does nothing yet. */
+.a11y-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   min-height: var(--control-height-xs);
   padding: 0 var(--space-3);
-  border: 0;
   border-radius: var(--radius-pill);
-  background: transparent;
   color: var(--color-heading);
   font-size: var(--text-button-s-size);
   line-height: var(--text-button-s-line);
   font-weight: var(--text-button-weight);
+  text-decoration: none;
 }
-.a11y-toggle:hover { background: var(--color-primary-tint); color: var(--color-on-tint); }
-.a11y-toggle .icon { color: var(--color-primary); }
-.a11y-toggle__on { display: none; }
-.a11y .a11y-toggle__on { display: inline; }
-.a11y .a11y-toggle__off { display: none; }
+.a11y-link:hover { background: var(--color-primary-tint); color: var(--color-on-tint); text-decoration: none; }
+.a11y-link .icon { color: var(--color-primary); }
 
 /* Main row: sticky so «Записаться» and the phone are always one tap away. */
 .site-header {
@@ -278,73 +278,17 @@
 .site-header .btn { white-space: nowrap; }
 .site-header__call,
 .site-header__menu { display: none; }
-/* Large type in the accessibility version: drop secondary lines so the bar stays one row. */
-.a11y .site-header .phone-link__hours { display: none; }
-.a11y .site-top__inner { flex-wrap: wrap; row-gap: var(--space-1); padding-block: var(--space-1); }
-.a11y .site-top__end { flex-wrap: wrap; }
-.a11y .site-header__inner { flex-wrap: wrap; column-gap: var(--space-5); row-gap: 0; padding-block: var(--space-2); }
-.a11y .site-nav { order: 3; flex-basis: 100%; }
-.a11y .site-nav__list { flex-wrap: wrap; }
-
 @media (max-width: 1099px) {
   .site-top, .site-nav, .site-header__phone { display: none; }
   .site-header__inner { gap: var(--space-2); min-height: var(--header-height-m); }
   .site-header__actions { margin-left: auto; }
   .site-header__call, .site-header__menu { display: inline-flex; }
   .site-header .logo__svg { width: var(--logo-width-m); }
-  .site-header .btn--book { min-height: var(--control-height-xs); padding: var(--space-1) var(--space-4); font-size: var(--text-button-s-size); line-height: var(--text-button-s-line); }
 }
 @media (max-width: 767px) {
   .site-header__menu-text { display: none; }
   .site-header .btn--book { padding-inline: var(--space-3); }
   .site-header__menu { width: var(--control-height-xs); padding: 0; }
-}
-
-/* Accessibility panel: shown only in the accessibility version. */
-.a11y-panel { display: none; border-bottom: var(--border-width-strong) solid var(--color-text); background: var(--color-bg); }
-.a11y .a11y-panel { display: block; }
-.a11y-panel__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4) var(--space-6);
-  padding-block: var(--space-3);
-  padding-inline: var(--content-edge);
-}
-.a11y-panel__group { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.a11y-panel__label { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.a11y-panel__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--control-height-s);
-  min-height: var(--control-height-s);
-  padding-inline: var(--space-3);
-  border: var(--border-width-strong) solid var(--color-text);
-  border-radius: var(--radius-input);
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-weight: var(--font-weight-bold);
-}
-.a11y-panel__btn[aria-pressed="true"] { background: var(--color-text); color: var(--color-bg); }
-.a11y-panel__btn--size-1 { font-size: var(--text-body-size); }
-.a11y-panel__btn--size-2 { font-size: var(--text-body-l-size); }
-.a11y-panel__btn--size-3 { font-size: var(--text-lead-size); }
-/* Scheme samples keep their own colors whatever scheme is active. */
-.a11y-panel__btn--white { background: var(--a11y-white-bg); color: var(--a11y-white-fg); border-color: var(--a11y-white-fg); }
-.a11y-panel__btn--black { background: var(--a11y-black-bg); color: var(--a11y-black-fg); border-color: var(--a11y-black-bg); }
-.a11y-panel__btn--blue  { background: var(--a11y-blue-bg);  color: var(--a11y-blue-fg);  border-color: var(--a11y-blue-fg); }
-.a11y-panel__btn--white[aria-pressed="true"],
-.a11y-panel__btn--black[aria-pressed="true"],
-.a11y-panel__btn--blue[aria-pressed="true"] { outline: var(--focus-width) solid var(--color-text); outline-offset: var(--focus-offset); }
-.a11y-panel__btn--white[aria-pressed="true"] { background: var(--a11y-white-bg); color: var(--a11y-white-fg); }
-.a11y-panel__btn--black[aria-pressed="true"] { background: var(--a11y-black-bg); color: var(--a11y-black-fg); }
-.a11y-panel__btn--blue[aria-pressed="true"]  { background: var(--a11y-blue-bg);  color: var(--a11y-blue-fg); }
-.a11y-panel__exit { margin-left: auto; }
-@media (max-width: 767px) {
-  .a11y-panel__inner { gap: var(--space-3); }
-  .a11y-panel__label { flex-basis: 100%; }
-  .a11y-panel__exit { margin-left: 0; width: 100%; }
 }
 
 /* =========================================================================
@@ -425,7 +369,6 @@
   width: 100%;
   min-height: var(--control-height);
   padding: var(--space-4) var(--space-5);
-  border: 0;
   border-radius: var(--radius-panel);
   background: var(--color-panel-on-primary);
   color: var(--color-on-primary);
@@ -433,6 +376,7 @@
   line-height: var(--text-body-line);
   font-weight: var(--font-weight-semibold);
   text-align: left;
+  text-decoration: none;
 }
 .mnav__tile-icon {
   display: inline-flex;
@@ -444,11 +388,11 @@
   background: var(--color-on-primary);
   color: var(--color-primary);
 }
-.mnav__tile:hover { background: var(--color-on-primary-subtle); }
+.mnav__tile:hover { background: var(--color-on-primary-subtle); text-decoration: none; }
 .mnav :focus-visible { outline-color: var(--color-on-primary); }
 
 /* =========================================================================
-   5. Footer
+   5. Footer (A-47). Twelve columns on the page grid: the same gaps as the card rows, text on the line of the card text.
    ========================================================================= */
 
 .site-footer {
@@ -457,16 +401,19 @@
   color: var(--color-text);
   border-top: var(--border-width) solid var(--color-border);
 }
-.site-footer__inner { padding: var(--space-8) var(--content-edge) var(--space-6); }
-.site-footer__main {
-  display: grid;
-  grid-template-columns: minmax(0, var(--footer-brand-width)) repeat(3, minmax(0, 1fr));
-  gap: var(--space-7) var(--space-6);
-}
-.site-footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
-.site-footer__about { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
+.site-footer__inner { padding-block: var(--space-6) var(--space-5); }
+.site-footer__main, .site-footer__nav { display: grid; column-gap: var(--grid-gap); }
+.site-footer__main { grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr)); row-gap: var(--space-5); }
+.site-footer__contacts { grid-column: span 4; }
+.site-footer__nav { grid-column: span 4; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.site-footer__docs { grid-column: span 4; }
+.site-footer__contacts, .site-footer__nav > div, .site-footer__docs { padding-inline-start: var(--content-gutter); }
+.site-footer__contacts .logo { margin-bottom: var(--space-2); }
+.site-footer__contacts { display: flex; flex-direction: column; align-items: flex-start; }
 .footer-title {
-  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  min-height: var(--footer-link-height);
   font-size: var(--text-label-size);
   line-height: var(--text-label-line);
   font-weight: var(--text-label-weight);
@@ -474,85 +421,72 @@
   letter-spacing: var(--text-label-tracking);
   color: var(--color-primary);
 }
-.footer-title:not(:first-child) { margin-top: var(--space-5); }
-/* Navigation takes two columns of the footer grid and splits them into its own two columns. */
-.site-footer__nav { grid-column: span 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
 .footer-list { display: flex; flex-direction: column; }
-.footer-list a { display: inline-flex; min-width: var(--tap-target); align-items: center; min-height: var(--tap-target); color: var(--color-heading); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); }
-.footer-list a:hover { color: var(--color-primary); }
-.footer-text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text); }
-.footer-text--muted { color: var(--color-text-muted); }
-.footer-contacts { display: flex; flex-direction: column; gap: var(--space-3); }
-.footer-contacts .footer-title { margin-bottom: 0; }
-.footer-phone { display: inline-flex; align-items: center; min-height: var(--tap-target); color: var(--color-heading); font-weight: var(--font-weight-semibold); white-space: nowrap; }
-.footer-phone:hover { color: var(--color-primary); }
-.a11y .footer-phone { white-space: normal; }
-
-.site-footer__legal {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: var(--space-5) var(--space-6);
-  margin-top: var(--space-7);
-  padding-top: var(--space-6);
-  border-top: var(--border-width) solid var(--color-border);
-}
-.site-footer__org { max-width: var(--text-measure-s); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.site-footer__req { margin-top: var(--space-2); font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
-.site-footer__docs { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin-top: var(--space-4); }
-.site-footer__docs a { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--tap-target); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); }
-
-.payments { display: flex; flex-direction: column; gap: var(--space-3); }
-.payments__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-/* A-15: payment systems as text chips; official logos are added when the bank provides them. */
-.payments__item {
+.footer-link {
   display: inline-flex;
   align-items: center;
-  min-height: var(--control-height-xs);
-  padding-inline: var(--space-3);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-input);
-  background: var(--color-bg);
+  min-height: var(--footer-link-height);
   color: var(--color-heading);
   font-size: var(--text-body-s-size);
   line-height: var(--text-body-s-line);
-  font-weight: var(--font-weight-bold);
 }
+.footer-link:hover { color: var(--color-primary); }
+.footer-phones { display: flex; flex-wrap: wrap; column-gap: var(--space-5); }
+.footer-phone { display: inline-flex; align-items: center; min-height: var(--footer-link-height); color: var(--color-heading); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-semibold); white-space: nowrap; }
+.footer-phone:hover { color: var(--color-primary); }
+.footer-text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
 
-.site-footer__bottom {
+/* One row: socials on the left, payment logos on the right. */
+.site-footer__strip {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3) var(--space-6);
-  margin-top: var(--space-6);
-  padding-top: var(--space-5);
-  border-top: var(--border-width) solid var(--color-border);
+  gap: var(--space-2) var(--space-6);
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--content-gutter);
+  border-block: var(--border-width) solid var(--color-border);
+}
+/* The tile sits inside a 44 px tap target: the tile itself stands on the text line. */
+.site-footer__strip .social-links { margin-inline-start: calc((var(--social-tile-s) - var(--tap-target)) / 2); }
+.payments { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.payments__title { font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
+.payments__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.payments__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--pay-height);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-input);
+  background: var(--color-bg);
+}
+.payments__logo { width: auto; height: var(--pay-logo-height); }
+
+/* Three short paragraphs on the columns of the row above, so that no line runs across the page. */
+.site-footer__legal {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-1) var(--grid-gap);
+  margin-top: var(--space-4);
   font-size: var(--text-caption-size);
   line-height: var(--text-caption-line);
   color: var(--color-text-muted);
 }
-.site-footer__copy { max-width: var(--text-measure-xs); }
 /* A-18: the legally required warning, kept readable rather than tiny. */
-.site-footer__warning {
-  flex-basis: 100%;
-  font-size: var(--text-body-s-size);
-  line-height: var(--text-body-s-line);
-  font-weight: var(--font-weight-semibold);
-  text-transform: var(--text-label-transform);
-  color: var(--color-text-muted);
-}
+.site-footer__legal > p { padding-inline-start: var(--content-gutter); }
+.site-footer__warning { grid-column: 1 / -1; font-weight: var(--font-weight-semibold); text-transform: var(--text-label-transform); }
 
 @media (max-width: 1099px) {
-  .site-footer__main { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "brand contacts" "nav nav"; }
-  .site-footer__brand { grid-area: brand; }
-  .site-footer__nav { grid-area: nav; }
-  .footer-contacts { grid-area: contacts; }
-  .site-footer__legal { grid-template-columns: 1fr; }
+  .site-footer__contacts { grid-column: 1 / -1; }
+  .site-footer__nav { grid-column: span 6; }
+  .site-footer__docs { grid-column: span 6; }
+
 }
 @media (max-width: 767px) {
-  .site-footer__inner { padding-top: var(--space-7); }
-  .site-footer__main { grid-template-columns: 1fr; grid-template-areas: "brand" "nav" "contacts"; gap: var(--space-6); }
-  .site-footer__nav { gap: var(--space-4); }
+  .site-footer__contacts, .site-footer__nav, .site-footer__docs { grid-column: 1 / -1; }
+  .site-footer__strip { flex-direction: column; align-items: flex-start; }
+  .site-footer__legal { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* =========================================================================
@@ -654,74 +588,9 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .field--error .check__input { border-color: var(--color-error); }
 
 /* =========================================================================
-   7a. Date picker and time slots
+   7a. Choice chip (one-of-many radio)
    ========================================================================= */
 
-.datepicker {
-  width: 100%;
-  max-width: var(--datepicker-width);
-  padding: var(--space-4);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-bg);
-}
-@media (max-width: 767px) { .datepicker { padding-inline: var(--space-2); } }  /* A-32: seven 44px day cells fit a 360px sheet */
-.datepicker__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-3); }
-.datepicker__title { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); text-transform: capitalize; }
-.datepicker__grid { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.datepicker__grid th {
-  padding: 0 0 var(--space-2);
-  font-size: var(--text-caption-size);
-  line-height: var(--text-caption-line);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-muted);
-  text-align: center;
-}
-.datepicker__grid abbr { text-decoration: none; }
-.datepicker__grid td { padding: var(--space-0) 0; text-align: center; }
-.datepicker__day {
-  position: relative;
-  width: var(--datepicker-cell);
-  height: var(--datepicker-cell);
-  max-width: 100%;
-  padding: 0;
-  border: var(--border-width) solid transparent;
-  border-radius: var(--radius-circle);
-  background: transparent;
-  color: var(--color-heading);
-  font-size: var(--text-body-s-size);
-  line-height: var(--text-body-s-line);
-  font-weight: var(--font-weight-medium);
-}
-.datepicker__day:hover, .datepicker__day.is-hover { background: var(--color-primary-tint); color: var(--color-on-tint); }
-.datepicker__day[aria-current="date"] { border-color: var(--color-primary); }
-.datepicker__day[aria-pressed="true"] { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
-.datepicker__day:disabled { background: transparent; color: var(--color-disabled-text); cursor: not-allowed; }
-/* Open day with everything booked: can be chosen, the slots panel then offers the nearest free date (A-36). */
-.datepicker__day--full { color: var(--color-text-muted); font-weight: var(--font-weight-regular); text-decoration: line-through; }
-.datepicker__day--full[aria-pressed="true"] { background: var(--color-text-muted); border-color: var(--color-text-muted); color: var(--color-bg); }
-.datepicker__legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-top: var(--space-3); font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
-
-.slots { display: flex; flex-direction: column; gap: var(--space-3); }
-.slots__legend { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-medium); color: var(--color-heading); }
-.slots__list { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--slot-min-width), 1fr)); gap: var(--space-2); }
-.slots__empty { grid-column: 1 / -1; font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-/* No free time on the chosen day (A-36). */
-.slots__none {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-  font-size: var(--text-body-s-size);
-  line-height: var(--text-body-s-line);
-  color: var(--color-text);
-}
-.slots__none-title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.slots__none .btn { margin-top: var(--space-1); }
 .slot { position: relative; display: block; }
 .slot__input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
 .slot__text {
@@ -754,51 +623,55 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
    7b. Cards and service row
    ========================================================================= */
 
-/* Direction card: whole card is one link (stretched link on the title). */
+/* Direction card (A-46): photo with a gradient, text on the photo, the whole card is one link. The arrow shows on hover and focus only. */
 .dcard {
   position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-3);
+  justify-content: flex-end;
+  aspect-ratio: var(--dcard-ratio);
+  min-height: min-content; /* long text on narrow cards grows the card instead of being clipped */
   border-radius: var(--radius-card);
-  background: var(--color-surface);
-  transition: background-color var(--duration-fast) var(--easing-base);
+  background: var(--color-primary);
+  overflow: hidden;
 }
-.dcard:hover, .dcard.is-hover { background: var(--color-surface-hover); }
-.dcard:focus-within { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); }
-.dcard.is-focus { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); }
-.dcard__media { aspect-ratio: var(--card-media-ratio); border-radius: var(--radius-panel); background: var(--color-bg); }
-.dcard__body { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; padding: var(--space-2) var(--space-3) var(--space-3); }
+.dcard:focus-within, .dcard.is-focus { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); }
+.dcard .dcard__media { position: absolute; inset: 0; }
+/* The gradient belongs to the text block, so the text stays on it at any width and with any photo. */
+.dcard__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-5) var(--space-5);
+  background: linear-gradient(to bottom, var(--color-dcard-overlay-start), var(--color-dcard-overlay-end) var(--space-8));
+  color: var(--color-on-primary);
+}
 .dcard__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); }
-.dcard__link { color: var(--color-heading); text-decoration: none; }
+.dcard__link { color: var(--color-on-primary); text-decoration: none; }
 .dcard__link::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-card); }
+.dcard { isolation: isolate; }
+.dcard__link::after { z-index: 1; }
 .dcard__link:hover, .dcard__link:focus { text-decoration: none; }
 .dcard__link:focus-visible { outline: none; box-shadow: none; }
-.dcard:hover .dcard__link, .dcard.is-hover .dcard__link { color: var(--color-primary); }
-.dcard__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-.dcard__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: auto; padding-top: var(--space-2); }
+.dcard__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-on-primary); }
 .dcard__arrow {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
   width: var(--control-height-xs);
   height: var(--control-height-xs);
   border-radius: var(--radius-circle);
   background: var(--color-bg);
   color: var(--color-primary);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--easing-base);
 }
-.dcard:hover .dcard__arrow, .dcard.is-hover .dcard__arrow { background: var(--color-primary); color: var(--color-on-primary); }
-/* Compact on phones: small photo on the left, no arrow row, so a list of cards stays short. */
-@media (max-width: 767px) {
-  .dcard--compact-m { flex-direction: row; align-items: flex-start; }
-  .dcard--compact-m .dcard__media { flex: none; width: var(--card-thumb-m); aspect-ratio: 1 / 1; }
-  .dcard--compact-m .dcard__media .icon { width: var(--icon-size); height: var(--icon-size); }
-  .dcard--compact-m .dcard__body { gap: var(--space-1); padding: var(--space-1) var(--space-2) var(--space-1) 0; }
-  .dcard--compact-m .dcard__foot { display: none; }
-}
+.dcard:hover .dcard__arrow, .dcard:focus-within .dcard__arrow, .dcard.is-hover .dcard__arrow { opacity: 1; }
 
 /* Doctor card. */
 .doctor-card {
@@ -812,40 +685,15 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
   background: var(--color-bg);
 }
 .doctor-card__media { aspect-ratio: var(--doctor-media-ratio); border-radius: var(--radius-panel); }
-.doctor-card__media img { object-position: center top; }
 .doctor-card__body { display: flex; flex-direction: column; gap: var(--space-2); flex: 1; padding-inline: var(--space-2); }
-.doctor-card__spec {
-  font-size: var(--text-label-size);
-  line-height: var(--text-label-line);
-  font-weight: var(--text-label-weight);
-  text-transform: var(--text-label-transform);
-  letter-spacing: var(--text-label-tracking);
-  color: var(--color-primary);
-}
 .doctor-card__name { min-height: calc(2 * var(--text-h5-line)); font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); }
 .doctor-card__name a { display: block; min-height: var(--tap-target); color: var(--color-heading); }
 .doctor-card__name a:hover { color: var(--color-primary); }
 .doctor-card__role { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-.doctor-card__facts { margin-top: auto; padding-top: var(--space-1); display: flex; flex-wrap: wrap; gap: var(--space-1); }
-/* Nearest free date and price of the visit (R-3, A-37). */
-.doctor-card__next {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-1) var(--space-3);
-  margin-inline: var(--space-2);
-  padding-top: var(--space-3);
-  border-top: var(--border-width) solid var(--color-border);
-  font-size: var(--text-caption-size);
-  line-height: var(--text-caption-line);
-  color: var(--color-text-muted);
-}
-.doctor-card__next-date { display: inline-flex; align-items: center; gap: var(--space-1); }
-.doctor-card__next-date .icon { width: var(--icon-size-s); height: var(--icon-size-s); color: var(--color-primary); }
-.doctor-card__next-date strong { font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.doctor-card__price { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-bold); color: var(--color-heading); white-space: nowrap; }
-.doctor-card__actions { display: flex; gap: var(--space-2); padding: 0 var(--space-2) var(--space-2); }
+/* Price of the visit (A-37) and «Записаться», which leads to the contact form. */
+.doctor-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-2) var(--space-2); }
+.doctor-card__foot .btn { flex: 1; }
+.doctor-card__price { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-bold); color: var(--color-heading); white-space: nowrap; }
 
 /* Service row: name, short description, code, price, «Записаться» (a request, answer 5: no payment here). */
 .service-list { border-top: var(--border-width) solid var(--color-border); }
@@ -919,15 +767,9 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .section-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3) var(--space-6); margin-bottom: var(--space-6); }
 .section-head--flush { margin-bottom: 0; }
 .section-head__text { display: flex; flex-direction: column; gap: var(--space-2); max-width: var(--text-measure); }
-.section-head__eyebrow {
-  font-size: var(--text-label-size);
-  line-height: var(--text-label-line);
-  font-weight: var(--text-label-weight);
-  text-transform: var(--text-label-transform);
-  letter-spacing: var(--text-label-tracking);
-  color: var(--color-accent);
-}
 .section-head__lead { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-text-muted); }
+/* A centred outline button under a row of cards («Все врачи»). */
+.section-more { display: flex; justify-content: center; margin-top: var(--space-6); }
 /* Right side of the head: "all" link and, for scrollers, prev/next buttons. */
 .section-head__actions { display: flex; align-items: center; gap: var(--space-5); }
 .section-head__controls { display: flex; gap: var(--space-2); }
@@ -1102,56 +944,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .checklist__note { display: block; font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
 
 /* =========================================================================
-   11. Modal (desktop) / bottom sheet (mobile). Native <dialog>, see js/ui.js.
-   ========================================================================= */
-
-.modal {
-  width: calc(100% - 2 * var(--space-5));
-  max-width: var(--modal-width);
-  max-height: var(--modal-max-height);
-  margin: auto;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-card);
-  background: var(--color-bg);
-  color: var(--color-text);
-  box-shadow: var(--shadow-modal);
-  overflow: hidden;
-}
-.modal[open] { display: flex; flex-direction: column; animation: modal-in var(--duration-base) var(--easing-base); }
-.modal::backdrop { background: var(--color-backdrop); }
-.modal__handle { display: none; }
-.modal__head { display: flex; align-items: flex-start; gap: var(--space-4); padding: var(--space-6) var(--space-6) var(--space-4); }
-.modal__title { flex: 1; font-size: var(--text-h4-size); line-height: var(--text-h4-line); font-weight: var(--text-h4-weight); letter-spacing: var(--text-h4-tracking); }
-.modal__body { padding: 0 var(--space-6) var(--space-6); overflow-y: auto; overscroll-behavior: contain; }
-
-@media (max-width: 767px) {
-  .modal {
-    width: 100%;
-    max-width: 100%;
-    margin: auto 0 0;
-    border-radius: var(--radius-card) var(--radius-card) 0 0;
-  }
-  .modal[open] { animation-name: sheet-in; }
-  .modal__handle {
-    display: block;
-    flex: none;
-    width: var(--sheet-handle-width);
-    height: var(--sheet-handle-height);
-    margin: var(--space-2) auto 0;
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-alt);
-  }
-  .modal__head { padding: var(--space-4) var(--space-4) var(--space-3); }
-  .modal__body { padding: 0 var(--space-4) var(--space-5); }
-}
-
-@keyframes modal-in { from { opacity: 0; transform: translateY(var(--motion-distance)); } to { opacity: 1; transform: none; } }
-@keyframes sheet-in { from { transform: translateY(100%); } to { transform: none; } }
-@keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
-
-/* =========================================================================
-   12. Alerts (form-level success / error / info messages)
+   11. Alerts (form-level success / error / info messages)
    ========================================================================= */
 
 .alert {
@@ -1176,7 +969,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .alert--info > .icon { color: var(--color-primary); }
 
 /* =========================================================================
-   13. Media and placeholder (A-07: photos come later)
+   12. Media and placeholder (A-07: photos come later)
    ========================================================================= */
 
 .media { position: relative; overflow: hidden; background: var(--color-media-placeholder); }
@@ -1185,7 +978,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .media--placeholder .icon { width: var(--icon-size-l); height: var(--icon-size-l); }
 
 /* =========================================================================
-   14. Scroller: one row of cards that scrolls sideways (doctors). Behaviour: js/ui.js.
+   13. Scroller: one row of cards that scrolls sideways (doctors). Behaviour: js/ui.js.
    ========================================================================= */
 
 .scroller__track {
@@ -1210,19 +1003,19 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .scroller__list > li { scroll-snap-align: start; min-width: 0; }
 
 /* =========================================================================
-   15. Choice chips (one-of-many radio, e.g. contact method) and form panel
+   14. Choice chips (one-of-many radio, e.g. contact method) and contact form panel
    ========================================================================= */
 
 /* Reuses the time slot chip (.slot) for each option; the fieldset is also a .field so validation works. */
 .choices > legend { margin-bottom: var(--space-2); }
 .choices__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.choices .slot__text .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
+.choices .slot__text .icon, .slot__brand { width: var(--icon-size-s); height: var(--icon-size-s); }
 
-/* Blue block with a heading and contacts on the left and a white form card on the right
-   with standard fields inside a card. */
+/* A-48: the one contact form of the site (js/layout.js), after «Остались вопросы?» of РКБ 2.0 in our tokens:
+   blue block, heading and text on the left, fields with an underline on the right. */
 .form-panel {
   display: grid;
-  grid-template-columns: minmax(0, var(--form-panel-text-width)) minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-6) var(--space-8);
   padding: var(--hero-padding);
   border-radius: var(--radius-card);
@@ -1231,252 +1024,43 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 }
 .form-panel__text { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
 .form-panel__title { color: var(--color-on-primary); }
-.form-panel__lead { max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-on-primary-muted); }
-.form-panel__contacts { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-3); }
-.form-panel__card {
-  padding: var(--space-6);
-  border-radius: var(--radius-panel);
-  background: var(--color-bg);
-  color: var(--color-text);
-}
+.form-panel__lead { max-width: var(--text-measure-s); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-on-primary-muted); }
 .form-panel :focus-visible { outline-color: var(--color-on-primary); }
-.form-panel__card :focus-visible { outline-color: var(--color-focus); }
-/* "Send another request" link-like button inside the success message (was duplicated in home.css and direction.css) */
+.form-panel .field__label { color: var(--color-on-primary-muted); }
+.form-panel .field__req { color: inherit; }
+.form-panel .field__control {
+  padding-inline: 0;
+  border: 0;
+  border-bottom: var(--border-width) solid var(--color-on-primary-muted);
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-on-primary);
+}
+.form-panel .field__control::placeholder { color: var(--color-on-primary-muted); }
+.form-panel .field__control:hover, .form-panel .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
+.form-panel .field__control:focus-visible { outline: none; }
+.form-panel select.field__control option { background: var(--color-bg); color: var(--color-text); }
+.form-panel .field__icon { right: 0; color: var(--color-on-primary); }
+.form-panel .field--error .field__control, .form-panel .field--error .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
+.form-panel .field--error .field__msg { color: var(--color-on-primary); }
+.form-panel .slot__text { background: transparent; border-color: var(--color-on-primary-line); color: var(--color-on-primary); }
+.form-panel .slot__input:hover + .slot__text { border-color: var(--color-on-primary); color: var(--color-on-primary); }
+.form-panel .slot__input:focus-visible + .slot__text { outline-color: var(--color-on-primary); }
+.form-panel .slot__input:checked + .slot__text { background: var(--color-on-primary); border-color: var(--color-on-primary); color: var(--color-primary); }
+.form-panel .check__input { border-color: var(--color-on-primary); background: transparent; }
+.form-panel .check__input::after { background-color: var(--color-primary); }
+.form-panel .check__input:checked { background: var(--color-on-primary); border-color: var(--color-on-primary); }
+.form-panel .check__text, .form-panel .check__text a { color: var(--color-on-primary); }
+.form-panel .form__submit { align-self: flex-start; }
+/* "Send another request" link-like button inside the success message */
 .form-panel .alert .btn--ghost { justify-content: flex-start; margin-inline-start: calc(-1 * var(--space-3)); text-align: left; }
+.form-panel .alert :focus-visible { outline-color: var(--color-focus); }
 @media (max-width: 1099px) {
-  .form-panel { grid-template-columns: 1fr; }
-}
-@media (max-width: 767px) {
-  .form-panel__card { padding: var(--space-4); }
+  .form-panel { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* =========================================================================
-   16. Flow modal: booking (js/booking.js). A wider modal on desktop, a full-screen sheet below 768px.
-       Head: back, progress, title, close. Body scrolls; the foot with the main button stays at the bottom.
-   ========================================================================= */
-
-.modal--flow { max-width: var(--modal-width-l); }
-.modal__title:focus { outline: none; box-shadow: none; }
-.flow__head { align-items: center; padding-bottom: var(--space-3); }
-.flow__heading { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 0; }
-.flow__progress {
-  font-size: var(--text-label-size);
-  line-height: var(--text-label-line);
-  font-weight: var(--text-label-weight);
-  text-transform: var(--text-label-transform);
-  letter-spacing: var(--text-label-tracking);
-  color: var(--color-primary);
-}
-.flow__bar { flex: none; height: var(--flow-bar-height); margin: 0 var(--space-6) var(--space-4); border-radius: var(--radius-pill); background: var(--color-surface-alt); overflow: hidden; }
-.flow__bar-fill { display: block; height: 100%; border-radius: inherit; background: var(--color-primary); transition: width var(--duration-base) var(--easing-base); }
-.flow__body { display: flex; flex-direction: column; gap: var(--space-5); flex: 1; min-height: 0; }
-.modal__foot {
-  flex: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-6) var(--space-6);
-  border-top: var(--border-width) solid var(--color-border);
-  background: var(--color-bg);
-}
-.modal__foot:empty { display: none; }
-.flow__lead { max-width: var(--text-measure-s); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-/* First step: the two booking scenarios (R-1). Each is one button; the next step opens at once. */
-.scenarios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--grid-gap); }
-.scenario {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding: var(--space-5);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-card);
-  background: var(--color-bg);
-  color: var(--color-text);
-  text-align: left;
-  transition: background-color var(--duration-fast) var(--easing-base), border-color var(--duration-fast) var(--easing-base);
-}
-.scenario:hover, .scenario.is-hover { border-color: var(--color-primary); background: var(--color-primary-tint); }
-.scenario.is-focus { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring); }
-.scenario__icon { display: inline-flex; align-items: center; justify-content: center; width: var(--doc-icon-box); height: var(--doc-icon-box); border-radius: var(--radius-circle); background: var(--color-primary-tint); color: var(--color-primary); }
-.scenario:hover .scenario__icon, .scenario.is-hover .scenario__icon { background: var(--color-bg); }
-.scenario__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
-.scenario__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-.scenario__go { display: inline-flex; align-items: center; gap: var(--space-2); margin-top: auto; padding-top: var(--space-2); font-size: var(--text-button-s-size); line-height: var(--text-button-s-line); font-weight: var(--text-button-weight); color: var(--color-primary); }
-@media (max-width: 767px) { .scenarios { grid-template-columns: minmax(0, 1fr); } .scenario { padding: var(--space-4); } }
-/* Nearest free date above the calendar (R-4, A-36). */
-.flow__nearest { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-2); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-/* Secondary way out of a step, e.g. «Оставить заявку без времени». */
-.flow__aside {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-  font-size: var(--text-body-s-size);
-  line-height: var(--text-body-s-line);
-  color: var(--color-text-muted);
-}
-.flow__aside-title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.flow__aside .btn { margin-top: var(--space-1); }
-/* Date and time step: calendar and slots side by side on desktop. */
-.flow__datetime { display: grid; grid-template-columns: minmax(0, var(--datepicker-width)) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
-/* Desktop: the main button sits on the right at its own width; phones keep it full width. */
-@media (min-width: 768px) {
-  .modal--flow .modal__foot { justify-content: flex-end; }
-  .modal--flow .modal__foot .btn--block { width: auto; }
-}
-
-/* «Закрыть запись?»: a layer over the flow; the rest of the dialog is inert while it is shown. */
-.modal__confirm {
-  position: absolute;
-  inset: 0;
-  z-index: var(--z-sticky);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-5);
-  background: var(--color-backdrop);
-}
-.modal__confirm-box {
-  width: 100%;
-  max-width: var(--confirm-width);
-  padding: var(--space-5);
-  border-radius: var(--radius-panel);
-  background: var(--color-bg);
-  box-shadow: var(--shadow-modal);
-}
-.modal__confirm-title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); color: var(--color-heading); }
-.modal__confirm-text { margin-top: var(--space-2); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-.modal__confirm-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-5); }
-/* kit.html shows the layer statically inside a frame. */
-.modal__confirm--static { position: relative; inset: auto; border-radius: var(--radius-card); }
-
-@media (max-width: 767px) {
-  .modal--flow {
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    max-height: 100%;
-    margin: 0;
-    border-radius: 0;
-  }
-  .modal--flow[open] { animation-name: sheet-in; }
-  .flow__head { padding: var(--space-3) var(--space-4); }
-  .flow__bar { margin: 0 var(--space-4) var(--space-4); }
-  .modal--flow .modal__foot { padding: var(--space-3) var(--space-4) var(--space-4); }
-  .flow__datetime { grid-template-columns: minmax(0, 1fr); }
-  .flow__datetime .datepicker { max-width: none; }
-  .modal__confirm { align-items: flex-end; padding: var(--space-3); }
-  .modal__confirm-actions .btn { flex: 1; }
-}
-
-/* =========================================================================
-   17. Option card: one-of-many radio with a title, text, price or photo (service, doctor in the booking flow)
-   ========================================================================= */
-
-.options__list { display: flex; flex-direction: column; gap: var(--space-2); }
-.option { position: relative; display: block; cursor: pointer; }
-.option__input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-.option__box {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-panel);
-  background: var(--color-bg);
-  transition: background-color var(--duration-fast) var(--easing-base), border-color var(--duration-fast) var(--easing-base);
-}
-.option__media { flex: none; width: var(--option-media); height: var(--option-media); border-radius: var(--radius-circle); }
-.option__media .icon { width: var(--icon-size); height: var(--icon-size); }
-.option__body { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; min-width: 0; }
-.option__title { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.option__text { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-/* Nearest free date and price of a doctor (R-3). */
-.option__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
-.option__meta strong { font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.option__aside { flex: none; font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-bold); color: var(--color-heading); white-space: nowrap; }
-.option__mark {
-  position: relative;
-  flex: none;
-  width: var(--check-size);
-  height: var(--check-size);
-  border: var(--border-width-strong) solid var(--color-border-strong);
-  border-radius: var(--radius-circle);
-  background: var(--color-bg);
-}
-.option__mark::after { content: ""; position: absolute; inset: var(--space-0); border-radius: inherit; background: var(--color-primary); opacity: 0; }
-.option__input:hover + .option__box, .option.is-hover .option__box { border-color: var(--color-primary); }
-.option__input:focus-visible + .option__box, .option.is-focus .option__box {
-  outline: var(--focus-width) solid var(--color-focus);
-  outline-offset: var(--focus-offset);
-  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
-}
-.option__input:checked + .option__box, .option.is-checked .option__box { border-color: var(--color-primary); background: var(--color-primary-tint); }
-.option__input:checked + .option__box .option__mark, .option.is-checked .option__mark { border-color: var(--color-primary); }
-.option__input:checked + .option__box .option__mark::after, .option.is-checked .option__mark::after { opacity: 1; }
-.field--error .option__box { border-color: var(--color-error); }
-@media (max-width: 767px) {
-  .option__box { gap: var(--space-3); padding: var(--space-3); }
-  .option__media { width: var(--option-media-m); height: var(--option-media-m); }
-  .option__box:has(.option__aside) { flex-wrap: wrap; }
-  .option__box:has(.option__aside) .option__body { flex-basis: calc(100% - var(--check-size) - var(--space-3)); }
-  .option__box:has(.option__aside) .option__aside { order: 3; margin-left: 0; }
-}
-
-/* =========================================================================
-   18. Summary (chosen service, doctor, time), result screen
-   ========================================================================= */
-
-.summary {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface);
-}
-.summary__row {
-  display: grid;
-  grid-template-columns: minmax(0, var(--summary-term-width)) minmax(0, 1fr);
-  gap: var(--space-1) var(--space-4);
-  padding-block: var(--space-2);
-  border-bottom: var(--border-width) solid var(--color-border);
-  font-size: var(--text-body-s-size);
-  line-height: var(--text-body-s-line);
-}
-.summary__row:last-child { border-bottom: 0; }
-.summary__term { color: var(--color-text-muted); }
-.summary__value { margin: 0; color: var(--color-heading); font-weight: var(--font-weight-medium); }
-.summary__price { font-weight: var(--font-weight-bold); white-space: nowrap; }
-.summary--compact { padding-block: var(--space-1); }
-.summary--compact .summary__row { padding-block: var(--space-1); border-bottom: 0; }
-@media (max-width: 767px) {
-  .summary__row { grid-template-columns: minmax(0, 1fr); gap: 0; }
-}
-
-.result { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-.result__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--result-icon-box);
-  height: var(--result-icon-box);
-  border-radius: var(--radius-circle);
-  background: var(--color-success-tint);
-  color: var(--color-success);
-}
-/* Not final yet: the administrator still has to confirm (answer 4). */
-.result__icon--pending { background: var(--color-primary-tint); color: var(--color-primary); }
-.result__title { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
-.result__text { max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-text); }
-
-
-/* =========================================================================
-   19. Search field, filter chips, grouped service list, empty state (long lists, shown on kit.html; the search and the chips also work in the booking flow)
+   15. Search field, filter chips, grouped service list, empty state (long lists, shown on kit.html)
    ========================================================================= */
 
 .search { position: relative; display: flex; }
@@ -1535,7 +1119,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .empty__text { color: var(--color-text-muted); }
 
 /* =========================================================================
-   20. Feature cards (short reasons on a direction page)
+   16. Feature cards (short reasons on a direction page)
    ========================================================================= */
 
 .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--steps-col-min)), 1fr)); gap: var(--grid-gap); }

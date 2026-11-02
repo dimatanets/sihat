@@ -99,3 +99,24 @@
 
 ## 4. Скриншоты
 Сохранены только скриншоты РКБ 2.0 (docs/references). Скриншоты rkb-sihat.ru, milleniumclinic.ru и k31.ru не делались: чтение шло по тексту страниц.
+
+## 5. Правки раунда 1
+
+### Соцсети текущего сайта
+- ВКонтакте: https://vk.com/public211630542. RuTube: https://rutube.ru/channel/40995908/ (из кода главной rkb-sihat.ru). Адресов MAX, Telegram и WhatsApp в коде страницы не нашлось, ссылки остаются «#».
+
+### Фото направлений (Pexels)
+- Чек-ап: https://www.pexels.com/photo/doctor-consultation-in-modern-clinic-office-39192382/
+- Роды: https://www.pexels.com/photo/tender-moment-mother-holding-newborn-in-hospital-35308506/
+- Хирургия: https://www.pexels.com/photo/surgeons-during-operation-20217787/
+
+### Источники логотипов
+- Официальные сайты: СБП (sbp.nspk.ru, знак из шапки), Visa (visa.com, файл с сайта, цвет #1434CB задан вручную), Mastercard (логотип из подвала mastercard.com/brandcenter; архивы для скачивания не брали: они требуют принять соглашение), MAX (max.ru), RuTube (rutube.ru), Telegram (telegram.org).
+- Не с официальных сайтов: «Мир» с Wikimedia Commons (nspk.ru и mironline.ru отсюда не открылись), глифы VK и WhatsApp из Simple Icons (страница vk.com/brand не отдала файлы). Перед сдачей заменить на файлы из брендбуков.
+
+### Футер: что выбрали
+- Смотрели: milleniumclinic.ru (579 px), medsi.ru (749 px), mamadeti.ru (1004 px), invitro.ru (670 px), sberhealth.ru (586 px). emcmos.ru снят неудачно, smclinic.ru не пустил робота, у www.k31.ru футер прочитать не удалось: выводы по K+31 не сделаны.
+- Самый собранный приём у Invitro: колонки ссылок, под ними узкая полоса с соцсетями и платёжными системами, затем мелкий юридический текст.
+- Взяли его: так реквизиты и логотипы не занимают отдельных колонок. Убрали описание, кнопку и список корпусов (корпуса остались в мобильном меню), все ссылки разделов и документов сохранили.
+- Колонки стоят на сетке карточек страницы: 4 + 2 + 2 + 4 из 12.
+

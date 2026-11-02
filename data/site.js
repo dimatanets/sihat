@@ -2,7 +2,7 @@
   Mock site data shared by the header, mobile menu and footer (js/layout.js).
   Plain JS instead of JSON so pages make no network requests (A-11).
   Sources: docs/research.md (current rkb-sihat.ru).
-  A-13: pages that are not in the prototype yet, messenger and social accounts link to "#".
+  A-13: pages that are not in the prototype yet and messengers without a known address link to "#". VK and RuTube are the real accounts from the current site.
   A-14: tax and licence numbers were not found; zeros are placeholders until the client sends them.
 */
 window.SIHAT_DATA = {
@@ -33,13 +33,13 @@ window.SIHAT_DATA = {
   },
 
   messengers: [
-    { name: "MAX", icon: "message-circle", href: "#" },
-    { name: "Telegram", icon: "brand-telegram", href: "#" },
-    { name: "WhatsApp", icon: "brand-whatsapp", href: "#" }
+    { name: "MAX", logo: "max", href: "#" },
+    { name: "Telegram", logo: "telegram", href: "#" },
+    { name: "WhatsApp", logo: "whatsapp", href: "#" }
   ],
   socials: [
-    { name: "ВКонтакте", icon: "brand-vk", href: "#" },
-    { name: "RuTube", icon: "player-play", href: "#" }
+    { name: "ВКонтакте", logo: "vk", href: "https://vk.com/public211630542" },
+    { name: "RuTube", logo: "rutube", href: "https://rutube.ru/channel/40995908/" }
   ],
 
   languages: [
@@ -88,11 +88,11 @@ window.SIHAT_DATA = {
       "Юридический адрес: 420064, г. Казань, Оренбургский тракт, 138",
       "ИНН 0000000000, КПП 000000000, ОГРН 0000000000000"
     ],
-    licence: { label: "Лицензия на медицинскую деятельность № Л041-00000-16/00000000", href: "#" },
+    licence: { label: "Лицензия № Л041-00000-16/00000000", href: "#" },
     docs: [
       { label: "Политика обработки персональных данных", href: "#" },
       { label: "Согласие на обработку персональных данных", href: "#" },
-      { label: "Договор-оферта на оказание платных медицинских услуг", href: "#" },
+      { label: "Договор-оферта на платные медицинские услуги", href: "#" },
       { label: "Пользовательское соглашение", href: "#" }
     ],
     priceNote: "Цены на сайте справочные и не являются публичной офертой.",
@@ -100,7 +100,13 @@ window.SIHAT_DATA = {
     warning: "Имеются противопоказания, необходима консультация специалиста"
   },
 
-  payments: ["Мир", "СБП", "Visa", "Mastercard"],
+  // Round 1: logos, sources in docs/research.md.
+  payments: [
+    { name: "Мир", logo: "mir" },
+    { name: "СБП", logo: "sbp" },
+    { name: "Visa", logo: "visa" },
+    { name: "Mastercard", logo: "mastercard" }
+  ],
 
   // Full list from the booking form of the current site (docs/research.md).
   directions: [

@@ -10,7 +10,7 @@ html {
   scroll-padding-top: var(--anchor-nav-offset);
 }
 
-/* Lock page scroll while a modal, bottom sheet or the mobile menu is open. */
+/* Lock page scroll while the mobile menu is open. */
 html:has(dialog[open]) { overflow: hidden; }
 
 body {
@@ -100,9 +100,6 @@ button { cursor: pointer; }
 }
 
 /* ---- Accessibility version (A-08): behaviour that tokens alone cannot express ---- */
-.a11y a:not(.btn):not(.logo):not(.social-link):not(.anchor-nav__link):not(.lang__link) { text-decoration: underline; }
-.a11y[data-a11y-images="off"] img,
-.a11y[data-a11y-images="off"] .media { display: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

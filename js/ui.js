@@ -1,15 +1,10 @@
 /*
-  UI behaviour: modal / bottom sheet, mobile menu, anchor navigation.
+  UI behaviour: mobile menu, in-page links, anchor navigation.
   Everything uses event delegation, so markup rendered later (js/layout.js) works too.
 
-  Modal / bottom sheet (native <dialog class="modal">; on screens below 768px CSS turns it into a bottom sheet):
-    open:  <button data-modal-open="modal-id">   or  Sihat.modal.open("modal-id" | element, openerElement)
-    close: <button data-modal-close>              or  Sihat.modal.close("modal-id" | element), Esc, click on the backdrop
-    Focus returns to the opener. Events on the dialog: "modal:open", "modal:close".
-    Before any close (button, Esc, backdrop, Sihat.modal.close) a cancelable "modal:beforeclose" fires on the dialog;
-    preventDefault() keeps it open (the booking flow asks "Закрыть запись?"). Sihat.modal.close(target, { force: true })
-    skips that check.
-  Mobile menu: <dialog class="mnav" id="site-menu">, opened by [data-menu-open]; closes itself on desktop widths.
+  Mobile menu: <dialog class="mnav" id="site-menu">, opened by [data-menu-open], closed by [data-modal-close] and Esc;
+    closes itself on desktop widths and when a link inside it leads to a part of this page. Focus returns to the opener.
+  Links that do nothing yet: <a href="#" data-inert> (A-08).
   Anchor navigation: <nav data-anchor-nav> with links to #ids; the link of the section in view gets aria-current="true".
   Accordion: native <details>/<summary>, no JS.
   Scroller (horizontal card row): <div class="scroller__track" id="track-id" data-scroller tabindex="0" role="region"
@@ -30,33 +25,20 @@
     open: function (target, opener) {
       var dialog = resolve(target);
       if (!dialog || dialog.open) return;
-      // Only one dialog at a time: opening from the mobile menu closes the menu first.
-      var openDialog = document.querySelector("dialog[open]");
-      if (openDialog) {
-        opener = openDialog._opener || opener;
-        openDialog.close();
-      }
       dialog._opener = opener || document.activeElement;
       dialog.showModal();
-      dialog.dispatchEvent(new CustomEvent("modal:open", { bubbles: true }));
     },
-    close: function (target, opts) {
+    close: function (target) {
       var dialog = resolve(target);
-      if (!dialog || !dialog.open) return;
-      if (!(opts && opts.force)) {
-        var ev = new CustomEvent("modal:beforeclose", { bubbles: true, cancelable: true });
-        if (!dialog.dispatchEvent(ev)) return;
-      }
-      dialog.close();
+      if (dialog && dialog.open) dialog.close();
     }
   };
   window.Sihat.modal = modal;
 
   document.addEventListener("click", function (e) {
-    var opener = e.target.closest("[data-modal-open]");
-    if (opener) {
+    var inert = e.target.closest("[data-inert]");
+    if (inert) {
       e.preventDefault();
-      modal.open(opener.getAttribute("data-modal-open"), opener);
       return;
     }
     var menuBtn = e.target.closest("[data-menu-open]");
@@ -70,28 +52,14 @@
       modal.close(closer.closest("dialog"));
       return;
     }
-    // Click on the backdrop of a .modal (the dialog element itself, outside its box).
-    if (e.target.matches && e.target.matches("dialog.modal[open]")) {
-      var r = e.target.getBoundingClientRect();
-      var inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-      if (!inside) modal.close(e.target);
+    // «Записаться» in the menu: close it, the browser then scrolls to the form. Focus must not jump back to the menu button.
+    var inPage = e.target.closest('dialog a[href^="#"]:not([href="#"])');
+    if (inPage) {
+      var dialog = inPage.closest("dialog");
+      dialog._opener = null;
+      dialog.close();
     }
   });
-
-  // Esc goes through modal.close too, so "modal:beforeclose" can keep the dialog open.
-  document.addEventListener("keydown", function (e) {
-    if (e.key !== "Escape" || e.defaultPrevented) return;
-    var dialog = document.querySelector("dialog.modal[open]");
-    if (!dialog) return;
-    e.preventDefault();
-    modal.close(dialog);
-  });
-  document.addEventListener("cancel", function (e) {
-    var dialog = e.target;
-    if (!dialog || !dialog.matches || !dialog.matches("dialog.modal")) return;
-    e.preventDefault();
-    modal.close(dialog);
-  }, true);
 
   // Restore focus and state on every close (button, Esc or backdrop).
   document.addEventListener("close", function (e) {
@@ -103,7 +71,6 @@
     var opener = dialog._opener;
     dialog._opener = null;
     if (opener && document.contains(opener) && opener.offsetParent !== null) opener.focus();
-    dialog.dispatchEvent(new CustomEvent("modal:close", { bubbles: true }));
   }, true);
 
   // The mobile menu has no meaning on desktop widths.

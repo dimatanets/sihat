@@ -10,7 +10,7 @@
     spec        string   specialty, the short label on the card; links the doctor to his visit in data/services.js
     role        string   position (head of department etc.), shortened from the current site
     position    string   full position and qualification text as on the current site
-    regalia     string[] badges on the card: category, degree, honorary title
+    regalia     string[] category, degree, honorary title; not shown on the card since round 1
     directions  string[] ids from data/directions.js (A-26: who is shown on a direction page)
     href        string   doctor page; "#" until it is built (A-13)
     photo       string|null  photo path

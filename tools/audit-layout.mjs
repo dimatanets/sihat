@@ -22,7 +22,7 @@ const WIDTHS = [1440, 1280, 1024, 768, 390, 360];
 const BASE_HEIGHT = 900;
 const BASELINE = process.argv.includes("--baseline");
 const CHECK = process.argv.includes("--check");
-const FIXED_NOW = new Date("2026-11-02T09:00:00"); // the mock schedule and its labels depend on today
+const FIXED_NOW = new Date("2026-11-02T09:00:00"); // the year in the footer depends on today
 
 const RULES = {
   1: "Шкала отступов",
@@ -338,7 +338,7 @@ function collect({ scope, tokenNames, nameKeys }) {
     }
     const blocks = flat.filter((c) => c.getBoundingClientRect().height).map((c) => {
       const q = c.getBoundingClientRect();
-      const list = c.querySelector(":scope > .scroller__track > .scroller__list");
+      const list = c.lastElementChild && c.lastElementChild.matches(".scroller__track") && c.querySelector(":scope > .scroller__track > .scroller__list");
       const bottom = list ? list.getBoundingClientRect().bottom : q.bottom;
       return { sel: selectorOf(c, [...c.classList]) + (c.id ? "#" + c.id : ""), isNav: c.tagName === "NAV", top: round(q.top + scrollY), bottom: round(bottom + scrollY), left: round(q.left), right: round(q.right) };
     });
@@ -506,8 +506,6 @@ async function runWidth(browser, base, width, tokenNames, scenes, problems) {
   page.on("request", (r) => { if (!r.url().startsWith(base) && !r.url().startsWith("data:")) problems.push(width + ": внешний запрос " + r.url()); });
   page.on("response", (r) => { if (r.status() >= 400) problems.push(width + ": " + r.status() + " " + r.url()); });
   const open = async (file) => { await page.goto(base + file, { waitUntil: "load" }); await settle(page); };
-  const B = "#modal-book";
-  const next = () => page.click(B + ' .modal__foot button[type="submit"]');
 
   await open("index.html");
   await scene(page, { id: "home", page: "Главная" }, width, tokenNames, scenes);
@@ -520,48 +518,6 @@ async function runWidth(browser, base, width, tokenNames, scenes, problems) {
 
   await open("direction.html");
   await scene(page, { id: "direction", page: "Чек-ап программы" }, width, tokenNames, scenes);
-
-  // Scenario «doctor»: choose → doctor → date and time → contacts → payment → done.
-  await open("index.html");
-  await page.click("[data-hero-book]");
-  await page.waitForSelector(B + "[open]");
-  await scene(page, { id: "book-choose", page: "Запись: выбор сценария", scope: B }, width, tokenNames, scenes);
-  await page.click(B + ' [data-book-choose="doctor"]');
-  await page.click(B + " label.option");
-  await scene(page, { id: "book-doctor", page: "Запись: выбор врача", scope: B }, width, tokenNames, scenes);
-  await next();
-  await page.waitForSelector(B + " .datepicker");
-  await page.click(B + " #bk-time label.slot:has(.slot__input:not(:disabled))");
-  await scene(page, { id: "book-datetime", page: "Запись: дата и время", scope: B }, width, tokenNames, scenes);
-  await next();
-  await page.waitForSelector("#bk-name");
-  await page.fill("#bk-name", "Тест");
-  await page.locator("#bk-phone").pressSequentially("9001234567");
-  await page.check("#bk-consent");
-  await scene(page, { id: "book-contacts", page: "Запись: данные", scope: B }, width, tokenNames, scenes);
-  await next();
-  await page.waitForSelector("#bk-pay-clinic");
-  await scene(page, { id: "book-payment", page: "Оплата: в клинике", scope: B }, width, tokenNames, scenes);
-  await page.click('label[for="bk-pay-now"]');
-  await page.fill("#bk-email", "test@example.test");
-  await page.check("#bk-offer-consent");
-  await scene(page, { id: "book-payment-now", page: "Оплата: сейчас", scope: B }, width, tokenNames, scenes);
-  await next();
-  await page.waitForSelector(B + " .result");
-  await scene(page, { id: "book-done", page: "Запись к врачу: результат", scope: B }, width, tokenNames, scenes);
-  await page.click(B + " [data-book-finish]");
-
-  // Scenario «request»: choose → request → done.
-  await page.click("[data-hero-book]");
-  await page.click(B + ' [data-book-choose="request"]');
-  await page.waitForSelector("#rq-name");
-  await page.fill("#rq-name", "Тест");
-  await page.locator("#rq-phone").pressSequentially("9001234567");
-  await page.check("#rq-consent");
-  await scene(page, { id: "request", page: "Заявка на услугу", scope: B }, width, tokenNames, scenes);
-  await next();
-  await page.waitForSelector(B + " .result");
-  await scene(page, { id: "request-done", page: "Заявка: результат", scope: B }, width, tokenNames, scenes);
 
   await context.close();
 }

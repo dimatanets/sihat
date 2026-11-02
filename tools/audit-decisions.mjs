@@ -47,13 +47,13 @@ export const PROPOSALS = [
 ];
 
 export const EXCEPTIONS = [
+  { rule: 1, sig: /social-links--s/, why: "A-45: плитка 32 px стоит на линии текста, поэтому её область нажатия 44 px выходит на 6 px влево" },
+  { rule: 5, sig: /btn--secondary$/, prop: "align", why: "кнопка «Все врачи» по центру под карточками, по запросу Димы" },
+  { rule: 4, sig: /^\.(footer-link|footer-phone)$/, prop: "tap", why: "A-47: строки подвала 28 px, на телефоне 36 px: больше 24 px по WCAG 2.5.8, иначе подвал не становится компактным" },
   { rule: 3, sig: ".field__control", prop: "padding", why: "поле с иконкой внутри (поиск, выпадающий список): больше отступ под иконку" },
-  { rule: 3, sig: ".a11y-toggle__off", prop: "font-size", why: "тот же текст внутри плитки мобильного меню, размер задаёт плитка" },
-  { rule: 3, sig: ".a11y-toggle__off", prop: "line-height", why: "тот же текст внутри плитки мобильного меню" },
   { rule: 3, sig: ".nowrap", prop: "font-size", why: "служебный класс, размер наследуется от текста вокруг" },
   { rule: 3, sig: ".nowrap", prop: "line-height", why: "служебный класс, строка наследуется от текста вокруг" },
   { rule: 3, sig: ".social-link", prop: "height", why: "модификатор списка .social-links--s в служебной строке шапки" },
-  { rule: 3, sig: ".summary__row", prop: "padding", why: "модификатор .summary--compact над шагами записи" },
   { rule: 4, sig: ".check__text a", prop: "tap", why: "ссылка внутри текста: WCAG 2.5.8 не требует для неё 44 px" },
   { rule: 4, sig: ".nowrap", prop: "tap", why: "телефон внутри текста: WCAG 2.5.8 не требует для него 44 px" },
   { rule: 7, sig: /^(width: 1px; height: 1px;|margin: -1px; padding: 0;)$/, why: "приём скрытия текста для экранных дикторов в .visually-hidden, не значение дизайна" }

@@ -27,7 +27,6 @@
   color: var(--color-on-primary);
 }
 .hero__intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
-.hero__intro .badge { white-space: normal; }
 .hero__title {
   max-width: var(--hero-title-measure);
   color: var(--color-on-primary);
@@ -72,8 +71,16 @@
 .home-booking .form-panel { scroll-margin-top: var(--anchor-nav-offset); }
 
 @media (max-width: 1099px) {
+  .home-directions .dcard__title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); }
   .hero { grid-template-columns: minmax(0, 1fr); }
   .hero__aside { display: none; }
+}
+/* Titles of the row stay on one line: room for the longest text of the three cards. */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .home-directions .dcard__text { min-height: calc(4 * var(--text-body-s-line)); }
+}
+@media (min-width: 768px) and (max-width: 899px) {
+  .home-directions .dcard__text { min-height: calc(5 * var(--text-body-s-line)); }
 }
 @media (max-width: 767px) {
   .hero__main { gap: var(--space-6); }
@@ -83,6 +90,3 @@
   .hero__hours { flex-basis: auto; text-align: center; }
   .home-directions { grid-template-columns: minmax(0, 1fr); }
 }
-
-/* Accessibility version with images hidden: the photo card disappears, the offer takes the full width. */
-.a11y[data-a11y-images="off"] .hero { grid-template-columns: minmax(0, 1fr); }

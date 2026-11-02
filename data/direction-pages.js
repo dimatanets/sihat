@@ -18,8 +18,6 @@
     doctorsLead
     documents   { title, meta, type: pdf|doc|xls, href }
     bring       { text, note }
-    (the head «Записаться» opens the scenario of the services, here always a request: answer 4, A-03)
-    formLead    text of the request form at the end
 */
 window.SIHAT_DIRECTION_PAGES = {
   checkup: {
@@ -65,7 +63,6 @@ window.SIHAT_DIRECTION_PAGES = {
       { text: "Список лекарств, которые принимаете" },
       { text: "Удобную одежду, сменную обувь и средства гигиены", note: "Обследование проходит в стационаре" },
       { text: "Прийти натощак", note: "Не есть 8–12 часов, можно пить воду" }
-    ],
-    formLead: "Оставьте заявку на чек-ап: администратор свяжется с вами, поможет выбрать программу, подберёт удобную дату и подтвердит запись."
+    ]
   }
 };

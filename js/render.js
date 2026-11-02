@@ -4,8 +4,8 @@
   the markup of each card is exactly the one shown on kit.html.
 
   Placeholders (attributes on the list element):
-    <ul data-render="directions" data-filter="home|all" [data-heading="h3"] [data-limit="6"] [data-card-mod="dcard--compact-m"]>
-        Direction cards (.dcard); data-card-mod adds modifier classes to each card. "home" = directions with a priority, in priority order (A-21).
+    <ul data-render="directions" data-filter="home|all" [data-heading="h3"] [data-limit="6"]>
+        Direction cards (.dcard); "home" = directions with a priority, in priority order (A-21).
     <ul data-render="doctors" data-filter="home|all|direction:<id>" [data-heading="h3"] [data-limit="8"]>
         Doctor cards (.doctor-card). "home" = doctors with a home position, in that order (A-22).
     <select data-render="direction-options">
@@ -32,6 +32,7 @@
     return '<div class="' + cls + ' media media--placeholder">' + icon(iconName) + "</div>";
   }
 
+  // A-46: photo with a gradient, text on the photo; the arrow is visible on hover and focus only.
   function directionCard(d, h, mod) {
     h = h || "h3";
     return (
@@ -40,23 +41,17 @@
       '<div class="dcard__body">' +
       "<" + h + ' class="dcard__title"><a class="dcard__link" href="' + esc(d.href) + '">' + esc(d.title) + "</a></" + h + ">" +
       '<p class="dcard__text">' + esc(d.text) + "</p>" +
-      '<div class="dcard__foot"><span class="dcard__arrow">' + icon("arrow-up-right") + "</span></div>" +
-      "</div></article>"
+      "</div>" +
+      '<span class="dcard__arrow">' + icon("arrow-up-right") + "</span>" +
+      "</article>"
     );
   }
 
-  // R-3, A-37: nearest free date from data/schedule.js and the price of the primary visit from data/services.js.
-  function doctorNext(d) {
-    var schedule = window.SIHAT_SCHEDULE;
-    if (!schedule) return "";
-    var near = schedule.nearest(d.id);
-    var visit = (window.SIHAT_SERVICES || []).filter(function (s) { return s.booking === "doctor" && s.spec === d.spec; })[0];
-    return (
-      '<p class="doctor-card__next"><span class="doctor-card__next-date">' + icon("calendar") + "<span>" +
-      (near ? "Ближайшая запись: <strong>" + esc(schedule.shortLabel(near)) + "</strong>" : "Запись через администратора") + "</span></span>" +
-      (visit ? '<span class="doctor-card__price"><span class="visually-hidden">Цена приёма: </span>' + Number(visit.price).toLocaleString("ru-RU") + " ₽</span>" : "") +
-      "</p>"
-    );
+  // A-37: price of the primary visit from data/services.js.
+  function doctorPrice(d) {
+    var visit = (window.SIHAT_SERVICES || []).filter(function (s) { return s.spec === d.spec; })[0];
+    if (!visit) return "";
+    return '<p class="doctor-card__price"><span class="visually-hidden">Цена приёма: </span>' + Number(visit.price).toLocaleString("ru-RU") + " ₽</p>";
   }
 
   function doctorCard(d, h, mod) {
@@ -65,18 +60,12 @@
       '<article class="doctor-card' + (mod ? " " + esc(mod) : "") + '">' +
       media("doctor-card__media", d.photo, "user", d.name + ", " + d.spec.toLowerCase()) +
       '<div class="doctor-card__body">' +
-      '<p class="doctor-card__spec">' + esc(d.spec) + "</p>" +
       "<" + h + ' class="doctor-card__name"><a href="' + esc(d.href) + '">' + esc(d.name) + "</a></" + h + ">" +
       (d.role ? '<p class="doctor-card__role">' + esc(d.role) + "</p>" : "") +
-      (d.regalia && d.regalia.length
-        ? '<ul class="doctor-card__facts" aria-label="Квалификация">' +
-          d.regalia.map(function (r) { return '<li class="badge">' + esc(r) + "</li>"; }).join("") + "</ul>"
-        : "") +
       "</div>" +
-      doctorNext(d) +
-      // Booking with this doctor preselected: js/booking.js starts at the date and time step (A-03).
-      '<div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-book data-doctor="' + esc(d.id) + '">' +
-      'Записаться<span class="visually-hidden"> к врачу: ' + esc(d.name) + "</span></button></div>" +
+      '<div class="doctor-card__foot">' + doctorPrice(d) +
+      // «Записаться» leads to the contact form of this page (round 1).
+      '<a class="btn btn--primary btn--s" href="#booking">Записаться<span class="visually-hidden"> к врачу: ' + esc(d.name) + "</span></a></div>" +
       "</article>"
     );
   }

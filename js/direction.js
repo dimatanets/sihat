@@ -5,7 +5,7 @@
 
   Services list (data/services.js, filtered by direction): a plain .service-list. The long list of A-28 (search, chips,
   groups) stays as a component on kit.html; its behaviour was removed with «Анализы», see js/direction.js at tag answers-1.
-  Row button: «Записаться» = [data-book data-service] (js/booking.js). No payment here: only doctor visits are paid (answer 5).
+  Row button: «Записаться» leads to the contact form at the end of the page (round 1).
   JS: Sihat.direction.page (the current entry), Sihat.direction.serviceRow(service, heading).
 */
 (function () {
@@ -48,7 +48,6 @@
   } else {
     headMedia.innerHTML = icon(P.icon);
   }
-  slot("book").setAttribute("data-direction", P.direction);
 
   slot("about").innerHTML = P.about.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
   var inc = slot("includes");
@@ -87,9 +86,9 @@
       (b.note ? '<span class="checklist__note">' + esc(b.note) + "</span>" : "") + "</span></li>";
   }).join("");
 
-  slot("service-options").insertAdjacentHTML("beforeend", services.map(function (s) {
-    return '<option value="' + s.id + '">' + esc(s.title) + "</option>";
-  }).join(""));
+  // A-48: the shared contact form opens with the direction of this page.
+  var option = Array.prototype.filter.call(document.querySelectorAll("#cf-direction option"), function (o) { return o.textContent === P.title; })[0];
+  if (option) option.defaultSelected = option.selected = true;
 
   /* ---- doctors ---- */
   var docs = slot("doctors");
@@ -107,7 +106,7 @@
       '<p class="service-row__code">Код услуги ' + esc(s.code) + "</p></div>" +
       '<p class="service-row__price"><span class="visually-hidden">Цена: </span>' + rub(s.price) + "</p>" +
       '<div class="service-row__actions">' +
-      '<button class="btn btn--primary btn--s" type="button" data-book data-service="' + s.id + '">Записаться<span class="visually-hidden">: ' + esc(s.title) + "</span></button>" +
+      '<a class="btn btn--primary btn--s" href="#booking">Записаться<span class="visually-hidden">: ' + esc(s.title) + "</span></a>" +
       "</div></article></li>"
     );
   }
