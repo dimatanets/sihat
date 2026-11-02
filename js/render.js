@@ -27,8 +27,8 @@
     return '<span class="icon icon--' + name + (extra ? " " + extra : "") + '" aria-hidden="true"></span>';
   }
   // A-07: photo if there is one, otherwise a tinted placeholder with an icon.
-  function media(cls, image, iconName) {
-    if (image) return '<div class="' + cls + ' media"><img src="' + esc(image) + '" alt="" loading="lazy"></div>';
+  function media(cls, image, iconName, alt) {
+    if (image) return '<div class="' + cls + ' media"><img src="' + esc(image) + '" alt="' + esc(alt || "") + '" loading="lazy"></div>';
     return '<div class="' + cls + ' media media--placeholder">' + icon(iconName) + "</div>";
   }
 
@@ -45,11 +45,25 @@
     );
   }
 
+  // R-3, A-37: nearest free date from data/schedule.js and the price of the primary visit from data/services.js.
+  function doctorNext(d) {
+    var schedule = window.SIHAT_SCHEDULE;
+    if (!schedule) return "";
+    var near = schedule.nearest(d.id);
+    var visit = (window.SIHAT_SERVICES || []).filter(function (s) { return s.booking === "doctor" && s.spec === d.spec; })[0];
+    return (
+      '<p class="doctor-card__next"><span class="doctor-card__next-date">' + icon("calendar") + "<span>" +
+      (near ? "Ближайшая запись: <strong>" + esc(schedule.shortLabel(near)) + "</strong>" : "Запись через администратора") + "</span></span>" +
+      (visit ? '<span class="doctor-card__price"><span class="visually-hidden">Цена приёма: </span>' + Number(visit.price).toLocaleString("ru-RU") + " ₽</span>" : "") +
+      "</p>"
+    );
+  }
+
   function doctorCard(d, h, mod) {
     h = h || "h3";
     return (
       '<article class="doctor-card' + (mod ? " " + esc(mod) : "") + '">' +
-      media("doctor-card__media", d.photo, "user") +
+      media("doctor-card__media", d.photo, "user", d.name + ", " + d.spec.toLowerCase()) +
       '<div class="doctor-card__body">' +
       '<p class="doctor-card__spec">' + esc(d.spec) + "</p>" +
       "<" + h + ' class="doctor-card__name"><a href="' + esc(d.href) + '">' + esc(d.name) + "</a></" + h + ">" +
@@ -59,6 +73,7 @@
           d.regalia.map(function (r) { return '<li class="badge">' + esc(r) + "</li>"; }).join("") + "</ul>"
         : "") +
       "</div>" +
+      doctorNext(d) +
       // Booking with this doctor preselected: js/booking.js starts at the date and time step (A-03).
       '<div class="doctor-card__actions"><button class="btn btn--primary btn--s btn--block" type="button" data-book data-doctor="' + esc(d.id) + '">' +
       'Записаться<span class="visually-hidden"> к врачу: ' + esc(d.name) + "</span></button></div>" +

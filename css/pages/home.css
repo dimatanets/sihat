@@ -6,10 +6,10 @@
 
 .home { padding-top: var(--grid-gap); }
 .home-section { margin-top: var(--space-section); }
-/* Headings line up with the text inside the cards, as in РКБ 2.0. */
+/* Headings line up with the text inside the cards. */
 .home-section__head { padding-inline: var(--content-gutter); }
 
-/* ---- Hero: blue card with the offer and actions + photo card (РКБ 2.0, 190:22) ---- */
+/* ---- Hero: blue card with the offer and actions + photo card ---- */
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -57,16 +57,16 @@
 .hero__quick-list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .hero__main :focus-visible { outline-color: var(--color-on-primary); }
 
-/* Photo card. A-07: placeholder until the clinic sends photos. */
+/* Photo card. A-07: photo from rkb-sihat.ru until the clinic sends new ones. */
 .hero__aside { position: relative; min-height: 100%; border-radius: var(--radius-card); }
-.hero__aside > .icon { width: var(--icon-size-l); height: var(--icon-size-l); }
+.media.hero__aside > img { position: absolute; inset: 0; }
 .hero__place { position: absolute; left: var(--space-5); right: var(--space-5); bottom: var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .hero__place .badge { background: var(--color-bg); white-space: normal; }
 .hero__place .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
 
-/* ---- Directions: three cards in a row ---- */
+/* ---- Directions: three priority cards in one row from 768 up (answer 6) ---- */
 .home-directions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--grid-gap); }
-@media (min-width: 768px) { .home-directions .dcard__media { aspect-ratio: var(--card-media-ratio-wide); } }
+.home-directions .dcard__title { font-size: var(--text-h4-size); line-height: var(--text-h4-line); }
 
 /* ---- Contact form ---- */
 .home-booking .form-panel { scroll-margin-top: var(--anchor-nav-offset); }
@@ -74,7 +74,6 @@
 @media (max-width: 1099px) {
   .hero { grid-template-columns: minmax(0, 1fr); }
   .hero__aside { display: none; }
-  .home-directions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 767px) {
   .hero__main { gap: var(--space-6); }

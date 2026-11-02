@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Чек-ап программы — Сихат РКБ (макет)</title>
   <meta name="description" content="Направление платного отделения РКБ «Сихат»: описание, этапы, услуги и цены, врачи, документы, запись.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/icons.css">
@@ -21,7 +22,7 @@
   <a class="skip-link" href="#main">Перейти к содержимому</a>
 
   <!-- Shared header (js/layout.js, A-11) -->
-  <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><span class="logo__mark" aria-hidden="true"></span><span class="logo__text"><span class="logo__name">Сихат</span><span class="logo__sub">Платное отделение РКБ</span></span></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
+  <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><img class="logo__svg" src="assets/img/logo-sihat.svg" alt="Сихат РКБ, на главную" width="161" height="58"></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
 
   <main id="main" class="direction container">
 
@@ -41,7 +42,7 @@
           <ul class="page-head__facts" data-dir-facts aria-label="Коротко о направлении"></ul>
         </div>
         <div class="page-head__actions">
-          <!-- Booking type comes from the services of the direction (A-03): request for check-ups, lab visit for tests -->
+          <!-- The scenario comes from the services of the direction: both built directions open a request (answer 4) -->
           <button class="btn btn--primary" type="button" data-book data-dir-book>Записаться</button>
           <a class="phone-link" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
         </div>
@@ -200,7 +201,7 @@
             <span class="icon icon--circle-check" aria-hidden="true"></span>
             <div>
               <p class="alert__title">Заявка отправлена</p>
-              <p>Администратор свяжется с вами выбранным способом в рабочее время: пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>. Это макет: данные никуда не отправляются.</p>
+              <p>Запись ещё не подтверждена. Администратор свяжется с вами выбранным способом в рабочее время (пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>) и подтвердит её. Это макет: данные никуда не отправляются.</p>
               <p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p>
             </div>
           </div>
@@ -216,6 +217,7 @@
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
   <script src="data/services.js"></script>
+  <script src="data/schedule.js"></script>
   <script src="data/direction-pages.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>

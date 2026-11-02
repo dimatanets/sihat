@@ -13,19 +13,19 @@
 
   Phone mask — <input type="tel" data-phone-mask>: formats to +7 (XXX) XXX-XX-XX.
 
-  Date picker — <div class="datepicker" data-datepicker data-name="date" data-days="60" data-slots-target="slots-id"
-    [data-closed="0,6"] [data-seed="3"]>
-    Renders a month grid (keyboard: arrows, Home/End, PageUp/PageDown). Closed weekdays (data-closed, 0 = Sunday,
-    default "0") and some mock days are unavailable; data-seed varies the mock busy days (e.g. per doctor).
+  Date picker — <div class="datepicker" data-datepicker data-name="date" data-days="45" data-slots-target="slots-id"
+    data-schedule="<doctor id>">
+    Renders a month grid (keyboard: arrows, Home/End, PageUp/PageDown). The schedule comes from data/schedule.js (A-36):
+    closed days cannot be chosen; a day with everything booked is crossed out but can be chosen, the slots then say so.
     Writes ISO date to a hidden input, fires "datepicker:change" {detail: {date, iso, label}}.
-    JS: Sihat.datepicker.init(el), Sihat.datepicker.label(date) → "4 ноября, среда", Sihat.datepicker.iso(date).
+    JS: Sihat.datepicker.init(el) → instance with isOpen(date), goTo(date, keepFocus);
+    Sihat.datepicker.label(date) → "4 ноября, среда", Sihat.datepicker.iso(date).
 
-  Time slots — <fieldset class="slots" id="slots-id" data-slots data-name="time"><legend class="slots__legend">…
-    <div class="slots__list"></div></fieldset>. Radio chips; arrow keys work natively.
-    JS: Sihat.slots.render(fieldset, date) fills mock slots for that date (or a hint when date is null).
-    Options as attributes on the fieldset: data-from="8" data-to="18" hours (Saturday ends two hours earlier),
-    data-step="30" minutes, data-seed="3" varies the busy slots, data-required makes the radios required
-    (validation message "Выберите время").
+  Time slots — <fieldset class="slots" id="slots-id" data-slots data-name="time" data-schedule="<doctor id>">
+    <legend class="slots__legend">…</legend><div class="slots__list"></div></fieldset>. Radio chips; arrow keys work natively.
+    JS: Sihat.slots.render(fieldset, date) fills the slots of that date, a hint when date is null, or «свободного времени
+    нет» with the nearest free date when nothing is free. data-required makes the radios required.
+    A button [data-slots-nearest="<iso date>"][data-slots-for="slots-id"] opens that date in the linked calendar.
 */
 (function () {
   "use strict";
@@ -224,6 +224,7 @@
   /* ------------------------------------------------------------------ date picker */
 
   var MONTHS = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
+  var SCHEDULE = window.SIHAT_SCHEDULE;
   var MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
   var DAYS = ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"];
   var DAYS_SHORT = [["Пн", "понедельник"], ["Вт", "вторник"], ["Ср", "среда"], ["Чт", "четверг"], ["Пт", "пятница"], ["Сб", "суббота"], ["Вс", "воскресенье"]];
@@ -236,19 +237,13 @@
   }
   function label(d) { return d.getDate() + " " + MONTHS_GEN[d.getMonth()] + ", " + DAYS[d.getDay()]; }
 
-  // Mock schedule: closed weekdays (Sunday by default), a few fully booked days.
-  function available(d, closed, seed) {
-    return closed.indexOf(d.getDay()) === -1 && (d.getDate() * 7 + d.getMonth() + seed) % 11 !== 0;
-  }
-
   function Datepicker(el) {
     this.el = el;
     this.today = day(new Date());
     this.min = this.today;
     this.max = addDays(this.today, parseInt(el.getAttribute("data-days"), 10) || 60);
     this.selected = null;
-    this.closed = (el.getAttribute("data-closed") || "0").split(",").map(Number);
-    this.seed = parseInt(el.getAttribute("data-seed"), 10) || 0;
+    this.key = el.getAttribute("data-schedule") || "demo";
     this.input = el.querySelector('input[type="hidden"]');
     if (!this.input) {
       this.input = document.createElement("input");
@@ -266,7 +261,12 @@
     this.render(false);
   }
 
-  Datepicker.prototype.isOpen = function (d) { return d >= this.min && d <= this.max && available(d, this.closed, this.seed); };
+  Datepicker.prototype.isOpen = function (d) { return d >= this.min && d <= this.max && !SCHEDULE.isClosed(d); };
+  Datepicker.prototype.isFull = function (d) { return this.isOpen(d) && !SCHEDULE.freeCount(this.key, d); };
+  Datepicker.prototype.goTo = function (d, keepFocus) {
+    this.view = new Date(d.getFullYear(), d.getMonth(), 1);
+    this.select(d, keepFocus);
+  };
   Datepicker.prototype.firstAvailable = function (from, step) {
     var d = from;
     for (var i = 0; i < 400; i++) {
@@ -298,17 +298,18 @@
     for (var dnum = 1; dnum <= daysIn; dnum++) {
       var d = new Date(y, m, dnum);
       var open = this.isOpen(d);
+      var full = open && this.isFull(d);
       var focusable = same(d, this.focusDate);
-      h += '<td><button class="datepicker__day" type="button" data-dp-date="' + iso(d) + '"' +
+      h += '<td><button class="datepicker__day' + (full ? " datepicker__day--full" : "") + '" type="button" data-dp-date="' + iso(d) + '"' +
         ' tabindex="' + (focusable ? "0" : "-1") + '"' +
-        ' aria-label="' + label(d) + (open ? "" : ", записи нет") + '"' +
+        ' aria-label="' + label(d) + (open ? (full ? ", всё время занято" : "") : ", приёма нет") + '"' +
         ' aria-pressed="' + (same(d, this.selected) ? "true" : "false") + '"' +
         (same(d, this.today) ? ' aria-current="date"' : "") +
         (open ? "" : " disabled") + ">" + dnum + "</button></td>";
       if ((offset + dnum) % 7 === 0 && dnum !== daysIn) h += "</tr><tr>";
     }
     h += "</tr></tbody></table>" +
-      '<p class="datepicker__legend">Зачёркнуты дни без свободного времени. ' + this.closedText() + "</p>";
+      '<p class="datepicker__legend">Зачёркнуты дни, когда всё время занято. Выходной: воскресенье.</p>';
     this.box.innerHTML = h;
     // If the focus date is not in this month, let the first open day take the tab stop.
     if (!this.box.querySelector('.datepicker__day[tabindex="0"]')) {
@@ -319,12 +320,6 @@
       var f = this.box.querySelector('.datepicker__day[tabindex="0"]');
       if (f) f.focus();
     }
-  };
-
-  Datepicker.prototype.closedText = function () {
-    var names = this.closed.map(function (n) { return DAYS[n]; });
-    if (!names.length) return "";
-    return (names.length > 1 ? "Выходные: " : "Выходной: ") + names.join(" и ") + ".";
   };
 
   Datepicker.prototype.parse = function (s) {
@@ -396,31 +391,40 @@
         list.innerHTML = '<p class="slots__empty">Сначала выберите дату</p>';
         return;
       }
-      var from = parseInt(fieldset.getAttribute("data-from"), 10) || 8;
-      var to = parseInt(fieldset.getAttribute("data-to"), 10) || 18;
-      if (date.getDay() === 6) to -= 2; // Saturday until 16:00
-      var stepMin = parseInt(fieldset.getAttribute("data-step"), 10) || 30;
-      var seed = parseInt(fieldset.getAttribute("data-seed"), 10) || 0;
+      var key = fieldset.getAttribute("data-schedule") || "demo";
+      var times = SCHEDULE.times(key, date);
+      // A-36: nothing free on this day: say so and offer the nearest free date
+      if (!times.some(function (t) { return t.free; })) {
+        var near = SCHEDULE.nearest(key, date);
+        list.innerHTML = '<div class="slots__none" role="status"><p class="slots__none-title">На ' + date.getDate() + " " + MONTHS_GEN[date.getMonth()] + " свободного времени нет</p>" +
+          (near
+            ? "<p>Ближайшая свободная дата: " + label(near) + '.</p><button class="btn btn--secondary btn--s" type="button" data-slots-nearest="' + iso(near) + '" data-slots-for="' + fieldset.id + '">Показать ' + near.getDate() + " " + MONTHS_GEN[near.getMonth()] + "</button>"
+            : "<p>В ближайшие недели свободного времени нет.</p>") + "</div>";
+        return;
+      }
       var req = fieldset.hasAttribute("data-required") ? ' required data-msg-required="Выберите время"' : "";
       var h = "";
-      var i = 0;
-      // A-34: on today the times that have already passed cannot be chosen
-      var now = new Date();
-      var isToday = date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
-      var nowMin = now.getHours() * 60 + now.getMinutes();
-      for (var m = from * 60; m < to * 60; m += stepMin) {
-        var t = Math.floor(m / 60) + ":" + String(m % 60).padStart(2, "0");
-        var past = isToday && m <= nowMin;
-        var busy = past || (date.getDate() * 13 + i * 7 + seed) % 10 < 3; // about 30% booked
+      times.forEach(function (t, i) {
         var id = fieldset.id + "-" + i;
         h += '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="' + name +
-          '" value="' + t + '"' + (busy ? " disabled" : "") + req + '><span class="slot__text">' + t +
-          (busy ? '<span class="visually-hidden">' + (past ? ", время прошло" : ", занято") + "</span>" : "") + "</span></label>";
-        i++;
-      }
+          '" value="' + t.time + '"' + (t.free ? "" : " disabled") + req + '><span class="slot__text">' + t.time +
+          (t.free ? "" : '<span class="visually-hidden">' + (t.past ? ", время прошло" : ", занято") + "</span>") + "</span></label>";
+      });
       list.innerHTML = h;
     }
   };
+
+  // «Показать 12 ноября»: open the date in the calendar linked to these slots and move focus to the first free time.
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest && e.target.closest("[data-slots-nearest]");
+    if (!btn) return;
+    var fs = document.getElementById(btn.getAttribute("data-slots-for"));
+    var el = fs && document.querySelector('[data-slots-target="' + fs.id + '"]');
+    if (!el || !el._dp) return;
+    el._dp.goTo(el._dp.parse(btn.getAttribute("data-slots-nearest")), false);
+    var first = fs.querySelector(".slot__input:not(:disabled)");
+    if (first) first.focus();
+  });
 
   function init() {
     Array.prototype.forEach.call(document.querySelectorAll("[data-datepicker]"), window.Sihat.datepicker.init);

@@ -11,8 +11,8 @@
     href      string   link in the prototype; "#" for pages that are not built yet (A-13). The two built directions
                      open the one template direction.html with ?d=checkup / ?d=analyses (A-02)
     icon      string   Tabler icon name for the photo placeholder (A-07)
-    image     string|null  photo path; null until photos arrive (A-07)
-    priority  number|null  position on the home page; null = not on the home page (A-21)
+    image     string|null  image path, a local copy of the illustration on the current site (A-07); null = placeholder
+    priority  number|null  position on the home page; null = not on the home page (answer 6, A-21)
 */
 window.SIHAT_DIRECTIONS = [
   {
@@ -22,8 +22,8 @@ window.SIHAT_DIRECTIONS = [
     slug: "vedenie-beremennosti-i-rody",
     href: "#",
     icon: "baby-carriage",
-    image: null,
-    priority: 1
+    image: "assets/img/directions/rody.jpg",
+    priority: 2
   },
   {
     id: "chek-ap",
@@ -32,8 +32,8 @@ window.SIHAT_DIRECTIONS = [
     slug: "chek-ap-programmy",
     href: "direction.html?d=checkup",
     icon: "clipboard-heart",
-    image: null,
-    priority: 2
+    image: "assets/img/directions/chek-ap.jpg",
+    priority: 1
   },
   {
     id: "khirurgiya",
@@ -42,7 +42,7 @@ window.SIHAT_DIRECTIONS = [
     slug: "obshchaya-khirurgiya",
     href: "#",
     icon: "first-aid-kit",
-    image: null,
+    image: "assets/img/directions/khirurgiya.jpg",
     priority: 3
   },
   {
@@ -53,7 +53,7 @@ window.SIHAT_DIRECTIONS = [
     href: "#",
     icon: "stethoscope",
     image: null,
-    priority: 4
+    priority: null
   },
   {
     id: "diagnostika",
@@ -63,7 +63,7 @@ window.SIHAT_DIRECTIONS = [
     href: "#",
     icon: "heart-rate-monitor",
     image: null,
-    priority: 5
+    priority: null
   },
   {
     id: "analizy",
@@ -72,8 +72,8 @@ window.SIHAT_DIRECTIONS = [
     slug: "laboratornye-issledovaniya",
     href: "direction.html?d=analyses",
     icon: "test-pipe",
-    image: null,
-    priority: 6
+    image: "assets/img/directions/analizy.jpg",
+    priority: null
   },
   {
     id: "bariatriya",

@@ -1,55 +1,73 @@
 /*
   Design tokens. The only file that may contain raw colors, fonts, sizes and radii.
-  Source: РКБ 2.0, Figma b1Lx2dWbxpkNECsxljEZej, section "update 27.10" (home 190:22 desktop, 190:1560 mobile,
-  mobile menu 190:4425).
-  Values marked "estimate" were not found in Figma and must be confirmed (see docs/research.md).
-  A-01: Сихат is a sub-brand of РКБ 2.0, so the tokens are shared; a separate brand changes only this file.
+  Source: identity of the current site rkb-sihat.ru (client answer 1, docs/review-client-answers-1.md, section 3).
+  Values marked "estimate" were chosen for this design and must be confirmed.
+  A-35: Montserrat stands in for Gotham, the font of the current site. Files and license are in assets/fonts.
   A-08: the accessibility version only overrides tokens (see the bottom of this file).
 */
 
+/* Variable font, weights 100-900; the subsets load only when the page needs them, no external requests. */
+@font-face { font-family: "Montserrat"; src: url("../assets/fonts/montserrat-cyrillic.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+/* Tatar letters for the future language version (A-09). */
+@font-face { font-family: "Montserrat"; src: url("../assets/fonts/montserrat-cyrillic-ext.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+@font-face { font-family: "Montserrat"; src: url("../assets/fonts/montserrat-latin.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+/* Latin Extended holds the ruble sign. */
+@font-face { font-family: "Montserrat"; src: url("../assets/fonts/montserrat-latin-ext.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+
 :root {
-  /* ---- Color: brand ---- */
-  --color-primary: #1e6bd0;
-  --color-primary-hover: #1a5cb3;          /* estimate: primary darkened */
-  --color-primary-active: #154c95;         /* estimate */
-  --color-primary-tint: #dbe7f7;           /* "Меню" button background */
-  --color-primary-tint-hover: #c7daf3;     /* estimate */
-  --color-on-tint: var(--color-primary-active); /* A-33: text on tinted surfaces; primary itself is 4.1:1 on the tint, below AA */
+  /* ---- Color: brand. Blue from the blocks of rkb-sihat.ru: white text is 6.3:1, the logo blue is only 4.8:1 ---- */
+  --color-primary: #126598;
+  --color-primary-hover: #065688;
+  --color-primary-active: #064165;
+  --color-primary-tint: #e4f1f8;           /* estimate */
+  --color-primary-tint-hover: #d2e7f3;     /* estimate */
+  --color-on-tint: var(--color-primary-active); /* A-33: text on tinted surfaces */
   --color-on-primary: #ffffff;
-  --color-on-primary-muted: rgba(255, 255, 255, 0.92); /* estimate: raised from 0.72 in Figma to pass WCAG AA on primary */
+  --color-on-primary-muted: rgba(255, 255, 255, 0.92); /* estimate: secondary text on the blue blocks, passes AA */
   --color-on-primary-subtle: rgba(255, 255, 255, 0.16);
   --color-on-primary-line: rgba(255, 255, 255, 0.32);  /* dividers in the blue mobile menu */
-  --color-panel-on-primary: rgba(15, 23, 42, 0.24);    /* darker card inside the blue menu (190:4425) */
+  --color-panel-on-primary: rgba(0, 41, 66, 0.4);      /* darker card inside the blue blocks */
+
+  /* Main action: green as «Записаться» on rkb-sihat.ru, darkened from #2d8925 (4.45:1) to pass AA (A-35). */
+  --color-cta: #2a8023;
+  --color-cta-hover: #236c1d;
+  --color-cta-active: #1c5817;
+  --color-on-cta: #ffffff;
+  --color-accent: #2a8023;                 /* small green text and marks, AA on white and on the surface */
+
+  /* Logo: exact colors of the original file, not used for interface text. */
+  --color-logo-main: #0577bd;
+  --color-logo-accent: #56a64f;
 
   /* ---- Color: text ---- */
-  --color-text: #010101;
-  --color-heading: #0f172a;
-  --color-text-muted: #475569;
+  --color-text: #0a3149;
+  --color-heading: #00395b;
+  --color-text-muted: #4a6272;
   --color-link: var(--color-primary);
-  --color-disabled-text: #64748b;          /* estimate: AA on --color-disabled-bg for 16px medium */
-  --color-disabled-bg: #e2e8f0;
+  --color-disabled-text: #5c7181;          /* estimate: AA on --color-disabled-bg */
+  --color-disabled-bg: #e4e9ed;
 
   /* ---- Color: surfaces and lines ---- */
   --color-bg: #ffffff;
-  --color-surface: #f1f5f9;                /* review cards */
-  --color-surface-hover: #e7edf3;          /* estimate */
-  --color-surface-alt: #e2e8f0;            /* dividers, input lines */
-  --color-border: rgba(15, 23, 42, 0.12);  /* outlined buttons, news cards */
-  --color-border-strong: rgba(15, 23, 42, 0.32); /* estimate: input borders (3:1 non-text contrast) */
+  --color-surface: #f2f4f7;
+  --color-surface-hover: #e8ecf1;          /* estimate */
+  --color-surface-alt: #e1e6eb;            /* dividers, input lines */
+  --color-border: rgba(0, 57, 91, 0.14);   /* outlined buttons, cards */
+  --color-border-strong: rgba(0, 57, 91, 0.56); /* estimate: input borders (3:1 non-text contrast) */
   --color-overlay-start: rgba(0, 0, 0, 0);
   --color-overlay-end: rgba(0, 0, 0, 0.64);/* gradient over photos */
-  --color-overlay-heading-end: #0f172a;    /* gradient over the doctor card photo */
-  --color-backdrop: rgba(15, 23, 42, 0.56);/* estimate: modal backdrop */
-  --color-media-placeholder: #dbe7f7;      /* image placeholder until real photos arrive (A-07) */
-  --color-media-placeholder-icon: #1e6bd0;
+  --color-overlay-heading-end: #00395b;    /* gradient over the doctor card photo */
+  --color-backdrop: rgba(0, 41, 66, 0.56); /* estimate: modal backdrop */
+  --color-media-placeholder: #e4f1f8;      /* image placeholder until real photos arrive (A-07) */
+  --color-media-placeholder-icon: #126598;
 
   /* ---- Color: states ---- */
-  --color-focus: #1e6bd0;
-  --color-focus-ring: rgba(30, 107, 208, 0.32);
-  --color-error: #c62828;                  /* estimate: no error state in Figma */
+  --color-focus: #126598;
+  --color-focus-ring: rgba(18, 101, 152, 0.32);
+  --color-error: #c62828;                  /* estimate */
   --color-error-tint: #fdecea;             /* estimate */
-  --color-success: #2e7d32;                /* estimate: no success state in Figma */
-  --color-success-tint: #e8f5e9;           /* estimate */
+  --color-success: #236c1d;                /* darker than the green button: AA as text on the success tint */
+  --color-success-tint: #e8f4e6;           /* estimate */
 
   /* ---- Color: accessibility panel samples (A-08). Each button previews its scheme. ---- */
   --a11y-white-bg: #ffffff;  --a11y-white-fg: #000000;
@@ -57,44 +75,42 @@
   --a11y-blue-bg: #9dd1ff;   --a11y-blue-fg: #063462;
 
   /* ---- Typography: family ---- */
-  /* Gilroy is used in Figma; the font files are not in the repo yet, so fall back to system fonts. */
-  --font-family-base: "Gilroy", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-family-base: "Montserrat", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* ---- Typography: scale (desktop 1440) ----
+  /* ---- Typography: scale (desktop 1440), estimate: Montserrat is wider than the previous font, so a step smaller ----
      --font-scale is 1 normally; the accessibility version raises it (A-08). */
   --font-scale: 1;
-  --text-display-size: calc(56px * var(--font-scale));  --text-display-line: calc(64px * var(--font-scale));  --text-display-weight: var(--font-weight-bold);
-  --text-h1-size: calc(56px * var(--font-scale));       --text-h1-line: calc(64px * var(--font-scale));       --text-h1-weight: var(--font-weight-bold);
-  --text-h2-size: calc(40px * var(--font-scale));       --text-h2-line: calc(48px * var(--font-scale));       --text-h2-weight: var(--font-weight-bold);   --text-h2-tracking: -0.4px;
-  --text-h3-size: calc(32px * var(--font-scale));       --text-h3-line: calc(40px * var(--font-scale));       --text-h3-weight: var(--font-weight-bold);
-  --text-h4-size: calc(24px * var(--font-scale));       --text-h4-line: calc(32px * var(--font-scale));       --text-h4-weight: var(--font-weight-bold);   --text-h4-tracking: -0.24px;
-  --text-h5-size: calc(20px * var(--font-scale));       --text-h5-line: calc(28px * var(--font-scale));       --text-h5-weight: var(--font-weight-semibold); /* estimate: card titles */
-  --text-lead-size: calc(20px * var(--font-scale));     --text-lead-line: calc(28px * var(--font-scale));
-  --text-body-l-size: calc(18px * var(--font-scale));   --text-body-l-line: calc(26px * var(--font-scale));
+  --text-display-size: calc(48px * var(--font-scale));  --text-display-line: calc(56px * var(--font-scale));  --text-display-weight: var(--font-weight-bold);
+  --text-h1-size: calc(44px * var(--font-scale));       --text-h1-line: calc(52px * var(--font-scale));       --text-h1-weight: var(--font-weight-bold);
+  --text-h2-size: calc(36px * var(--font-scale));       --text-h2-line: calc(44px * var(--font-scale));       --text-h2-weight: var(--font-weight-bold);   --text-h2-tracking: -0.36px;
+  --text-h3-size: calc(28px * var(--font-scale));       --text-h3-line: calc(36px * var(--font-scale));       --text-h3-weight: var(--font-weight-bold);
+  --text-h4-size: calc(22px * var(--font-scale));       --text-h4-line: calc(30px * var(--font-scale));       --text-h4-weight: var(--font-weight-bold);   --text-h4-tracking: -0.22px;
+  --text-h5-size: calc(18px * var(--font-scale));       --text-h5-line: calc(26px * var(--font-scale));       --text-h5-weight: var(--font-weight-semibold);
+  --text-lead-size: calc(18px * var(--font-scale));     --text-lead-line: calc(28px * var(--font-scale));
+  --text-body-l-size: calc(17px * var(--font-scale));   --text-body-l-line: calc(26px * var(--font-scale));
   --text-body-size: calc(16px * var(--font-scale));     --text-body-line: calc(24px * var(--font-scale));
   --text-body-s-size: calc(14px * var(--font-scale));   --text-body-s-line: calc(22px * var(--font-scale));
   --text-caption-size: calc(12px * var(--font-scale));  --text-caption-line: calc(20px * var(--font-scale));
-  --text-label-size: calc(12px * var(--font-scale));    --text-label-line: calc(20px * var(--font-scale));   --text-label-weight: var(--font-weight-medium);  --text-label-transform: uppercase;  --text-label-tracking: 0.04em;
-  --text-button-size: calc(16px * var(--font-scale));   --text-button-line: calc(22px * var(--font-scale));  --text-button-weight: var(--font-weight-medium);
+  --text-label-size: calc(12px * var(--font-scale));    --text-label-line: calc(20px * var(--font-scale));   --text-label-weight: var(--font-weight-semibold);  --text-label-transform: uppercase;  --text-label-tracking: 0.04em;
+  --text-button-size: calc(15px * var(--font-scale));   --text-button-line: calc(22px * var(--font-scale));  --text-button-weight: var(--font-weight-semibold);
   --text-button-s-size: calc(14px * var(--font-scale)); --text-button-s-line: calc(22px * var(--font-scale));
-  --text-price-size: calc(20px * var(--font-scale));    --text-price-line: calc(28px * var(--font-scale));   --text-price-weight: var(--font-weight-bold); /* estimate */
-  --text-menu-size: calc(18px * var(--font-scale));     --text-menu-line: calc(26px * var(--font-scale));    /* mobile menu links, 190:4425 */
-  --text-logo-size: calc(20px * var(--font-scale));     --text-logo-line: calc(22px * var(--font-scale));    /* estimate: placeholder wordmark */
-  --text-step-number-size: calc(32px * var(--font-scale)); /* estimate */
+  --text-price-size: calc(20px * var(--font-scale));    --text-price-line: calc(28px * var(--font-scale));   --text-price-weight: var(--font-weight-bold);
+  --text-menu-size: calc(18px * var(--font-scale));     --text-menu-line: calc(26px * var(--font-scale));    /* mobile menu links */
+  --text-step-number-size: calc(32px * var(--font-scale));
 
-  /* ---- Radii ---- */
-  --radius-card: 24px;
-  --radius-panel: 16px;       /* estimate: inner panels, mobile menu cards */
+  /* ---- Radii: small cards and pill buttons, as on rkb-sihat.ru (estimate) ---- */
+  --radius-card: 16px;
+  --radius-panel: 12px;       /* inner panels, mobile menu cards */
   --radius-input: 8px;
-  --radius-image: 8px;        /* small thumbnails (news list) */
+  --radius-image: 8px;
   --radius-pill: 1000px;      /* buttons, chips */
   --radius-circle: 50%;
-  --radius-check: 4px;        /* estimate: checkbox */
-  --radius-tag: 2px;          /* estimate: smallest radius found in Figma */
+  --radius-check: 4px;
+  --radius-tag: 2px;
 
   /* ---- Borders ---- */
   --border-width: 1px;
@@ -103,7 +119,7 @@
   --focus-offset: 2px;
   --focus-ring-width: 4px;
 
-  /* ---- Spacing (4px base; 12/24 are the page rhythm in Figma) ---- */
+  /* ---- Spacing (4px base; 12/24 are the page rhythm) ---- */
   --space-0: 2px;
   --space-1: 4px;
   --space-2: 8px;
@@ -118,13 +134,13 @@
 
   /* ---- Layout / grid ---- */
   --container-max: 1440px;
-  --page-gutter: 12px;        /* page margin in both Figma frames */
+  --page-gutter: 12px;        /* page margin */
   --content-gutter: 24px;     /* estimate: inner padding of header/footer rows on desktop */
-  --grid-gap: 12px;           /* gap between hero/tile cards in Figma */
+  --grid-gap: 12px;           /* gap between hero/tile cards */
   --grid-columns: 12;
   --text-measure: 720px;      /* estimate: max width of running text */
   --header-top-height: 40px;  /* estimate: utility row (address, languages, accessibility) */
-  --header-height: 80px;      /* estimate: Figma bar is 96px with three phone blocks; one phone here */
+  --header-height: 80px;      /* estimate */
   --header-height-m: 64px;    /* estimate: mobile bar */
   --control-height: 56px;     /* primary buttons, circular arrows */
   --control-height-s: 48px;   /* "Меню" button, input */
@@ -132,7 +148,7 @@
   --control-height-xs: var(--tap-target); /* compact bar buttons and chips (was 40px, raised for touch (A-32)) */
   --check-size: 20px;         /* estimate: checkbox box */
   --textarea-min-height: 128px; /* estimate */
-  --badge-height: 28px;       /* estimate: chips like "Новости РКБ" in Figma */
+  --badge-height: 28px;       /* estimate */
   --phone-icon-box: 40px;     /* estimate: tinted circle next to the header phone */
   --footer-brand-width: 320px;/* estimate */
   --card-col-min: 280px;      /* estimate: card grids wrap to fewer columns below this */
@@ -141,12 +157,11 @@
   --icon-size: 24px;
   --icon-size-s: 20px;
   --icon-size-l: 32px;
-  --logo-mark-size: 44px;     /* estimate: placeholder logo mark */
-  --logo-mark-size-m: 32px;
-  --card-media-ratio: 4 / 3;  /* estimate: direction card photo */
-  --card-media-ratio-wide: 16 / 9; /* estimate: lower photo when six cards sit in a three-column grid (home) */
+  --logo-width: 128px;        /* estimate: original 161×58 on rkb-sihat.ru */
+  --logo-width-m: 100px;
+  --card-media-ratio: 3 / 2;  /* direction card image: the illustrations of rkb-sihat.ru are 3:2 */
   --card-thumb-m: 72px;       /* estimate: photo of a compact direction card on phones */
-  --doctor-media-ratio: 1 / 1;/* estimate: doctor card photo */
+  --doctor-media-ratio: 5 / 6;/* doctor card photo, as in the catalogue of rkb-sihat.ru */
   --slot-min-width: 88px;     /* estimate: time chip */
   --datepicker-cell: 44px;    /* estimate: day cell, also the minimum touch target */
   --datepicker-width: 360px;  /* estimate */
@@ -156,7 +171,8 @@
   --flow-bar-height: 4px;     /* estimate: progress bar of the booking flow */
   --option-media: 56px;       /* estimate: doctor photo in an option card */
   --option-media-m: 44px;
-  --summary-term-width: 140px;/* estimate: label column of the booking summary */
+  --summary-term-width: 160px;/* estimate: label column of the booking summary */
+  --service-code-width: 120px;/* estimate: code column of the long price list */
   --result-icon-box: 64px;    /* estimate: success icon circle */
   --page-head-media-width: 400px; /* estimate: photo column of the direction page head */
   --about-aside-width: 400px; /* estimate: «Программа включает» column next to the description */
@@ -166,9 +182,9 @@
   --doc-icon-box: 48px;       /* estimate: document row icon box */
   --anchor-nav-offset: 96px;  /* estimate: scroll offset for sticky header + anchor bar */
   --anchor-nav-height: calc(var(--control-height-xs) + 2 * var(--space-2)); /* sticky anchor bar: chip + padding */
-  --hero-min-height: 560px;   /* estimate: home hero card, close to the 540px hero in РКБ 2.0 (190:22) */
+  --hero-min-height: 520px;   /* estimate: home hero card */
   --hero-padding: 48px;       /* estimate: inner padding of the hero and the form panel on desktop */
-  --hero-title-measure: 14em; /* estimate: hero heading wraps into about three lines */
+  --hero-title-measure: 15em; /* estimate: hero heading wraps into about three lines */
   --scroller-per-view: 4;     /* estimate: cards visible in a horizontal row (doctors) */
   --form-panel-text-width: 480px; /* estimate: text column of the blue form panel */
 
@@ -178,12 +194,12 @@
   --z-skip: 200;
 
   /* ---- Shadows / effects ---- */
-  /* Figma has no box-shadows; elevation is done with borders. Kept as tokens for components. */
+  /* Elevation is done with borders; kept as tokens for components. */
   --shadow-none: none;
-  --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.12);   /* estimate: uses the Figma border/shadow color */
-  --shadow-header: 0 1px 0 rgba(15, 23, 42, 0.12);     /* estimate: sticky header separator */
-  --shadow-modal: 0 24px 64px rgba(15, 23, 42, 0.24);  /* estimate */
-  --shadow-primary: 0 8px 24px rgba(30, 107, 208, 0.3);/* estimate: from the blue glow color in Figma */
+  --shadow-card: 0 8px 24px rgba(0, 57, 91, 0.12);     /* estimate */
+  --shadow-header: 0 1px 0 rgba(0, 57, 91, 0.14);      /* estimate: sticky header separator */
+  --shadow-modal: 0 24px 64px rgba(0, 57, 91, 0.24);   /* estimate */
+  --shadow-primary: 0 8px 24px rgba(18, 101, 152, 0.3);/* estimate */
   --blur-glass: 16px;         /* chips over photos */
 
   /* ---- Motion ---- */
@@ -202,17 +218,16 @@
   }
 }
 
-/* ---- Mobile 360 overrides: estimate, Figma mobile frame shows smaller headings ---- */
+/* ---- Mobile 360 overrides: estimate ---- */
 @media (max-width: 767px) {
   :root {
-    --text-display-size: calc(32px * var(--font-scale));  --text-display-line: calc(40px * var(--font-scale));
-    --text-h1-size: calc(32px * var(--font-scale));       --text-h1-line: calc(40px * var(--font-scale));
-    --text-h2-size: calc(28px * var(--font-scale));       --text-h2-line: calc(36px * var(--font-scale));
-    --text-h3-size: calc(24px * var(--font-scale));       --text-h3-line: calc(32px * var(--font-scale));
-    --text-h4-size: calc(20px * var(--font-scale));       --text-h4-line: calc(28px * var(--font-scale));
-    --text-h5-size: calc(18px * var(--font-scale));       --text-h5-line: calc(26px * var(--font-scale));
-    --text-lead-size: calc(18px * var(--font-scale));     --text-lead-line: calc(26px * var(--font-scale));
-    --text-logo-size: calc(18px * var(--font-scale));     --text-logo-line: calc(20px * var(--font-scale));
+    --text-display-size: calc(28px * var(--font-scale));  --text-display-line: calc(36px * var(--font-scale));
+    --text-h1-size: calc(28px * var(--font-scale));       --text-h1-line: calc(36px * var(--font-scale));
+    --text-h2-size: calc(24px * var(--font-scale));       --text-h2-line: calc(32px * var(--font-scale));
+    --text-h3-size: calc(22px * var(--font-scale));       --text-h3-line: calc(30px * var(--font-scale));
+    --text-h4-size: calc(19px * var(--font-scale));       --text-h4-line: calc(27px * var(--font-scale));
+    --text-h5-size: calc(17px * var(--font-scale));       --text-h5-line: calc(24px * var(--font-scale));
+    --text-lead-size: calc(16px * var(--font-scale));     --text-lead-line: calc(24px * var(--font-scale));
     --text-step-number-size: calc(24px * var(--font-scale));
     --space-section: 64px;
     --content-gutter: 12px;
@@ -236,6 +251,14 @@
   --shadow-header: 0 2px 0 var(--color-text);
   --focus-width: 3px;
   --border-width: 2px;
+  /* The schemes below define only the primary colors; green and the logo colors follow them. */
+  --color-cta: var(--color-primary);
+  --color-cta-hover: var(--color-primary-hover);
+  --color-cta-active: var(--color-primary-active);
+  --color-on-cta: var(--color-on-primary);
+  --color-accent: var(--color-primary);
+  --color-logo-main: var(--color-heading);
+  --color-logo-accent: var(--color-heading);
 }
 :root.a11y[data-a11y-size="2"] { --font-scale: 1.5; }
 :root.a11y[data-a11y-size="3"] { --font-scale: 1.75; }

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Сихат — платное отделение РКБ, Казань (макет)</title>
   <meta name="description" content="Платные медицинские услуги Республиканской клинической больницы: консультации врачей, чек-апы, диагностика, хирургия и роды. Запись на приём.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/icons.css">
@@ -16,7 +17,7 @@
   <a class="skip-link" href="#main">Перейти к содержимому</a>
 
   <!-- Shared header (js/layout.js, A-11) -->
-  <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><span class="logo__mark" aria-hidden="true"></span><span class="logo__text"><span class="logo__name">Сихат</span><span class="logo__sub">Платное отделение РКБ</span></span></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
+  <div data-include="header"><noscript><div class="site-header__inner container"><a class="logo" href="index.html"><img class="logo__svg" src="assets/img/logo-sihat.svg" alt="Сихат РКБ, на главную" width="161" height="58"></a><a class="phone-link" href="tel:+78432312090"><span class="phone-link__number">+7 (843) 231-20-90</span></a></div></noscript></div>
 
   <main id="main" class="home container">
 
@@ -25,7 +26,7 @@
       <div class="hero__main">
         <div class="hero__intro">
           <span class="badge badge--glass">Платное отделение РКБ · Казань</span>
-          <h1 class="hero__title" id="hero-title">Забота о здоровье с врачами клиники экспертного уровня</h1>
+          <h1 class="hero__title" id="hero-title">Забота о здоровье с&nbsp;врачами клиники экспертного уровня</h1>
           <p class="hero__lead">Платные медицинские услуги Республиканской клинической больницы Татарстана: консультации врачей, чек-апы, диагностика, хирургия и роды.</p>
           <div class="hero__actions">
             <!-- A-23: opens the booking flow (js/booking.js); without JS the link still leads to the form below. -->
@@ -36,25 +37,22 @@
         </div>
         <nav class="hero__quick" aria-labelledby="hero-quick-title">
           <p class="hero__quick-title" id="hero-quick-title">Популярные направления</p>
-          <!-- A-21: same set and order as the directions section below -->
+          <!-- Answer 6: same set and order as the directions section below -->
           <ul class="hero__quick-list">
-            <li><a class="btn btn--inverse-outline btn--xs" href="#">Роды</a></li>
             <li><a class="btn btn--inverse-outline btn--xs" href="direction.html?d=checkup">Чек-ап программы</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#">Роды</a></li>
             <li><a class="btn btn--inverse-outline btn--xs" href="#">Хирургия</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="#">Консультации врачей</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="#">Диагностика</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html?d=analyses">Анализы</a></li>
           </ul>
         </nav>
       </div>
-      <!-- A-07: photo of the clinic goes here; placeholder until photos arrive -->
-      <div class="hero__aside media media--placeholder" role="img" aria-label="Здесь будет фото клиники">
-        <span class="icon icon--building-hospital" aria-hidden="true"></span>
+      <!-- A-07: photo from the current site, until the clinic sends new ones -->
+      <div class="hero__aside media">
+        <img src="assets/img/hero-clinic.jpg" alt="Хирурги РКБ в операционной" width="1200" height="800">
         <p class="hero__place"><span class="badge"><span class="icon icon--map-pin" aria-hidden="true"></span>Казань, Оренбургский тракт, 138</span></p>
       </div>
     </section>
 
-    <!-- 2. Priority directions (A-21) -->
+    <!-- 2. Priority directions (answer 6, A-21) -->
     <section class="home-section" id="directions" aria-labelledby="directions-title">
       <div class="section-head home-section__head">
         <div class="section-head__text">
@@ -64,16 +62,16 @@
         </div>
         <a class="link-arrow" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
       </div>
-      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="6" data-card-mod="dcard--compact-m"></ul>
+      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="3" data-card-mod="dcard--compact-m"></ul>
     </section>
 
-    <!-- 3. Doctors (A-22) -->
+    <!-- 3. Doctors: the first of the catalogue on the current site (answer 7, A-22) -->
     <section class="home-section" id="doctors" aria-labelledby="doctors-title">
       <div class="section-head home-section__head">
         <div class="section-head__text">
           <p class="section-head__eyebrow">Специалисты</p>
           <h2 id="doctors-title">Врачи</h2>
-          <p class="section-head__lead">Заведующие отделениями и ведущие специалисты Республиканской клинической больницы.</p>
+          <p class="section-head__lead">Заведующие отделениями и ведущие специалисты Республиканской клинической больницы. Выберите врача, удобный день и время: приём подтвердит администратор.</p>
         </div>
         <div class="section-head__actions">
           <a class="link-arrow" href="#">Все врачи<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
@@ -93,7 +91,7 @@
       <div class="form-panel" id="booking">
         <div class="form-panel__text">
           <h2 class="form-panel__title" id="booking-title">Записаться на приём</h2>
-          <p class="form-panel__lead">Оставьте заявку — администратор свяжется с вами удобным способом, поможет выбрать врача и время приёма.</p>
+          <p class="form-panel__lead">Оставьте заявку: администратор свяжется с вами удобным способом, поможет выбрать врача и время приёма и подтвердит запись.</p>
           <div class="form-panel__contacts">
             <a class="phone-link phone-link--inverse" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__label">Или позвоните</span><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
           </div>
@@ -143,7 +141,7 @@
             <span class="icon icon--circle-check" aria-hidden="true"></span>
             <div>
               <p class="alert__title">Заявка отправлена</p>
-              <p>Администратор свяжется с вами выбранным способом в рабочее время: пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>. Это макет: данные никуда не отправляются.</p>
+              <p>Запись ещё не подтверждена. Администратор свяжется с вами выбранным способом в рабочее время (пн–пт <span class="nowrap">8:00–18:00</span>, сб <span class="nowrap">8:00–16:00</span>) и подтвердит её. Это макет: данные никуда не отправляются.</p>
               <p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p>
             </div>
           </div>
@@ -159,6 +157,7 @@
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
   <script src="data/services.js"></script>
+  <script src="data/schedule.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>
   <script src="js/ui.js"></script>

@@ -7,7 +7,7 @@
     up to SHORT_LIST services: a plain .service-list;
     longer lists (A-28): search by name, code and description, filter chips by group, grouped rows
     (.service-group + .service-row--compact), the first GROUP_LIMIT rows of each group with «Показать все».
-  Row buttons: «Записаться» = [data-book data-service], «Оплатить» = [data-pay] (js/booking.js).
+  Row button: «Записаться» = [data-book data-service] (js/booking.js). No payment here: only doctor visits are paid (answer 5).
   JS: Sihat.direction.page (the current entry), Sihat.direction.serviceRow(service, heading, compact).
 */
 (function () {
@@ -53,7 +53,16 @@
   });
 
   slot("facts").innerHTML = P.facts.map(function (f) { return '<li class="badge badge--outline">' + esc(f) + "</li>"; }).join("");
-  slot("media").innerHTML = icon(P.icon);
+  // A-07: decorative image, the title is next to it
+  var headMedia = slot("media");
+  if (P.image) {
+    headMedia.classList.remove("media--placeholder");
+    headMedia.removeAttribute("role");
+    headMedia.removeAttribute("aria-label");
+    headMedia.innerHTML = '<img src="' + esc(P.image) + '" alt="">';
+  } else {
+    headMedia.innerHTML = icon(P.icon);
+  }
   slot("book").setAttribute("data-direction", P.direction);
 
   slot("about").innerHTML = P.about.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
@@ -114,8 +123,6 @@
       '<p class="service-row__price"><span class="visually-hidden">Цена: </span>' + rub(s.price) + "</p>" +
       '<div class="service-row__actions">' +
       '<button class="btn btn--primary btn--s" type="button" data-book data-service="' + s.id + '">Записаться<span class="visually-hidden">: ' + esc(s.title) + "</span></button>" +
-      '<button class="btn btn--secondary btn--s" type="button" data-pay="' + s.id + '">' + icon("credit-card") + "Оплатить" +
-      '<span class="visually-hidden">: ' + esc(s.title) + "</span></button>" +
       "</div></article></li>"
     );
   }

@@ -1,7 +1,7 @@
 /*
   Mock site data shared by the header, mobile menu and footer (js/layout.js).
   Plain JS instead of JSON so pages make no network requests (A-11).
-  Sources: docs/research.md (current rkb-sihat.ru and РКБ 2.0 footer).
+  Sources: docs/research.md (current rkb-sihat.ru).
   A-13: pages that are not in the prototype yet, messenger and social accounts link to "#".
   A-14: tax and licence numbers were not found; zeros are placeholders until the client sends them.
 */
@@ -17,7 +17,7 @@ window.SIHAT_DATA = {
     { label: "Платные услуги", number: "+7 (843) 231-20-90", href: "tel:+78432312090" },
     { label: "Платные услуги, мобильный", number: "+7 (927) 045-79-74", href: "tel:+79270457974" }
   ],
-  // A-10: hours of the paid department from РКБ 2.0; the current site did not give them.
+  // A-10: the current site says «с 08:00 до 17.00» without days; to be confirmed (question 22).
   hours: "пн–пт 8:00–18:00, сб 8:00–16:00",
   hoursShort: "пн–пт 8–18, сб 8–16",
 

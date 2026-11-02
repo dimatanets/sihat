@@ -4,7 +4,7 @@
   A-11: one source for every page without network requests. Each page has placeholders:
     <div data-include="header"><noscript>…fallback…</noscript></div>
     <div data-include="footer"><noscript>…fallback…</noscript></div>
-  and loads, at the end of <body>: data/site.js, data/directions.js, data/doctors.js, data/services.js, js/layout.js,
+  and loads, at the end of <body>: data/site.js, data/directions.js, data/doctors.js, data/services.js, data/schedule.js, js/layout.js,
   js/render.js, js/ui.js, js/forms.js, js/booking.js.
   The placeholder is replaced by the markup below. The current page is marked from <body data-page="…">.
   For Bitrix: each function below returns the exact HTML of one template part (header.php / footer.php).
@@ -33,13 +33,26 @@
   }
   var mainPhone = D.phones[0];
 
+  // Answer 1: the original logo from the header of rkb-sihat.ru (same as assets/img/logo-sihat.svg), inline so that
+  // its two colors come from tokens: inverse on the blue menu, the scheme colors in the accessibility version.
+  var LOGO =
+    '<svg class="logo__svg" viewBox="0 0 161 58" aria-hidden="true" focusable="false"><g class="logo__main">' +
+    '<path d="M0.34375 24.709V54.254C0.34375 55.9201 1.47226 57.2755 2.86551 57.2755H41.5183V51.1909H5.44343V27.6535H41.5183V21.6875H2.86551C1.47226 21.6875 0.34375 23.0396 0.34375 24.709Z"/>' +
+    '<path d="M48.582 33.7578V57.2407H53.4223L63.5869 42.7261V57.2407H68.2641V33.7578H63.5869L53.6657 47.6989V33.7578H48.582Z"/>' +
+    '<path d="M73.4219 33.7578L90.1382 57.2407H96.2354L79.3532 33.7578H73.4219Z"/>' +
+    '<path d="M96.2354 33.7578L79.519 57.2407H73.4219L90.304 33.7578H96.2354Z"/>' +
+    '<path d="M128.271 48.8171L123.19 52.0372H104.829V38.5704H122.759L128.271 42.0821V48.8171ZM128.271 33.7578V36.4781L123.045 33.7578H103.291C101.791 33.7578 100.574 35.2157 100.574 37.01V53.9597C100.574 55.7572 101.791 57.2407 103.291 57.2407H123.19L128.271 54.1295V57.2407H133.202V33.7578H128.271Z"/>' +
+    '<path d="M137.297 33.7578H160.215V39.4803H150.975V57.2407H146.25V39.4803H137.297V33.7578Z"/>' +
+    '</g><g class="logo__accent">' +
+    '<path d="M114.234 8.90421H107.164V3.72958H114.234V8.90421ZM103.754 0V20.5319H107.19V12.9446H114.739C116.24 12.9446 117.454 11.4867 117.454 9.68921V3.25537C117.454 1.45787 116.24 0 114.739 0H103.754Z"/>' +
+    '<path d="M141.324 12.9798H157.083V16.7799H141.324V12.9798ZM160.343 3.72958V0H137.992V20.5319H157.626C159.126 20.5319 160.343 19.0772 160.343 17.2797V12.3166C160.343 10.5191 159.126 9.06121 157.626 9.06121H141.324V3.72958H160.343Z"/>' +
+    '<path d="M121.148 0V20.5319H124.545V14.5723L126.09 12.4832L131.072 20.5319H135.29L128.425 9.64756L135.29 0H132.613C131.861 0 131.142 0.37488 130.628 1.03493L124.545 8.84013V1.62769C124.545 0.730536 123.938 0 123.186 0H121.148Z"/>' +
+    "</g></svg>";
+
   function logo(inverse) {
     return (
       '<a class="logo' + (inverse ? " logo--inverse" : "") + '" href="index.html" aria-label="' +
-      esc(D.brand.name + ", " + D.brand.sub.toLowerCase() + ". На главную") + '">' +
-      '<span class="logo__mark" aria-hidden="true"></span>' +
-      '<span class="logo__text" aria-hidden="true"><span class="logo__name">' + esc(D.brand.name) +
-      '</span><span class="logo__sub">' + esc(D.brand.sub) + "</span></span></a>"
+      esc(D.brand.name + ", " + D.brand.sub.toLowerCase() + ". На главную") + '">' + LOGO + "</a>"
     );
   }
 
@@ -142,7 +155,7 @@
       '<div class="site-header__actions">' +
       '<a class="btn btn--tint btn--xs btn--icon site-header__call" href="' + mainPhone.href +
       '" aria-label="Позвонить: ' + esc(mainPhone.number) + '">' + icon("phone") + "</a>" +
-      // A-16: «Записаться» opens the booking flow without a preselected service (js/booking.js).
+      // A-16: «Записаться» opens the booking flow at the choice of a scenario (js/booking.js).
       '<button class="btn btn--primary btn--book" type="button" data-book>Записаться</button>' +
       '<button class="btn btn--tint btn--xs site-header__menu" type="button" data-menu-open aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">' +
       icon("menu-2") + '<span class="site-header__menu-text">Меню</span></button>' +
@@ -151,7 +164,7 @@
     );
   }
 
-  // Full-screen mobile menu, like РКБ 2.0 node 190:4425. A native <dialog>, see js/ui.js.
+  // Full-screen mobile menu. A native <dialog>, see js/ui.js.
   function mobileMenu() {
     return (
       '<dialog class="mnav" id="site-menu" aria-label="Меню сайта">' +
@@ -230,7 +243,7 @@
       "</ul></div>" +
       '<div class="payments"><p class="footer-title">Принимаем к оплате</p><ul class="payments__list">' +
       D.payments.map(function (p) { return '<li class="payments__item">' + esc(p) + "</li>"; }).join("") +
-      '</ul><p class="footer-text footer-text--muted">Оплата картой и по QR-коду СБП онлайн на сайте или в клинике.</p></div>' +
+      '</ul><p class="footer-text footer-text--muted">Приём врача можно оплатить онлайн при записи или в клинике.</p></div>' +
       "</div>" +
       '<div class="site-footer__bottom">' +
       '<p class="site-footer__warning">' + esc(L.warning) + "</p>" +
