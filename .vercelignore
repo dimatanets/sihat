@@ -1,0 +1,4 @@
+# Tools for the audit: the site itself has no build step and no dependencies.
+package.json
+package-lock.json
+tools/

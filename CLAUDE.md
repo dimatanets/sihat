@@ -18,6 +18,7 @@ Static design prototype of the redesigned site of the paid department of the Rep
 - Do not add requirements that are not in SPEC.md. When something isn't defined, make the most reasonable choice, build it, record it in PROJECT_LOG.md as a new A-xx row (or reuse an existing one) and mark the code with a comment "A-xx". If a choice would change the structure of a page from what SPEC.md lists, ask the user first.
 - Accessibility: semantic HTML, visible focus states, keyboard navigation, WCAG AA contrast, alt texts, labels on all form fields, prefers-reduced-motion respected.
 - Before finishing any visual task, take screenshots at 1440 and 360 (and check 768 for breakage) and look at them yourself. Fix what is broken before replying.
+- After any visual change, run tools/audit-layout.mjs and do not finish with new violations. `--check` only checks and changes no files; without it the script also rewrites docs/audit/layout-audit.md, audit/report.html and the screenshots, so run the full form when the report should be updated. Proposals and exceptions: tools/audit-decisions.mjs.
 - The user doesn't use the terminal. Never ask them to run commands; if you need their action, give steps in the Claude app, the GitHub website, Vercel or Finder.
 - Always work in the main project folder on the main branch, even if the session starts in a worktree. If you find yourself in a worktree, tell the user before doing anything.
 

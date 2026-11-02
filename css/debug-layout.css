@@ -1,0 +1,72 @@
+/* Layout debug overlay (?debug=layout, js/debug-layout.js). Loaded only with that parameter. Values: --debug-* in tokens.css. */
+
+.dbg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--debug-panel-text);
+  font-family: var(--font-family-base);
+}
+.dbg__boxes { position: absolute; inset: 0; }
+.dbg__strip { position: absolute; }
+.dbg__strip--margin { background: var(--debug-margin); }
+.dbg__strip--padding { background: var(--debug-padding); }
+.dbg__strip--gap { background: var(--debug-gap); }
+.dbg__strip--off { background: var(--debug-off-fill); outline: var(--border-width) solid var(--debug-off); }
+
+.dbg__label {
+  position: absolute;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-tag);
+  background: var(--debug-panel-bg);
+  color: var(--debug-panel-text);
+  font-size: var(--debug-label-size);
+  line-height: var(--debug-label-line);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+.dbg__label--margin { background: var(--debug-margin-solid); }
+.dbg__label--padding { background: var(--debug-padding-solid); }
+.dbg__label--gap { background: var(--debug-gap-solid); }
+.dbg__label--off { background: var(--debug-off); }
+
+.dbg__panel {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  width: min(var(--debug-panel-width), calc(100% - 2 * var(--space-3)));
+  max-height: calc(100% - 2 * var(--space-3));
+  overflow-y: auto;
+  padding: var(--space-3);
+  border-radius: var(--radius-panel);
+  background: var(--debug-panel-bg);
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-line);
+  pointer-events: auto;
+}
+.dbg__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.dbg__title { color: inherit; font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); font-weight: var(--font-weight-bold); letter-spacing: 0; }
+.dbg__toggle { min-height: var(--tap-target); padding-inline: var(--space-2); border: var(--border-width) solid var(--debug-panel-line); border-radius: var(--radius-input); background: transparent; color: inherit; font-size: inherit; line-height: inherit; }
+.dbg__panel--folded .dbg__body { display: none; }
+.dbg__body { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-2); }
+.dbg__checks { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
+.dbg__check { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--tap-target); cursor: pointer; }
+.dbg__info { padding-block: var(--space-2); border-block: var(--border-width) solid var(--debug-panel-line); }
+.dbg__name { font-weight: var(--font-weight-semibold); overflow-wrap: anywhere; }
+.dbg__meta { color: var(--debug-panel-muted); }
+.dbg__values, .dbg__tokens { display: grid; gap: 0 var(--space-3); }
+.dbg__values { margin-top: var(--space-1); }
+.dbg__values li { display: grid; grid-template-columns: var(--debug-panel-key) var(--space-6) minmax(0, 1fr); gap: var(--space-1); }
+.dbg__tokens { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--space-1); }
+.dbg__tokens li { display: flex; justify-content: space-between; gap: var(--space-2); }
+.dbg__tokens b, .dbg__values b { font-weight: var(--font-weight-semibold); }
+.dbg__bad { color: var(--debug-off-text); font-style: normal; font-weight: var(--font-weight-semibold); }

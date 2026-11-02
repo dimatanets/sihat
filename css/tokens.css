@@ -207,6 +207,28 @@
   --duration-base: 250ms;
   --easing-base: cubic-bezier(0.2, 0, 0, 1);
   --motion-distance: 16px;    /* estimate: slide-in offset for modals */
+
+  /* ---- Layout debug overlay (?debug=layout) and audit report, not part of the site design ---- */
+  --debug-margin: rgba(245, 158, 11, 0.32);
+  --debug-margin-solid: #92400e;
+  --debug-padding: rgba(34, 197, 94, 0.28);
+  --debug-padding-solid: #166534;
+  --debug-gap: rgba(168, 85, 247, 0.32);
+  --debug-gap-solid: #6b21a8;
+  --debug-off: #b91c1c;
+  --debug-off-fill: rgba(220, 38, 38, 0.4);
+  --debug-off-text: #fca5a5;
+  --debug-panel-bg: #111827;
+  --debug-panel-text: #ffffff;
+  --debug-panel-muted: #cbd5e1;
+  --debug-panel-line: rgba(255, 255, 255, 0.24);
+  --debug-panel-width: 340px;
+  --debug-panel-key: 104px;
+  --debug-label-size: 11px;
+  --debug-label-line: 16px;
+  --report-list-width: 520px;
+  --report-term-width: 88px;
+  --report-viewer-height: calc(100vh - 2 * var(--space-3));
 }
 
 /* ---- Tablet: fewer cards per row (estimate) ---- */

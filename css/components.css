@@ -228,7 +228,7 @@
   align-items: center;
   gap: var(--space-2);
   min-height: var(--control-height-xs);
-  padding-inline: var(--space-3);
+  padding: 0 var(--space-3);
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
@@ -569,7 +569,7 @@
 .field__control {
   width: 100%;
   min-height: var(--control-height-s);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-4);
   border: var(--border-width) solid var(--color-border-strong);
   border-radius: var(--radius-input);
   background: var(--color-bg);
@@ -587,7 +587,7 @@
   outline: none;
 }
 .field__control:disabled { background: var(--color-disabled-bg); border-color: var(--color-disabled-bg); color: var(--color-disabled-text); cursor: not-allowed; }
-textarea.field__control { min-height: var(--textarea-min-height); resize: vertical; }
+textarea.field__control { min-height: var(--textarea-min-height); padding-block: var(--space-3); resize: vertical; }
 
 /* Select: native element for accessibility and the Bitrix hand-off; the chevron is an icon in markup. */
 select.field__control { appearance: none; -webkit-appearance: none; padding-right: var(--space-7); cursor: pointer; }
@@ -614,7 +614,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .field--success .field__msg { color: var(--color-success); }
 
 /* Checkbox (consent). The native input stays in place and is restyled. */
-.check { display: flex; align-items: flex-start; gap: var(--space-3); min-height: var(--tap-target); padding-block: calc((var(--tap-target) - var(--text-body-s-line)) / 2); cursor: pointer; }
+.check { display: flex; align-items: flex-start; gap: var(--space-3); min-height: var(--tap-target); padding-block: var(--space-3); cursor: pointer; }
 .check__input {
   appearance: none;
   -webkit-appearance: none;
@@ -668,7 +668,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .datepicker__title { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); text-transform: capitalize; }
 .datepicker__grid { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .datepicker__grid th {
-  padding-bottom: var(--space-2);
+  padding: 0 0 var(--space-2);
   font-size: var(--text-caption-size);
   line-height: var(--text-caption-line);
   font-weight: var(--font-weight-medium);
@@ -726,8 +726,9 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-2);
   min-height: var(--control-height-xs);
-  padding-inline: var(--space-3);
+  padding-inline: var(--space-4);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-pill);
   background: var(--color-bg);
@@ -1078,7 +1079,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .doc-row__link:focus-visible { outline: none; box-shadow: none; }
 .doc-row:hover .doc-row__link, .doc-row.is-hover .doc-row__link { color: var(--color-primary); text-decoration: underline; }
 .doc-row__meta { font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
-.doc-row__action { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-primary); font-size: var(--text-button-s-size); font-weight: var(--text-button-weight); }
+.doc-row__action { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-primary); font-size: var(--text-button-s-size); line-height: var(--text-button-s-line); font-weight: var(--text-button-weight); }
 @media (max-width: 767px) { .doc-row { padding-inline: 0; } .doc-row__action-text { display: none; } }
 
 .checklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--checklist-col-min)), 1fr)); gap: var(--space-3) var(--space-6); }
@@ -1213,7 +1214,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 /* Reuses the time slot chip (.slot) for each option; the fieldset is also a .field so validation works. */
 .choices > legend { margin-bottom: var(--space-2); }
 .choices__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.choices .slot__text { gap: var(--space-2); padding-inline: var(--space-4); }
 .choices .slot__text .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
 
 /* Blue block with a heading and contacts on the left and a white form card on the right
@@ -1229,7 +1229,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 }
 .form-panel__text { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
 .form-panel__title { color: var(--color-on-primary); }
-.form-panel__lead { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-on-primary-muted); }
+.form-panel__lead { max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); color: var(--color-on-primary-muted); }
 .form-panel__contacts { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-3); }
 .form-panel__card {
   padding: var(--space-6);
@@ -1483,7 +1483,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 
 /* Filter chips: radio chips (.slot) that wrap on desktop and scroll sideways in one row on phones. */
 .filter-chips__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.filter-chips .slot__text { gap: var(--space-2); padding-inline: var(--space-4); white-space: nowrap; }
+.filter-chips .slot__text { white-space: nowrap; }
 .filter-chips__count { font-weight: var(--font-weight-regular); }
 @media (max-width: 767px) {
   .filter-chips__list {

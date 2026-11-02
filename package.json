@@ -1,0 +1,11 @@
+{
+  "name": "sihat",
+  "private": true,
+  "description": "Static design prototype. No build step; Playwright is only for tools/audit-layout.mjs.",
+  "scripts": {
+    "audit": "node tools/audit-layout.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}
