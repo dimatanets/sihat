@@ -176,7 +176,8 @@
   --anchor-nav-offset: 96px;  /* estimate: scroll offset for sticky header + anchor bar */
   --anchor-nav-height: calc(var(--control-height-xs) + 2 * var(--space-2)); /* sticky anchor bar: chip + padding */
   --hero-min-height: 520px;   /* estimate: home hero card */
-  --hero-padding: 48px;       /* estimate: inner padding of the hero and the form panel on desktop */
+  --hero-padding: 48px;       /* estimate: inner padding of the hero on desktop */
+  --form-panel-padding: 64px; /* A-57: inner padding of the contact form block, roomier than the hero */
   --hero-title-measure: 15em; /* estimate: hero heading wraps into about three lines */
   --scroller-per-view: 4;     /* estimate: cards visible in a horizontal row (doctors) */
 
@@ -229,6 +230,7 @@
     --scroller-per-view: 2.5;
     --hero-min-height: 0px;
     --hero-padding: 32px;
+    --form-panel-padding: 48px;
   }
 }
 
@@ -250,5 +252,6 @@
     --logo-width-m: 88px;       /* A-43: the phone bar has to fit 360px with the 24px edge */
     --scroller-per-view: 1.2;   /* a part of the next card shows that the row scrolls */
     --hero-padding: 24px;
+    --form-panel-padding: 32px;
   }
 }
