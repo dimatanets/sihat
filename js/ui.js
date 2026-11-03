@@ -11,7 +11,7 @@
   Scroller (horizontal card row): <div class="scroller__track" id="track-id" data-scroller tabindex="0" role="region"
     aria-label="…"><ul class="scroller__list">…</ul></div> with buttons anywhere on the page:
     <button data-scroller-prev="track-id"> / <button data-scroller-next="track-id">. Buttons scroll by one view and
-    get aria-disabled="true" at the ends. Swipe, trackpad and arrow keys (track is focusable) work natively.
+    are never disabled: «next» after the last view starts over from the first, «previous» before the first goes to the last (A-57). Swipe, trackpad and arrow keys (track is focusable) work natively.
 */
 (function () {
   "use strict";
@@ -175,24 +175,16 @@
     track._scroller = true;
     var prev = document.querySelectorAll('[data-scroller-prev="' + track.id + '"]');
     var next = document.querySelectorAll('[data-scroller-next="' + track.id + '"]');
-    function set(btns, off) {
-      Array.prototype.forEach.call(btns, function (b) {
-        if (off) b.setAttribute("aria-disabled", "true"); else b.removeAttribute("aria-disabled");
-      });
-    }
-    function update() {
-      var max = track.scrollWidth - track.clientWidth;
-      set(prev, track.scrollLeft <= 1);
-      set(next, track.scrollLeft >= max - 1);
-    }
+    // A-57: no disabled state, the row loops: after the last view comes the first, before the first comes the last.
     function go(dir) {
-      track.scrollBy({ left: dir * track.clientWidth, behavior: reduceMotion.matches ? "auto" : "smooth" });
+      var behavior = reduceMotion.matches ? "auto" : "smooth";
+      var max = track.scrollWidth - track.clientWidth;
+      if (dir > 0 && track.scrollLeft >= max - 1) track.scrollTo({ left: 0, behavior: behavior });
+      else if (dir < 0 && track.scrollLeft <= 1) track.scrollTo({ left: max, behavior: behavior });
+      else track.scrollBy({ left: dir * track.clientWidth, behavior: behavior });
     }
     Array.prototype.forEach.call(prev, function (b) { b.setAttribute("aria-controls", track.id); b.addEventListener("click", function () { go(-1); }); });
     Array.prototype.forEach.call(next, function (b) { b.setAttribute("aria-controls", track.id); b.addEventListener("click", function () { go(1); }); });
-    track.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
   }
 
   function init() {

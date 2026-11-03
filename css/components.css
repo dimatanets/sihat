@@ -1093,7 +1093,9 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .form-panel :focus-visible { outline-color: var(--color-on-primary); }
 .form-panel .field__label { color: var(--color-on-primary-muted); }
 .form-panel .field__req { color: inherit; }
+/* A-57: the text sits close to its label: no space above it, the control keeps its 48 px height below. */
 .form-panel .field__control {
+  padding-block: 0 var(--space-4);
   padding-inline: 0;
   border: 0;
   border-bottom: var(--border-width) solid var(--color-on-primary-muted);
@@ -1105,7 +1107,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .form-panel .field__control:hover, .form-panel .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
 .form-panel .field__control:focus-visible { outline: none; }
 .form-panel select.field__control option { background: var(--color-bg); color: var(--color-text); }
-.form-panel .field__icon { right: 0; color: var(--color-on-primary); }
+.form-panel .field__icon { top: calc(50% - var(--space-2)); right: 0; color: var(--color-on-primary); }
 .form-panel .field--error .field__control, .form-panel .field--error .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
 .form-panel .field--error .field__msg { color: var(--color-on-primary); }
 .form-panel .check__input { border-color: var(--color-on-primary); background: transparent; }
