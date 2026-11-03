@@ -58,7 +58,6 @@
       }).join("") + "</ul>";
   } else {
     inc.remove();
-    root.querySelector(".about").classList.add("about--single");
   }
   var FEATURE_ICONS = ["certificate", "user", "clock"];
   slot("features").innerHTML = P.features.map(function (f, i) {

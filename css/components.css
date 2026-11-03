@@ -500,6 +500,7 @@
    ========================================================================= */
 
 .form { display: flex; flex-direction: column; gap: var(--space-4); }
+.form-panel .form { gap: var(--space-5); } /* A-57: contact form, one step up */
 .form__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
 @media (max-width: 767px) { .form__row { grid-template-columns: 1fr; } }
 .form__note { max-width: var(--text-measure-xs); font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
@@ -736,14 +737,16 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
    8. Badges, breadcrumbs, section head
    ========================================================================= */
 
+/* A-57: badges have no fill, only a border, so they do not read as filled blocks on tinted backgrounds. */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
   min-height: var(--badge-height);
   padding: var(--space-0) var(--space-3);
+  border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
+  background: transparent;
   color: var(--color-heading);
   font-size: var(--text-caption-size);
   line-height: var(--text-caption-line);
@@ -751,12 +754,12 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
   white-space: nowrap;
 }
 .badge .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
-.badge--primary { background: var(--color-primary-tint); color: var(--color-on-tint); }
-.badge--solid { background: var(--color-primary); color: var(--color-on-primary); }
-.badge--success { background: var(--color-success-tint); color: var(--color-success); }
-.badge--error { background: var(--color-error-tint); color: var(--color-error); }
-.badge--outline { background: transparent; border: var(--border-width) solid var(--color-border); }
-.badge--glass { background: var(--color-panel-on-primary); color: var(--color-on-primary); -webkit-backdrop-filter: blur(var(--blur-glass)); backdrop-filter: blur(var(--blur-glass)); }
+.badge--primary { border-color: var(--color-primary); color: var(--color-on-tint); }
+.badge--solid { border-color: var(--color-primary); color: var(--color-primary); font-weight: var(--font-weight-bold); }
+.badge--success { border-color: var(--color-success); color: var(--color-success); }
+.badge--error { border-color: var(--color-error); color: var(--color-error); }
+.badge--outline { border-color: var(--color-border); }
+.badge--glass { border-color: currentColor; color: var(--color-on-primary); }
 
 .breadcrumbs__list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
 .breadcrumbs__item { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
@@ -959,17 +962,17 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
   .steps__item::before { grid-row: span 2; min-width: var(--control-height-xs); }
 }
 
-.doc-list { display: flex; flex-direction: column; border-top: var(--border-width) solid var(--color-border); }
+/* Document card (A-57): horizontal card like the service card, border on all sides, no hover effect. */
+.doc-list { display: flex; flex-direction: column; gap: var(--space-2); }
 .doc-row {
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-4) var(--content-gutter);
-  border-bottom: var(--border-width) solid var(--color-border);
-  transition: background-color var(--duration-fast) var(--easing-base);
+  padding: var(--space-5);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-card);
 }
-.doc-row:hover, .doc-row.is-hover { background: var(--color-surface); }
 .doc-row:focus-within { outline: var(--focus-width) solid var(--color-focus); outline-offset: calc(-1 * var(--focus-width)); }
 .doc-row__icon {
   display: inline-flex;
@@ -986,10 +989,12 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .doc-row__link { color: var(--color-heading); font-weight: var(--font-weight-medium); }
 .doc-row__link::after { content: ""; position: absolute; inset: 0; }
 .doc-row__link:focus-visible { outline: none; box-shadow: none; }
-.doc-row:hover .doc-row__link, .doc-row.is-hover .doc-row__link { color: var(--color-primary); text-decoration: underline; }
 .doc-row__meta { font-size: var(--text-caption-size); line-height: var(--text-caption-line); color: var(--color-text-muted); }
 .doc-row__action { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-primary); font-size: var(--text-button-s-size); line-height: var(--text-button-s-line); font-weight: var(--text-button-weight); }
-@media (max-width: 767px) { .doc-row__action-text { display: none; } }
+@media (max-width: 767px) {
+  .doc-row { padding: var(--space-4); }
+  .doc-row__action-text { display: none; }
+}
 
 .checklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--checklist-col-min)), 1fr)); gap: var(--space-3) var(--space-6); }
 .checklist--1col { grid-template-columns: 1fr; }

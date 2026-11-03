@@ -11,7 +11,7 @@
     After the first submit, fields re-validate as the user types. JS: Sihat.forms.validate(form) → boolean,
     Sihat.forms.reset(form).
 
-  Phone mask — <input type="tel" data-phone-mask>: formats to +7 (XXX) XXX-XX-XX.
+  Phone mask — <input type="tel" data-phone-mask>: the whole mask +7 (XXX) XXX-XX-XX stays visible and fills in as the user types.
 */
 (function () {
   "use strict";
@@ -20,26 +20,57 @@
 
   /* ------------------------------------------------------------------ phone mask */
 
-  // The 10 digits after +7. Accepts "+7 (…", "8 927 …", "7927…" and pasted numbers.
-  function phoneDigits(value) {
+  // Parses a typed, pasted or autofilled value: the 10 digits after +7 (accepts "+7 (…", "8 927 …", "7927…")
+  // and how many leading raw digits were dropped (the +7 / 8 / 7 country part), to map the caret.
+  function parsePhone(value) {
     var s = String(value).trim();
-    var d;
+    var d, skip = 0;
     if (s.indexOf("+7") === 0) {
       d = s.slice(2).replace(/\D/g, "");
-      if (d.length > 10 && (d.charAt(0) === "8" || d.charAt(0) === "7")) d = d.slice(1);
+      if (d.length > 10 && (d.charAt(0) === "8" || d.charAt(0) === "7")) { d = d.slice(1); skip = 1; }
     } else {
       d = s.replace(/\D/g, "");
-      if (d.length > 10 || (d.length && (d.charAt(0) === "8" || d.charAt(0) === "7") && d.length === 11)) d = d.slice(1);
+      if (d.length > 10 || (d.length && (d.charAt(0) === "8" || d.charAt(0) === "7") && d.length === 11)) { d = d.slice(1); skip = 1; }
     }
-    return d.slice(0, 10);
+    return { d: d.slice(0, 10), skip: skip };
   }
+  function phoneDigits(value) { return parsePhone(value).d; }
+
+  // The whole mask stays in the field while typing: +7 (9__) ___-__-__
   function formatPhone(d) {
     if (!d) return "";
-    var out = "+7 (" + d.slice(0, 3);
-    if (d.length >= 3) out += ") " + d.slice(3, 6);
-    if (d.length >= 6) out += "-" + d.slice(6, 8);
-    if (d.length >= 8) out += "-" + d.slice(8, 10);
-    return out;
+    var p = (d + "__________").slice(0, 10);
+    return "+7 (" + p.slice(0, 3) + ") " + p.slice(3, 6) + "-" + p.slice(6, 8) + "-" + p.slice(8, 10);
+  }
+
+  // How many of the entered digits stand before the caret position.
+  function digitsBefore(raw, pos) {
+    var head = raw.slice(0, pos);
+    var n = (head.indexOf("+7") === 0 ? head.slice(2) : head).replace(/\D/g, "").length;
+    return Math.max(0, Math.min(n - parsePhone(raw).skip, 10));
+  }
+
+  // Caret position after k digits of a formatted value; skips the brackets, space and dashes that follow.
+  function caretAfter(formatted, k) {
+    var i = 4, seen = 0;
+    if (k > 0) {
+      for (i = 2; i < formatted.length && seen < k; i++) if (/\d/.test(formatted.charAt(i))) seen++;
+    }
+    while (i < formatted.length && !/[\d_]/.test(formatted.charAt(i))) i++;
+    return i;
+  }
+
+  var EMPTY_MASK = "+7 (___) ___-__-__";
+
+  function setPhone(input, digits, caretDigits) {
+    input._digits = digits;
+    // While the field is focused the empty mask stays in it too.
+    input.value = formatPhone(digits) || (document.activeElement === input ? EMPTY_MASK : "");
+    input._shown = input.value;
+    if (document.activeElement === input) {
+      var pos = caretAfter(input.value, caretDigits);
+      input.setSelectionRange(pos, pos);
+    }
   }
 
   document.addEventListener("input", function (e) {
@@ -47,17 +78,52 @@
     if (!input.matches || !input.matches("[data-phone-mask]")) return;
     var prev = input._digits || "";
     var digits = phoneDigits(input.value);
-    // Backspace over a bracket, space or dash: remove the digit before it.
-    if (e.inputType === "deleteContentBackward" && digits === prev) digits = digits.slice(0, -1);
-    input._digits = digits;
-    input.value = formatPhone(digits);
+    var caret = digitsBefore(input.value, input.selectionStart == null ? input.value.length : input.selectionStart);
+    // Backspace or Delete over a bracket, space, dash or underscore: remove the neighbouring digit instead.
+    // The fixed start «+7 (» is only restored.
+    var cut = input.selectionStart == null ? 0 : input.selectionStart;
+    if (digits === prev && digits && !(input._shown && cut < 4)) {
+      if (e.inputType === "deleteContentBackward" && caret > 0) {
+        digits = digits.slice(0, caret - 1) + digits.slice(caret);
+        caret--;
+      } else if (e.inputType === "deleteContentForward") {
+        digits = digits.slice(0, caret) + digits.slice(caret + 1);
+      }
+    }
+    setPhone(input, digits, Math.min(caret, digits.length));
+  });
+  // Paste: the pasted number replaces the selection, 8… and +7… are understood.
+  document.addEventListener("paste", function (e) {
+    var input = e.target;
+    if (!input.matches || !input.matches("[data-phone-mask]")) return;
+    var text = (e.clipboardData || window.clipboardData).getData("text");
+    e.preventDefault();
+    var raw = input.value;
+    var digits = phoneDigits(raw);
+    var a = digitsBefore(raw, input.selectionStart);
+    var b = digitsBefore(raw, input.selectionEnd);
+    var pasted = phoneDigits(text);
+    var next = (digits.slice(0, a) + pasted + digits.slice(b)).slice(0, 10);
+    setPhone(input, next, Math.min(a + pasted.length, next.length));
+    input.dispatchEvent(new Event("input", { bubbles: true }));
   });
   document.addEventListener("focusin", function (e) {
     var input = e.target;
-    if (input.matches && input.matches("[data-phone-mask]") && !input.value) {
-      input.value = "+7 (";
+    if (input.matches && input.matches("[data-phone-mask]") && !phoneDigits(input.value)) {
+      input.value = input._shown = EMPTY_MASK;
       input._digits = "";
+      var pos = caretAfter(input.value, 0);
+      // After the focusing click has placed the caret.
+      setTimeout(function () { if (document.activeElement === input) input.setSelectionRange(pos, pos); }, 0);
     }
+  });
+  // A click on the fixed part of the mask or on the empty tail moves the caret to the next free digit.
+  document.addEventListener("click", function (e) {
+    var input = e.target;
+    if (!input.matches || !input.matches("[data-phone-mask]") || input.selectionStart !== input.selectionEnd) return;
+    var end = caretAfter(input.value, phoneDigits(input.value).length);
+    var pos = input.selectionStart;
+    if (pos < 4 || pos > end) input.setSelectionRange(Math.min(Math.max(pos, 4), end), Math.min(Math.max(pos, 4), end));
   });
   document.addEventListener("focusout", function (e) {
     var input = e.target;

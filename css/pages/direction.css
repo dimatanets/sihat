@@ -28,7 +28,6 @@ html { scroll-padding-top: calc(var(--header-height) + var(--space-5)); }
 .page-head__intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
 .page-head__lead { max-width: var(--text-measure); font-size: var(--text-lead-size); line-height: var(--text-lead-line); color: var(--color-text-muted); }
 .page-head__facts { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.page-head__facts .badge { background: var(--color-bg); white-space: normal; }
 .page-head__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-6); margin-top: auto; }
 .page-head__media { min-height: 100%; border-radius: var(--radius-card); }
 .page-head__media > img { position: absolute; inset: 0; object-position: var(--page-head-media-position); }
@@ -52,21 +51,19 @@ html { scroll-padding-top: calc(var(--header-height) + var(--space-5)); }
   .direction .steps__title { min-height: calc(2 * var(--text-h5-line)); }
 }
 
-/* ---- 3. Description: text and «включает» side by side, features below ---- */
-.about {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, var(--about-aside-width));
-  gap: var(--space-6) var(--space-8);
-}
-.about--single { grid-template-columns: minmax(0, 1fr); }
+/* ---- 3. Description: text, «включает» below it (A-57), features below ---- */
+.about { display: flex; flex-direction: column; gap: var(--space-6); }
 .about__text { display: flex; flex-direction: column; gap: var(--space-4); max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); }
-.about__aside { display: flex; flex-direction: column; gap: var(--space-4); align-self: start; padding: var(--space-5); border-radius: var(--radius-card); background: var(--color-surface); }
+.about__aside { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-5); border-radius: var(--radius-card); background: var(--color-surface); }
 .about__aside-title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); }
 .about__features { margin-top: var(--space-6); }
+/* A-57: the items stand in a row and wrap; the check mark has no circle. */
+.about__aside .checklist { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
+.about__aside .checklist__icon { background: transparent; color: var(--color-accent); }
+.about__aside .checklist__icon .icon { width: var(--icon-size); height: var(--icon-size); }
 
 /* A-55: the content column next to the navigation is too narrow for the two-column blocks. */
 @media (min-width: 1100px) and (max-width: 1319px) {
-  .about { grid-template-columns: minmax(0, 1fr); }
   .direction .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .direction .form-panel { grid-template-columns: minmax(0, 1fr); }
   .feature__title { min-height: calc(2 * var(--text-h5-line)); }
@@ -74,7 +71,6 @@ html { scroll-padding-top: calc(var(--header-height) + var(--space-5)); }
 @media (max-width: 1099px) {
   .page-head { grid-template-columns: minmax(0, 1fr); }
   .page-head__media { display: none; }
-  .about { grid-template-columns: minmax(0, 1fr); }
   /* The sticky button travels through the whole block: a grid cell would hold it in the first row. */
   .direction-layout { display: block; margin-top: var(--grid-gap); }
   .direction-content { --scroller-per-view: inherit; }
