@@ -65,7 +65,6 @@ html { scroll-padding-top: calc(var(--header-height) + var(--space-5)); }
 /* A-55: the content column next to the navigation is too narrow for the two-column blocks. */
 @media (min-width: 1100px) and (max-width: 1319px) {
   .direction .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .direction .form-panel { grid-template-columns: minmax(0, 1fr); }
   .feature__title { min-height: calc(2 * var(--text-h5-line)); }
 }
 @media (max-width: 1099px) {
