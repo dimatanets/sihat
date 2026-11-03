@@ -128,8 +128,9 @@
   /* ---- Layout / grid ---- */
   --container-max: 1440px;
   --page-gutter: 12px;        /* page margin */
-  --content-gutter: 24px;     /* estimate: text inside the container, the line of the section headings */
+  --content-gutter: 0px;      /* A-51: headings, text and cards stand on one edge, the container edge */
   --content-edge: calc(var(--page-gutter) + var(--content-gutter)); /* A-43: the same line for rows without a container gutter: header, footer, menu */
+  --page-top: 32px;           /* A-53: gap between the header and the first card of a page */
   --grid-gap: 12px;           /* gap between hero/tile cards */
   --grid-columns: 12;
   --text-measure: 720px;      /* estimate: max width of running text */
@@ -145,7 +146,13 @@
   --lang-mark-width: 16px;    /* A-44: short underline below the active language */
   --social-tile: 40px;        /* A-45: from the Figma file n8zlCpOn5jTxyppRO0UFba, node 4:1470 (header) */
   --social-tile-s: 32px;      /* A-45: same file, node 4:1920 (footer) */
+  --social-tile-top: 24px;    /* A-52: messengers in the top bar */
+  --social-radius: 30%;       /* A-52: corners of the MAX tile in the Figma file, node 4:1474 (12 of 40 px) */
   --social-hover-opacity: 0.8;/* A-45: estimate, the Figma frame shows no hover state */
+  --section-nav-width: 240px; /* A-55: left navigation column of the direction page */
+  --scroller-per-view-narrow: 3; /* A-55: doctors in the content column next to the navigation */
+  --page-head-media-position: 75% 50%; /* item 7: keeps the doctor in the narrow crop of the photo */
+  --dcard-zoom: 1.06;         /* A-54: photo of a direction card on hover */
   --pay-height: 32px;         /* estimate: payment logo plate in the footer */
   --pay-logo-height: 18px;    /* estimate: payment logo */
   --footer-link-height: 28px; /* A-47: footer rows; above the 24 px of WCAG 2.5.8 */
@@ -190,6 +197,7 @@
   /* ---- Motion ---- */
   --duration-fast: 150ms;
   --duration-base: 250ms;
+  --duration-slow: 400ms;     /* A-54: photo zoom */
   --easing-base: cubic-bezier(0.2, 0, 0, 1);
 
   /* ---- Layout debug overlay (?debug=layout) and audit report, not part of the site design ---- */
@@ -239,7 +247,7 @@
     --text-lead-size: 16px;     --text-lead-line: 24px;
     --text-step-number-size: 24px;  --text-step-number-line: 24px;
     --space-section: 64px;
-    --content-gutter: 12px;
+    --page-top: 16px;           /* A-53 */
     --logo-width-m: 88px;       /* A-43: the phone bar has to fit 360px with the 24px edge */
     --scroller-per-view: 1.2;   /* a part of the next card shows that the row scrolls */
     --hero-padding: 24px;

@@ -1,7 +1,7 @@
 /*
   Direction page (direction.html): fills the [data-dir-…] slots from data/direction-pages.js.
   Stage 1 has one direction, «Чек-ап программы» (A-02, A-27).
-  Load after js/render.js (the doctor cards are rendered with Sihat.render) and before js/ui.js (scroller, anchor nav).
+  Load after js/render.js (the doctor cards are rendered with Sihat.render) and before js/ui.js (scroller, section nav).
 
   Services list (data/services.js, filtered by direction): a plain .service-list. The long list of A-28 (search, chips,
   groups) stays as a component on kit.html; its behaviour was removed with «Анализы», see js/direction.js at tag answers-1.

@@ -6,6 +6,7 @@
     closes itself on desktop widths and when a link inside it leads to a part of this page. Focus returns to the opener.
   Links that do nothing yet: <a href="#" data-inert> (A-08).
   Anchor navigation: <nav data-anchor-nav> with links to #ids; the link of the section in view gets aria-current="true".
+  Section navigation: <nav class="section-nav" data-section-nav>, the same; a toggle button opens the list up to 1099 px (A-55).
   Accordion: native <details>/<summary>, no JS.
   Scroller (horizontal card row): <div class="scroller__track" id="track-id" data-scroller tabindex="0" role="region"
     aria-label="…"><ul class="scroller__list">…</ul></div> with buttons anywhere on the page:
@@ -117,6 +118,56 @@
     map.forEach(function (link, section) { io.observe(section); });
   }
 
+  // ---- Section navigation (A-55) ----
+  function initSectionNav(nav) {
+    if (nav._sectionNav) return;
+    nav._sectionNav = true;
+    var toggle = nav.querySelector(".section-nav__toggle");
+    var label = nav.querySelector("[data-section-nav-current]");
+    var items = [];
+    Array.prototype.forEach.call(nav.querySelectorAll(".section-nav__link"), function (a) {
+      var section = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+      if (section) items.push({ link: a, section: section });
+    });
+    if (!items.length) return;
+
+    function setCurrent(item) {
+      items.forEach(function (i) { i.link.removeAttribute("aria-current"); });
+      item.link.setAttribute("aria-current", "true");
+      if (label) label.textContent = item.link.textContent;
+    }
+    // The last section whose top has passed the reading line; the first one above it, the last one at the page end.
+    function update() {
+      var doc = document.documentElement;
+      var line = Math.max((parseFloat(getComputedStyle(doc).scrollPaddingTop) || 0) + 8, window.innerHeight * 0.3);
+      var current = items[0];
+      items.forEach(function (i) {
+        if (i.section.getBoundingClientRect().top <= line) current = i;
+      });
+      if (window.scrollY + window.innerHeight >= doc.scrollHeight - 1) current = items[items.length - 1];
+      setCurrent(current);
+    }
+    var pending = false;
+    function schedule() {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { pending = false; update(); });
+    }
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    update();
+
+    // Compact pattern, up to 1099 px: the button opens the same list of links.
+    function setOpen(open) { if (toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false"); }
+    function isOpen() { return toggle && toggle.getAttribute("aria-expanded") === "true"; }
+    if (toggle) toggle.addEventListener("click", function () { setOpen(!isOpen()); });
+    nav.addEventListener("click", function (e) { if (e.target.closest(".section-nav__link")) setOpen(false); });
+    document.addEventListener("click", function (e) { if (isOpen() && !nav.contains(e.target)) setOpen(false); });
+    nav.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isOpen()) { setOpen(false); toggle.focus(); }
+    });
+  }
+
   // ---- Scroller ----
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   function initScroller(track) {
@@ -146,6 +197,7 @@
 
   function init() {
     Array.prototype.forEach.call(document.querySelectorAll("[data-anchor-nav]"), initAnchorNav);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-section-nav]"), initSectionNav);
     Array.prototype.forEach.call(document.querySelectorAll("[data-scroller]"), initScroller);
   }
   window.Sihat.anchorNav = { init: init };

@@ -65,9 +65,9 @@
 
       <div class="kit-block">
         <h3>Соцсети и платёжные системы</h3>
-        <p class="kit-section__note">Настоящие значки: плитка 40 px в шапке, 32 px в подвале, область нажатия 44 px (A-45). Логотипы платёжных систем — в подвале.</p>
+        <p class="kit-section__note">Настоящие значки одной формы: плитка 24 px в служебной строке шапки (A-52), 40 px в мобильном меню, 32 px в подвале, область нажатия 44 px (A-45). Логотипы платёжных систем — в подвале.</p>
         <div class="kit-row">
-          <ul class="social-links"><li><a class="social-link" href="#" aria-label="ВКонтакте"><img class="social-link__img" src="assets/icons/brand/vk.svg" alt="" width="40" height="40"></a></li><li><a class="social-link" href="#" aria-label="MAX"><img class="social-link__img" src="assets/icons/brand/max.svg" alt="" width="40" height="40"></a></li><li><a class="social-link" href="#" aria-label="RuTube"><img class="social-link__img" src="assets/icons/brand/rutube.svg" alt="" width="40" height="40"></a></li></ul>
+          <ul class="social-links"><li><a class="social-link" href="#" aria-label="ВКонтакте"><img class="social-link__img" src="assets/icons/brand/vk.svg" alt="" width="40" height="40"></a></li><li><a class="social-link" href="#" aria-label="MAX"><img class="social-link__img" src="assets/icons/brand/max.png" alt="" width="40" height="40"></a></li><li><a class="social-link" href="#" aria-label="RuTube"><img class="social-link__img" src="assets/icons/brand/rutube.svg" alt="" width="40" height="40"></a></li></ul>
           <ul class="social-links social-links--s"><li><a class="social-link" href="#" aria-label="Telegram"><img class="social-link__img" src="assets/icons/brand/telegram.svg" alt="" width="40" height="40"></a></li><li><a class="social-link" href="#" aria-label="WhatsApp"><img class="social-link__img" src="assets/icons/brand/whatsapp.svg" alt="" width="40" height="40"></a></li></ul>
         </div>
       </div>
@@ -259,22 +259,6 @@
       </div>
 
       <div class="kit-block">
-        <h3>Выбор варианта (способ связи)</h3>
-        <p class="kit-section__note">Радио-чипы на основе слота времени: <code>fieldset.field.choices</code> → <code>.choices__list</code> → <code>label.slot</code>. Один вариант выбран по умолчанию, поэтому поле не обязательное. Стрелки переключают вариант.</p>
-        <fieldset class="field choices">
-          <legend class="field__label">Удобный способ связи</legend>
-          <div class="choices__list">
-            <label class="slot" for="kc-call"><input class="slot__input" type="radio" id="kc-call" name="kit-contact" value="call" checked><span class="slot__text"><span class="icon icon--phone" aria-hidden="true"></span>Звонок</span></label>
-            <label class="slot" for="kc-sms"><input class="slot__input" type="radio" id="kc-sms" name="kit-contact" value="sms"><span class="slot__text"><span class="icon icon--device-mobile-message" aria-hidden="true"></span>SMS</span></label>
-            <label class="slot is-hover" for="kc-tg"><input class="slot__input" type="radio" id="kc-tg" name="kit-contact" value="telegram"><span class="slot__text"><img class="slot__brand" src="assets/icons/brand/telegram.svg" alt="" width="20" height="20">Telegram</span></label>
-            <label class="slot is-focus" for="kc-wa"><input class="slot__input" type="radio" id="kc-wa" name="kit-contact" value="whatsapp"><span class="slot__text"><img class="slot__brand" src="assets/icons/brand/whatsapp.svg" alt="" width="20" height="20">WhatsApp</span></label>
-            <label class="slot" for="kc-max"><input class="slot__input" type="radio" id="kc-max" name="kit-contact" value="max"><span class="slot__text"><img class="slot__brand" src="assets/icons/brand/max.svg" alt="" width="20" height="20">MAX</span></label>
-          </div>
-        </fieldset>
-        <p class="kit-caption kit-mt">Выбрано: «Звонок»; наведение: Telegram; фокус: WhatsApp.</p>
-      </div>
-
-      <div class="kit-block">
         <h3>Форма с проверкой и сообщения</h3>
         <div class="kit-grid--2 kit-grid">
           <div class="kit-panel kit-panel--bordered">
@@ -411,11 +395,11 @@
 
     <!-- ============================================================ Services -->
     <section class="container kit-section" id="services" aria-labelledby="h-services">
-      <h2 id="h-services">Строка услуги и аккордеон</h2>
-      <p class="kit-section__note">Строка: название, краткое описание, код по номенклатуре, цена, «Записаться». Оплаты в строке нет: оплата только внутри записи к врачу (ответ заказчика 5). Кнопка настоящая: <code>[data-book data-service]</code> открывает запись. Аккордеон — на странице цен: направление, внутри услуги. Длинный список с поиском и группами — в разделе ниже.</p>
+      <h2 id="h-services">Карточка услуги и аккордеон</h2>
+      <p class="kit-section__note">Карточка: название, краткое описание, код по номенклатуре, цена, «Записаться». Оплаты в строке нет: оплата только внутри записи к врачу (ответ заказчика 5). Кнопка настоящая: <code>[data-book data-service]</code> открывает запись. Аккордеон — на странице цен: направление, внутри услуги. Длинный список с поиском и группами — в разделе ниже.</p>
 
       <div class="kit-block">
-        <h3>Строка услуги</h3>
+        <h3>Карточка услуги</h3>
         <div class="service-list">
           <article class="service-row">
             <div class="service-row__main">
@@ -428,10 +412,10 @@
               <a class="btn btn--primary btn--s" href="#booking">Записаться</a>
             </div>
           </article>
-          <article class="service-row is-hover">
+          <article class="service-row">
             <div class="service-row__main">
               <h4 class="service-row__title">Приём терапевта первичный</h4>
-              <p class="service-row__text">Наведение на строку подсвечивает её фон.</p>
+              <p class="service-row__text">Горизонтальная карточка с рамкой, без эффекта наведения (A-56).</p>
               <p class="service-row__code">Код услуги B01.047.001</p>
             </div>
             <p class="service-row__price">2 500 ₽</p>
@@ -510,6 +494,20 @@
             <li><a class="anchor-nav__link" href="#navigation">Врачи</a></li>
             <li><a class="anchor-nav__link" href="#navigation">Документы</a></li>
             <li><a class="anchor-nav__link" href="#navigation">Что взять с собой</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="kit-block">
+        <h3>Навигация по разделам страницы</h3>
+        <p class="kit-section__note">Страница направления (A-55): колонка слева, закреплена, пока идут разделы, активный пункт следует за прокруткой. До 1099 px колонка становится закреплённой кнопкой с текущим разделом и тем же списком ссылок. В примере закрепление выключено: <code>.section-nav--static</code>.</p>
+        <nav class="section-nav section-nav--static kit-section-nav" aria-label="Пример навигации по разделам" data-section-nav>
+          <button class="section-nav__toggle" type="button" aria-expanded="false" aria-controls="kit-section-nav-list"><span><span class="visually-hidden">Раздел страницы: </span><span data-section-nav-current>Шапка</span></span><span class="icon icon--chevron-down" aria-hidden="true"></span></button>
+          <ul class="section-nav__list" id="kit-section-nav-list">
+            <li><a class="section-nav__link" href="#header">Шапка</a></li>
+            <li><a class="section-nav__link" href="#buttons">Кнопки</a></li>
+            <li><a class="section-nav__link" href="#fields">Поля формы</a></li>
+            <li><a class="section-nav__link" href="#cards">Карточки</a></li>
           </ul>
         </nav>
       </div>

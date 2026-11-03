@@ -35,3 +35,4 @@
 .kit-list { display: flex; flex-direction: column; gap: var(--space-2); padding-left: var(--space-5); list-style: disc; }
 .kit-list li { color: var(--color-text); }
 .kit-mt { margin-top: var(--space-5); }
+.kit-section-nav { max-width: var(--section-nav-width); }

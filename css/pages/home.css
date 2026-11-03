@@ -4,10 +4,8 @@
   html { scroll-behavior: smooth; } /* «Записаться на приём» without JS scrolls to the form */
 }
 
-.home { padding-top: var(--grid-gap); }
+.home { padding-top: var(--page-top); } /* A-53 */
 .home-section { margin-top: var(--space-section); }
-/* Headings line up with the text inside the cards. */
-.home-section__head { padding-inline: var(--content-gutter); }
 
 /* ---- Hero: blue card with the offer and actions + photo card ---- */
 .hero {

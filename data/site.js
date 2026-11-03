@@ -33,13 +33,13 @@ window.SIHAT_DATA = {
   },
 
   messengers: [
-    { name: "MAX", logo: "max", href: "#" },
-    { name: "Telegram", logo: "telegram", href: "#" },
-    { name: "WhatsApp", logo: "whatsapp", href: "#" }
+    { name: "MAX", logo: "max.png", href: "#" },
+    { name: "Telegram", logo: "telegram.svg", href: "#" },
+    { name: "WhatsApp", logo: "whatsapp.svg", href: "#" }
   ],
   socials: [
-    { name: "ВКонтакте", logo: "vk", href: "https://vk.com/public211630542" },
-    { name: "RuTube", logo: "rutube", href: "https://rutube.ru/channel/40995908/" }
+    { name: "ВКонтакте", logo: "vk.svg", href: "https://vk.com/public211630542" },
+    { name: "RuTube", logo: "rutube.svg", href: "https://rutube.ru/channel/40995908/" }
   ],
 
   languages: [

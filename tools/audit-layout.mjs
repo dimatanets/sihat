@@ -334,7 +334,10 @@ function collect({ scope, tokenNames, nameKeys }) {
     const inner = [round(mainBox.left + parseFloat(cs.paddingLeft)), round(mainBox.right - parseFloat(cs.paddingRight))];
     const flat = [];
     for (const c of main.children) {
-      if (c.classList.contains("direction-pair")) flat.push(...c.children); else flat.push(c);
+      // A-55: the navigation column and the sections next to it count as blocks of the page.
+      if (c.classList.contains("direction-layout")) {
+        for (const l of c.children) { if (l.classList.contains("direction-content")) flat.push(...l.children); else flat.push(l); }
+      } else flat.push(c);
     }
     const blocks = flat.filter((c) => c.getBoundingClientRect().height).map((c) => {
       const q = c.getBoundingClientRect();
@@ -352,8 +355,9 @@ function collect({ scope, tokenNames, nameKeys }) {
       const head = sec.querySelector(":scope > .section-head");
       const h2 = sec.querySelector("h2");
       const secBox = sec.getBoundingClientRect();
-      const inPair = sec.parentElement.classList.contains("direction-pair");
-      const startX = inPair ? round(secBox.left) : inner[0];
+      // A-55: sections next to the navigation column start at the edge of that column.
+      const inColumn = sec.parentElement.classList.contains("direction-content");
+      const startX = inColumn ? round(secBox.left) : inner[0];
       const headText = head && h2 ? h2.getBoundingClientRect().left : null;
       if (head) {
         const hb = head.getBoundingClientRect();
@@ -422,7 +426,7 @@ function collect({ scope, tokenNames, nameKeys }) {
     page.blocks = blocks;
     page.heads = heads;
     page.align = align;
-    page.edges = { logo: logo ? round(logo.getBoundingClientRect().left) : null, footer: footMain ? round(footMain.getBoundingClientRect().left) : null, h2: main.querySelector(".section-head h2") ? round(main.querySelector(".section-head h2").getBoundingClientRect().left) : null };
+    page.edges = { logo: logo ? round(logo.getBoundingClientRect().left) : null, footer: footMain ? round(footMain.getBoundingClientRect().left) : null, h2: main.querySelector(".section-head h2") ? inner[0] : null }; // A-51: the logo and the footer stand on the container edge, A-55: headings may be in the column next to the navigation
   }
 
   /* inner edges of the booking dialog and the mobile menu */
@@ -681,8 +685,8 @@ function analyzeScene(s, issues) {
     }
     for (const b of page.blocks) {
       if (b.isFooter) continue;
-      const inPair = b.left !== page.inner[0] && b.right === page.inner[1] && W >= 1100;
-      if (Math.abs(b.left - page.inner[0]) > 0.51 && !inPair && !(b.sel.includes("documents") || b.sel.includes("bring"))) {
+      const inColumn = b.left !== page.inner[0] && b.right === page.inner[1] && W >= 1100;
+      if (Math.abs(b.left - page.inner[0]) > 0.51 && !inColumn) {
         issues.add("5|block|" + b.sel, { rule: 5, sig: b.sel, title: "Край секции не совпадает с контейнером", measured: fmt(b.left), expected: fmt(page.inner[0]), props: new Set(["left"]) },
           { scene: s.id, page: s.page, width: W, rect: [b.left, b.top, b.right - b.left, b.bottom - b.top], name: b.sel, sel: b.sel, measured: fmt(b.left) });
       }
@@ -733,7 +737,7 @@ function analyzeRhythm(scenes, issues) {
     const tokens = s.data.tokens;
     const blocks = s.data.page.blocks;
     const gaps = [];
-    // Blocks side by side (documents and «что взять») count once; the anchor bar belongs to the page head.
+    // Blocks side by side (the navigation column and its sections) count once; the navigation button belongs to the page head.
     const seq = [];
     for (const b of blocks) {
       const prev = seq[seq.length - 1];

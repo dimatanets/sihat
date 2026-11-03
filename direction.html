@@ -41,107 +41,111 @@
         </div>
         <div class="page-head__actions">
           <a class="btn btn--primary" href="#booking">Записаться</a>
-          <a class="phone-link" href="tel:+78432312090"><span class="phone-link__icon"><span class="icon icon--phone icon--s" aria-hidden="true"></span></span><span class="phone-link__body"><span class="phone-link__number">+7 (843) 231-20-90</span><span class="phone-link__hours">пн–пт 8:00–18:00, сб 8:00–16:00</span></span></a>
         </div>
       </div>
-      <!-- A-07: photo of the direction goes here; placeholder until photos arrive -->
+      <!-- Photo from data/direction-pages.js, the same as on the home page card -->
       <div class="page-head__media media media--placeholder" role="img" aria-label="Здесь будет фото направления" data-dir-media><span class="icon icon--clipboard-heart" aria-hidden="true"></span></div>
     </section>
 
-    <!-- 2. Anchor navigation (sticky under the header, highlights the section in view) -->
-    <nav class="anchor-nav direction__nav" aria-label="Разделы страницы" data-anchor-nav>
-      <ul class="anchor-nav__list">
-        <li><a class="anchor-nav__link" href="#about">О направлении</a></li>
-        <li><a class="anchor-nav__link" href="#steps">Этапы</a></li>
-        <li><a class="anchor-nav__link" href="#services">Услуги и цены</a></li>
-        <li><a class="anchor-nav__link" href="#doctors">Специалисты</a></li>
-        <li><a class="anchor-nav__link" href="#documents">Документы</a></li>
-        <li><a class="anchor-nav__link" href="#bring">Что взять с собой</a></li>
-        <li><a class="anchor-nav__link" href="#booking">Записаться</a></li>
-      </ul>
-    </nav>
+    <div class="direction-layout">
+      <!-- 2. Navigation column (A-55): sticky inside .direction-layout, so it scrolls away after the last section -->
+      <nav class="section-nav" aria-label="Разделы страницы" data-section-nav>
+        <button class="section-nav__toggle" type="button" aria-expanded="false" aria-controls="section-nav-list"><span><span class="visually-hidden">Раздел страницы: </span><span data-section-nav-current>О направлении</span></span><span class="icon icon--chevron-down" aria-hidden="true"></span></button>
+        <ul class="section-nav__list" id="section-nav-list">
+          <li><a class="section-nav__link" href="#about">О направлении</a></li>
+          <li><a class="section-nav__link" href="#steps">Этапы</a></li>
+          <li><a class="section-nav__link" href="#services">Услуги и цены</a></li>
+          <li><a class="section-nav__link" href="#doctors">Специалисты</a></li>
+          <li><a class="section-nav__link" href="#documents">Документы</a></li>
+          <li><a class="section-nav__link" href="#bring">Что взять с собой</a></li>
+          <li><a class="section-nav__link" href="#booking">Записаться</a></li>
+        </ul>
+      </nav>
 
-    <!-- 3. Description -->
-    <section class="direction-section" id="about" aria-labelledby="about-title">
-      <div class="section-head direction-section__head">
-        <div class="section-head__text">
-          <h2 id="about-title">Описание</h2>
-        </div>
-      </div>
-      <div class="about">
-        <div class="about__text" data-dir-about></div>
-        <aside class="about__aside" data-dir-includes aria-labelledby="about-includes-title"></aside>
-      </div>
-      <ul class="features about__features" data-dir-features></ul>
-    </section>
-
-    <!-- 4. Steps -->
-    <section class="direction-section" id="steps" aria-labelledby="steps-title">
-      <div class="section-head direction-section__head">
-        <div class="section-head__text">
-          <h2 id="steps-title">Как получить услугу</h2>
-          <p class="section-head__lead" data-dir-text="stepsLead"></p>
-        </div>
-      </div>
-      <ol class="steps" data-dir-steps></ol>
-    </section>
-
-    <!-- 5. Services with prices and the full price list -->
-    <section class="direction-section" id="services" aria-labelledby="services-title">
-      <div class="section-head direction-section__head">
-        <div class="section-head__text">
-          <h2 id="services-title">Услуги и цены</h2>
-          <p class="section-head__lead" data-dir-text="servicesLead"></p>
-        </div>
-        <a class="link-arrow" href="#" download data-dir-pricelist><span class="icon icon--file-type-xls" aria-hidden="true"></span><span data-dir-pricelist-label>Скачать полный прайс-лист</span></a>
-      </div>
-      <div class="services" data-dir-services></div>
-    </section>
-
-    <!-- 6. Doctors (data/doctors.js, filtered by direction) -->
-    <section class="direction-section" id="doctors" aria-labelledby="doctors-title">
-      <div class="section-head direction-section__head">
-        <div class="section-head__text">
-          <h2 id="doctors-title">Врачи</h2>
-          <p class="section-head__lead" data-dir-text="doctorsLead"></p>
-        </div>
-        <div class="section-head__actions">
-          <div class="section-head__controls">
-            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="dir-doctors-track" aria-label="Предыдущие врачи"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
-            <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="dir-doctors-track" aria-label="Следующие врачи"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
+      <div class="direction-content">
+        <!-- 3. Description -->
+        <section class="direction-section" id="about" aria-labelledby="about-title">
+          <div class="section-head">
+            <div class="section-head__text">
+              <h2 id="about-title">Описание</h2>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="scroller__track" id="dir-doctors-track" data-scroller tabindex="0" role="region" aria-label="Список врачей, прокручивается по горизонтали">
-        <ul class="scroller__list" data-dir-doctors></ul>
-      </div>
-      <div class="section-more"><a class="btn btn--secondary" href="#">Все врачи</a></div>
-    </section>
+          <div class="about">
+            <div class="about__text" data-dir-about></div>
+            <aside class="about__aside" data-dir-includes aria-labelledby="about-includes-title"></aside>
+          </div>
+          <ul class="features about__features" data-dir-features></ul>
+        </section>
 
-    <!-- 7–8. Documents and what to bring, side by side on desktop -->
-    <div class="direction-pair">
-      <section class="direction-section" id="documents" aria-labelledby="documents-title">
-        <div class="section-head direction-section__head">
-          <div class="section-head__text">
-            <h2 id="documents-title">Документы</h2>
+        <!-- 4. Steps -->
+        <section class="direction-section" id="steps" aria-labelledby="steps-title">
+          <div class="section-head">
+            <div class="section-head__text">
+              <h2 id="steps-title">Как получить услугу</h2>
+              <p class="section-head__lead" data-dir-text="stepsLead"></p>
+            </div>
           </div>
-        </div>
-        <ul class="doc-list" data-dir-documents></ul>
-      </section>
-      <section class="direction-section" id="bring" aria-labelledby="bring-title">
-        <div class="section-head direction-section__head">
-          <div class="section-head__text">
-            <h2 id="bring-title">Что взять с собой</h2>
+          <ol class="steps" data-dir-steps></ol>
+        </section>
+
+        <!-- 5. Services with prices and the full price list -->
+        <section class="direction-section" id="services" aria-labelledby="services-title">
+          <div class="section-head">
+            <div class="section-head__text">
+              <h2 id="services-title">Услуги и цены</h2>
+              <p class="section-head__lead" data-dir-text="servicesLead"></p>
+            </div>
+            <a class="link-arrow" href="#" download data-dir-pricelist><span class="icon icon--file-type-xls" aria-hidden="true"></span><span data-dir-pricelist-label>Скачать полный прайс-лист</span></a>
           </div>
-        </div>
-        <ul class="checklist checklist--1col bring" data-dir-bring></ul>
-      </section>
+          <div class="services" data-dir-services></div>
+        </section>
+
+        <!-- 6. Doctors (data/doctors.js, filtered by direction) -->
+        <section class="direction-section" id="doctors" aria-labelledby="doctors-title">
+          <div class="section-head">
+            <div class="section-head__text">
+              <h2 id="doctors-title">Врачи</h2>
+              <p class="section-head__lead" data-dir-text="doctorsLead"></p>
+            </div>
+            <div class="section-head__actions">
+              <div class="section-head__controls">
+                <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="dir-doctors-track" aria-label="Предыдущие врачи"><span class="icon icon--arrow-left" aria-hidden="true"></span></button>
+                <button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="dir-doctors-track" aria-label="Следующие врачи"><span class="icon icon--arrow-right" aria-hidden="true"></span></button>
+              </div>
+            </div>
+          </div>
+          <div class="scroller__track" id="dir-doctors-track" data-scroller tabindex="0" role="region" aria-label="Список врачей, прокручивается по горизонтали">
+            <ul class="scroller__list" data-dir-doctors></ul>
+          </div>
+          <div class="section-more"><a class="btn btn--secondary" href="#">Все врачи</a></div>
+        </section>
+
+        <!-- 7. Documents. Stands above «Что взять с собой», not next to it: the navigation follows each of them (A-55) -->
+        <section class="direction-section" id="documents" aria-labelledby="documents-title">
+          <div class="section-head">
+            <div class="section-head__text">
+              <h2 id="documents-title">Документы</h2>
+            </div>
+          </div>
+          <ul class="doc-list" data-dir-documents></ul>
+        </section>
+
+        <!-- 8. What to bring -->
+        <section class="direction-section" id="bring" aria-labelledby="bring-title">
+          <div class="section-head">
+            <div class="section-head__text">
+              <h2 id="bring-title">Что взять с собой</h2>
+            </div>
+          </div>
+          <ul class="checklist checklist--1col" data-dir-bring></ul>
+        </section>
+
+        <!-- 9. Contact form at the end, shared by both pages (js/layout.js, A-24, A-48) -->
+        <section class="direction-section" aria-labelledby="booking-title">
+          <div data-include="contact"></div>
+        </section>
+      </div>
     </div>
-
-    <!-- 9. Contact form at the end, shared by both pages (js/layout.js, A-24, A-48) -->
-    <section class="direction-section" aria-labelledby="booking-title">
-      <div data-include="contact"></div>
-    </section>
   </main>
 
   <!-- Shared footer (js/layout.js, A-11) -->

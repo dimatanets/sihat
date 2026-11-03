@@ -69,7 +69,7 @@
       '<ul class="social-links' + (mod ? " " + mod : "") + '">' +
       list.map(function (s) {
         return '<li><a class="social-link" href="' + s.href + '" aria-label="' + esc(s.name) + '" title="' +
-          esc(s.name) + '"><img class="social-link__img" src="assets/icons/brand/' + s.logo + '.svg" alt="" width="40" height="40"></a></li>';
+          esc(s.name) + '"><img class="social-link__img" src="assets/icons/brand/' + s.logo + '" alt="" width="40" height="40"></a></li>';
       }).join("") + "</ul>"
     );
   }
@@ -171,14 +171,6 @@
     A-48: the one contact form of the site, on both pages. id="booking" is the target of every «Записаться».
     Fields: A-24. The direction list is filled by js/render.js; js/direction.js preselects the direction of its page.
   */
-  function contactChoice(value, label, mark, checked) {
-    var id = "cf-c-" + value;
-    return '<label class="slot" for="' + id + '"><input class="slot__input" type="radio" id="' + id + '" name="contact" value="' + value + '"' +
-      (checked ? " checked" : "") + '><span class="slot__text">' + mark + esc(label) + "</span></label>";
-  }
-  function brandMark(name) {
-    return '<img class="slot__brand" src="assets/icons/brand/' + name + '.svg" alt="" width="20" height="20">';
-  }
   function contact() {
     return (
       '<div class="form-panel" id="booking">' +
@@ -197,13 +189,10 @@
       '<div class="field"><label class="field__label" for="cf-direction">Направление</label>' +
       '<div class="field__wrap"><select class="field__control" id="cf-direction" name="direction" data-render="direction-options"><option value="">Пока не знаю</option></select>' +
       icon("chevron-down", "field__icon") + "</div></div>" +
-      '<fieldset class="field choices"><legend class="field__label">Удобный способ связи</legend><div class="choices__list">' +
-      contactChoice("call", "Звонок", icon("phone"), true) +
-      contactChoice("sms", "SMS", icon("device-mobile-message")) +
-      contactChoice("telegram", "Telegram", brandMark("telegram")) +
-      contactChoice("whatsapp", "WhatsApp", brandMark("whatsapp")) +
-      contactChoice("max", "MAX", brandMark("max")) +
-      "</div></fieldset>" +
+      '<div class="field"><label class="field__label" for="cf-contact">Удобный способ связи</label>' +
+      '<div class="field__wrap"><select class="field__control" id="cf-contact" name="contact">' +
+      '<option value="call">Звонок</option><option value="sms">SMS</option><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="max">MAX</option>' +
+      "</select>" + icon("chevron-down", "field__icon") + "</div></div>" +
       '<div class="field"><label class="check" for="cf-consent"><input class="check__input" id="cf-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку">' +
       '<span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>' +
       '<p class="field__msg" id="cf-consent-msg" aria-live="polite"></p></div>' +

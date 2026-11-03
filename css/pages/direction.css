@@ -1,7 +1,7 @@
-/* Direction page (direction.html): page head, section rhythm, description. Shared parts: components.css. */
+/* Direction page (direction.html): page head, navigation column, section rhythm, description. Shared parts: components.css. */
 
-/* Anchors land below the sticky header and the sticky anchor bar. */
-html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) + var(--space-4)); }
+/* Anchors land below the sticky header; up to 1099 px also below the sticky navigation button. */
+html { scroll-padding-top: calc(var(--header-height) + var(--space-5)); }
 @media (max-width: 1099px) {
   html { scroll-padding-top: calc(var(--header-height-m) + var(--anchor-nav-height) + var(--space-4)); }
 }
@@ -9,7 +9,7 @@ html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) 
   html { scroll-behavior: smooth; }
 }
 
-.direction { padding-top: var(--grid-gap); }
+.direction { padding-top: var(--page-top); } /* A-53 */
 
 /* ---- 1. Page head: breadcrumbs, title, lead, facts, «Записаться» + photo ---- */
 .page-head {
@@ -31,20 +31,32 @@ html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) 
 .page-head__facts .badge { background: var(--color-bg); white-space: normal; }
 .page-head__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-6); margin-top: auto; }
 .page-head__media { min-height: 100%; border-radius: var(--radius-card); }
+.page-head__media > img { position: absolute; inset: 0; object-position: var(--page-head-media-position); }
 
-/* ---- 2. Anchor bar ---- */
-.direction__nav { margin-top: var(--grid-gap); padding-inline: var(--content-gutter); }
+/* ---- 2. Navigation column and content (A-55) ---- */
+.direction-layout {
+  display: grid;
+  grid-template-columns: var(--section-nav-width) minmax(0, 1fr);
+  gap: var(--space-7);
+  margin-top: var(--space-section);
+}
+.direction-content { --scroller-per-view: var(--scroller-per-view-narrow); }
 
 /* ---- Sections ---- */
 .direction-section { margin-top: var(--space-section); }
-.direction-section__head { padding-inline: var(--content-gutter); }
+@media (min-width: 1100px) {
+  .direction-content > .direction-section:first-child { margin-top: 0; }
+}
+/* Four steps in one row: the titles of up to two lines keep the texts on one line. */
+@media (min-width: 1320px) {
+  .direction .steps__title { min-height: calc(2 * var(--text-h5-line)); }
+}
 
 /* ---- 3. Description: text and «включает» side by side, features below ---- */
 .about {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, var(--about-aside-width));
   gap: var(--space-6) var(--space-8);
-  padding-inline: var(--content-gutter);
 }
 .about--single { grid-template-columns: minmax(0, 1fr); }
 .about__text { display: flex; flex-direction: column; gap: var(--space-4); max-width: var(--text-measure); font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); }
@@ -52,15 +64,20 @@ html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) 
 .about__aside-title { font-size: var(--text-h5-size); line-height: var(--text-h5-line); font-weight: var(--font-weight-bold); }
 .about__features { margin-top: var(--space-6); }
 
-/* ---- 7–8. Documents and «что взять с собой» side by side ---- */
-.direction-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-8); }
-.bring { padding-inline: var(--content-gutter); }
-
+/* A-55: the content column next to the navigation is too narrow for the two-column blocks. */
+@media (min-width: 1100px) and (max-width: 1319px) {
+  .about { grid-template-columns: minmax(0, 1fr); }
+  .direction .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .direction .form-panel { grid-template-columns: minmax(0, 1fr); }
+  .feature__title { min-height: calc(2 * var(--text-h5-line)); }
+}
 @media (max-width: 1099px) {
   .page-head { grid-template-columns: minmax(0, 1fr); }
   .page-head__media { display: none; }
   .about { grid-template-columns: minmax(0, 1fr); }
-  .direction-pair { grid-template-columns: minmax(0, 1fr); }
+  /* The sticky button travels through the whole block: a grid cell would hold it in the first row. */
+  .direction-layout { display: block; margin-top: var(--grid-gap); }
+  .direction-content { --scroller-per-view: inherit; }
 }
 @media (max-width: 767px) {
   .page-head__main { gap: var(--space-5); }
@@ -68,10 +85,5 @@ html { scroll-padding-top: calc(var(--header-height) + var(--anchor-nav-height) 
   .page-head__actions .btn { width: 100%; }
   .about__text { font-size: var(--text-body-size); line-height: var(--text-body-line); }
   .about__aside { padding: var(--space-4); }
-}
-
-/* Accessibility version with images hidden: the head takes the full width. */
-
-@media (max-width: 767px) {
   .about__features .feature { padding: var(--space-4); }
 }

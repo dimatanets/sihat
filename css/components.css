@@ -9,8 +9,8 @@
     4. Mobile menu                      11. Alerts
     5. Footer                           12. Media placeholder
     6. Form fields, checkbox            13. Scroller (horizontal card row)
-    7. Choice chips, cards,             14. Choice chips (radio), contact form panel
-       service row                      15. Search, filter chips, service groups, empty state
+    7. Choice chips, cards,             14. Contact form panel
+       service card                     15. Search, filter chips, service groups, empty state
                                         16. Feature cards
 */
 
@@ -183,6 +183,9 @@
   background: currentColor;
 }
 .lang--inverse .lang__link, .lang--inverse .lang__link[aria-current="true"] { color: var(--color-on-primary); }
+/* Top bar: the mark lies exactly on the bottom border of the bar. */
+.site-top .lang { align-self: stretch; align-items: stretch; }
+.site-top .lang__link[aria-current="true"]::after { bottom: calc(-1 * var(--border-width)); }
 
 /* Messengers and socials. A-45: real brand tiles (assets/icons/brand), style of the Figma file n8zlCpOn5jTxyppRO0UFba:
    a filled rounded tile without a border, 40 px in the header and 32 px in the footer. The link stays a 44 px tap target. */
@@ -197,9 +200,12 @@
   transition: opacity var(--duration-fast) var(--easing-base);
 }
 .social-link:hover { opacity: var(--social-hover-opacity); text-decoration: none; }
-.social-link__img { width: var(--social-tile); height: var(--social-tile); }
+/* A-52: every tile has the corners of the MAX tile, so all of them are one shape. */
+.social-link__img { width: var(--social-tile); height: var(--social-tile); border-radius: var(--social-radius); }
 .social-links--s { gap: var(--space-1); }
 .social-links--s .social-link__img { width: var(--social-tile-s); height: var(--social-tile-s); }
+.site-top .social-links { gap: 0; }
+.site-top .social-link__img { width: var(--social-tile-top); height: var(--social-tile-top); }
 
 /* =========================================================================
    3. Header (A-05, A-17)
@@ -638,6 +644,11 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 }
 .dcard:focus-within, .dcard.is-focus { outline: var(--focus-width) solid var(--color-focus); outline-offset: var(--focus-offset); }
 .dcard .dcard__media { position: absolute; inset: 0; }
+/* A-54: the photo grows inside the card, clipped by its rounded corners. */
+.dcard__media > img { transition: transform var(--duration-slow) var(--easing-base); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .dcard:hover .dcard__media > img, .dcard.is-hover .dcard__media > img { transform: scale(var(--dcard-zoom)); }
+}
 /* The gradient belongs to the text block, so the text stays on it at any width and with any photo. */
 .dcard__body {
   position: relative;
@@ -690,23 +701,21 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .doctor-card__name a { display: block; min-height: var(--tap-target); color: var(--color-heading); }
 .doctor-card__name a:hover { color: var(--color-primary); }
 .doctor-card__role { font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); color: var(--color-text-muted); }
-/* Price of the visit (A-37) and «Записаться», which leads to the contact form. */
-.doctor-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 0 var(--space-2) var(--space-2); }
-.doctor-card__foot .btn { flex: 1; }
-.doctor-card__price { font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-bold); color: var(--color-heading); white-space: nowrap; }
+/* Price of the visit (A-37) above a full-width «Записаться», which leads to the contact form. */
+.doctor-card__foot { display: flex; flex-direction: column; gap: var(--space-2); }
+.doctor-card__price { padding-inline: var(--space-2); font-size: var(--text-body-size); line-height: var(--text-body-line); font-weight: var(--font-weight-bold); color: var(--color-heading); white-space: nowrap; }
 
-/* Service row: name, short description, code, price, «Записаться» (a request, answer 5: no payment here). */
-.service-list { border-top: var(--border-width) solid var(--color-border); }
+/* Service card (A-56): name, short description, code, price, «Записаться» (a request, answer 5: no payment here). */
+.service-list { display: flex; flex-direction: column; gap: var(--space-2); }
 .service-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: var(--space-3) var(--space-6);
-  padding: var(--space-5) var(--content-gutter);
-  border-bottom: var(--border-width) solid var(--color-border);
-  transition: background-color var(--duration-fast) var(--easing-base);
+  padding: var(--space-5);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-card);
 }
-.service-row:hover, .service-row.is-hover { background: var(--color-surface); }
 .service-row__main { display: flex; flex-direction: column; gap: var(--space-1); }
 .service-row__title { font-size: var(--text-body-l-size); line-height: var(--text-body-l-line); font-weight: var(--font-weight-semibold); color: var(--color-heading); }
 .service-row__title a { color: inherit; }
@@ -716,8 +725,7 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .service-row__price { font-size: var(--text-price-size); line-height: var(--text-price-line); font-weight: var(--text-price-weight); color: var(--color-heading); white-space: nowrap; text-align: right; }
 .service-row__actions { display: flex; gap: var(--space-2); }
 @media (max-width: 767px) {
-  .service-row { grid-template-columns: minmax(0, 1fr) auto; }
-  .service-row:hover { background: transparent; }
+  .service-row { grid-template-columns: minmax(0, 1fr) auto; padding: var(--space-4); }
   .service-row__main { grid-column: 1 / -1; }
   .service-row__price { grid-column: 1 / -1; grid-row: 2; text-align: left; }
   .service-row__actions { grid-column: 1 / -1; }
@@ -852,6 +860,63 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 }
 .anchor-nav__link:hover { border-color: var(--color-primary); color: var(--color-primary); text-decoration: none; }
 .anchor-nav__link[aria-current="true"] { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+
+/* Section navigation (A-55): a sticky column next to the content; up to 1099 px one sticky button with a list under it.
+   Behaviour: js/ui.js. Sticks inside its parent, so it scrolls away where the parent ends. */
+.section-nav { position: sticky; top: calc(var(--header-height) + var(--space-5)); z-index: var(--z-sticky); align-self: start; }
+.section-nav--static { position: relative; top: auto; }
+.section-nav__toggle { display: none; }
+.section-nav__list { display: flex; flex-direction: column; gap: var(--space-1); }
+.section-nav__link {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-pill);
+  color: var(--color-heading);
+  font-size: var(--text-button-s-size);
+  line-height: var(--text-button-s-line);
+  font-weight: var(--text-button-weight);
+  text-decoration: none;
+}
+.section-nav__link:hover { background: var(--color-surface); color: var(--color-primary); text-decoration: none; }
+.section-nav__link[aria-current="true"] { background: var(--color-primary-tint); color: var(--color-on-tint); }
+@media (max-width: 1099px) {
+  .section-nav { top: var(--header-height-m); padding-block: var(--space-2); background: var(--color-bg); }
+  .section-nav--static { top: auto; }
+  .section-nav__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    width: 100%;
+    min-height: var(--tap-target);
+    padding: var(--space-1) var(--space-4);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    color: var(--color-heading);
+    font-size: var(--text-button-s-size);
+    line-height: var(--text-button-s-line);
+    font-weight: var(--text-button-weight);
+    text-align: left;
+  }
+  .section-nav__toggle .icon { flex: none; transition: transform var(--duration-base) var(--easing-base); }
+  .section-nav__toggle[aria-expanded="true"] .icon { transform: rotate(180deg); }
+  .section-nav__list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: var(--space-2);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-card);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+  }
+  .section-nav__toggle[aria-expanded="true"] + .section-nav__list { display: flex; }
+}
 
 /* =========================================================================
    10. Steps, document row, checklist
@@ -1003,13 +1068,8 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .scroller__list > li { scroll-snap-align: start; min-width: 0; }
 
 /* =========================================================================
-   14. Choice chips (one-of-many radio, e.g. contact method) and contact form panel
+   14. Contact form panel
    ========================================================================= */
-
-/* Reuses the time slot chip (.slot) for each option; the fieldset is also a .field so validation works. */
-.choices > legend { margin-bottom: var(--space-2); }
-.choices__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.choices .slot__text .icon, .slot__brand { width: var(--icon-size-s); height: var(--icon-size-s); }
 
 /* A-48: the one contact form of the site (js/layout.js), after «Остались вопросы?» of РКБ 2.0 in our tokens:
    blue block, heading and text on the left, fields with an underline on the right. */
@@ -1043,10 +1103,6 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .form-panel .field__icon { right: 0; color: var(--color-on-primary); }
 .form-panel .field--error .field__control, .form-panel .field--error .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
 .form-panel .field--error .field__msg { color: var(--color-on-primary); }
-.form-panel .slot__text { background: transparent; border-color: var(--color-on-primary-line); color: var(--color-on-primary); }
-.form-panel .slot__input:hover + .slot__text { border-color: var(--color-on-primary); color: var(--color-on-primary); }
-.form-panel .slot__input:focus-visible + .slot__text { outline-color: var(--color-on-primary); }
-.form-panel .slot__input:checked + .slot__text { background: var(--color-on-primary); border-color: var(--color-on-primary); color: var(--color-primary); }
 .form-panel .check__input { border-color: var(--color-on-primary); background: transparent; }
 .form-panel .check__input::after { background-color: var(--color-primary); }
 .form-panel .check__input:checked { background: var(--color-on-primary); border-color: var(--color-on-primary); }

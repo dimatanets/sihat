@@ -111,7 +111,8 @@
 - Хирургия: https://www.pexels.com/photo/surgeons-during-operation-20217787/
 
 ### Источники логотипов
-- Официальные сайты: СБП (sbp.nspk.ru, знак из шапки), Visa (visa.com, файл с сайта, цвет #1434CB задан вручную), Mastercard (логотип из подвала mastercard.com/brandcenter; архивы для скачивания не брали: они требуют принять соглашение), MAX (max.ru), RuTube (rutube.ru), Telegram (telegram.org).
+- Официальные сайты: СБП (sbp.nspk.ru, знак из шапки), Visa (visa.com, файл с сайта, цвет #1434CB задан вручную), Mastercard (логотип из подвала mastercard.com/brandcenter; архивы для скачивания не брали: они требуют принять соглашение), RuTube (rutube.ru), Telegram (telegram.org).
+- MAX с раунда 2: из макета Димы, Figma n8zlCpOn5jTxyppRO0UFba, узел 4:1474 (растр). Был файл с max.ru.
 - Не с официальных сайтов: «Мир» с Wikimedia Commons (nspk.ru и mironline.ru отсюда не открылись), глифы VK и WhatsApp из Simple Icons (страница vk.com/brand не отдала файлы). Перед сдачей заменить на файлы из брендбуков.
 
 ### Футер: что выбрали
