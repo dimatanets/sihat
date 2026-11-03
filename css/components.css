@@ -534,6 +534,27 @@ textarea.field__control { min-height: var(--textarea-min-height); padding-block:
 
 /* Select: native element for accessibility and the Bitrix hand-off; the chevron is an icon in markup. */
 select.field__control { appearance: none; -webkit-appearance: none; padding-right: var(--space-7); cursor: pointer; }
+/* A-58: the opened list of a select. Browsers with customizable selects (Chrome, Edge) get a styled list in our tokens;
+   the others keep the native list, which only takes the option padding and font. */
+select.field__control option { padding: var(--space-3) var(--space-4); font: inherit; }
+@supports (appearance: base-select) {
+  select.field__control, select.field__control::picker(select) { appearance: base-select; }
+  select.field__control::picker-icon { display: none; } /* the chevron is .field__icon in markup */
+  select.field__control::picker(select) {
+    margin-top: var(--space-1);
+    padding: var(--space-1);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-input);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-card);
+  }
+  select.field__control option { border-radius: var(--radius-input); color: var(--color-text); cursor: pointer; }
+  select.field__control option::checkmark { display: none; }
+  select.field__control option:hover { background: var(--color-surface); }
+  /* keyboard focus: an inset line, so the list does not clip it */
+  select.field__control option:focus-visible { background: var(--color-surface); outline: var(--focus-width) solid var(--color-focus); outline-offset: calc(-1 * var(--focus-width)); box-shadow: none; }
+  select.field__control option:checked { background: var(--color-primary-tint); color: var(--color-on-tint); font-weight: var(--font-weight-medium); }
+}
 .field__icon {
   position: absolute;
   top: 50%;
@@ -1107,6 +1128,9 @@ select.field__control { appearance: none; -webkit-appearance: none; padding-righ
 .form-panel .field__control:hover, .form-panel .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
 .form-panel .field__control:focus-visible { outline: none; }
 .form-panel select.field__control option { background: var(--color-bg); color: var(--color-text); }
+.form-panel select.field__control option:hover { background: var(--color-surface); }
+.form-panel select.field__control option:checked { background: var(--color-primary-tint); color: var(--color-on-tint); }
+.form-panel select.field__control option:focus-visible { outline-color: var(--color-focus); }
 .form-panel .field__icon { top: calc(50% - var(--space-2)); right: 0; color: var(--color-on-primary); }
 .form-panel .field--error .field__control, .form-panel .field--error .field__control:focus { border-color: var(--color-on-primary); box-shadow: inset 0 calc(-1 * var(--border-width)) 0 var(--color-on-primary); }
 .form-panel .field--error .field__msg { color: var(--color-on-primary); }
