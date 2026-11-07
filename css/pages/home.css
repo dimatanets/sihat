@@ -58,7 +58,7 @@
 .hero__aside { position: relative; min-height: 100%; border-radius: var(--radius-card); }
 .media.hero__aside > img { position: absolute; inset: 0; }
 .hero__place { position: absolute; left: var(--space-5); right: var(--space-5); bottom: var(--space-5); display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.hero__place .badge { white-space: normal; }
+.hero__place .badge { white-space: normal; background: var(--color-bg); border-color: var(--color-bg); } /* white tag on the photo (Dima), only this one */
 .hero__place .icon { width: var(--icon-size-s); height: var(--icon-size-s); }
 
 /* ---- Directions: three priority cards in one row from 768 up (answer 6) ---- */
