@@ -104,6 +104,7 @@
   --radius-circle: 50%;
   --radius-check: 4px;
   --radius-tag: 2px;
+  --radius-none: 0;           /* square corners, e.g. the accessibility link hover */
 
   /* ---- Borders ---- */
   --border-width: 1px;

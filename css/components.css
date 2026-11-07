@@ -239,7 +239,7 @@
   gap: var(--space-2);
   min-height: var(--control-height-xs);
   padding: 0 var(--space-3);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-none); /* square hover (Dima) */
   color: var(--color-heading);
   font-size: var(--text-button-s-size);
   line-height: var(--text-button-s-line);
