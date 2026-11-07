@@ -213,9 +213,6 @@
 
 /* Utility row: address, messengers, languages, accessibility toggle. Desktop only. */
 .site-top { border-bottom: var(--border-width) solid var(--color-border); background: var(--color-bg); }
-.site-top__inner,
-.site-header__inner,
-.site-footer__inner { max-width: var(--container-max-chrome); }
 .site-top__inner {
   display: flex;
   align-items: center;
