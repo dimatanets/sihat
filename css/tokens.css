@@ -126,7 +126,8 @@
   --space-section: 96px;      /* estimate: vertical gap between home sections */
 
   /* ---- Layout / grid ---- */
-  --container-max: 1440px;
+  --container-max: calc(1200px + 2 * var(--page-gutter)); /* content box 1200px */
+  --container-max-chrome: 1440px; /* header and footer keep the full width */
   --page-gutter: 12px;        /* page margin */
   --content-gutter: 0px;      /* A-51: headings, text and cards stand on one edge, the container edge */
   --content-edge: calc(var(--page-gutter) + var(--content-gutter)); /* A-43: the same line for rows without a container gutter: header, footer, menu */
