@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Пациентам — Сихат РКБ</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/icons.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/pages/patients.css">
+</head>
+<body data-page="patients">
+  <a class="skip-link" href="#main">Перейти к содержимому</a><div data-include="header"></div>
+  <main class="patients container" id="main">
+    <section class="patients-information" aria-labelledby="patients-page-title">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки"><ol class="breadcrumbs__list"><li class="breadcrumbs__item"><a href="index.html">Главная</a></li><li class="breadcrumbs__item"><span aria-current="page">Пациентам</span></li></ol></nav>
+      <div class="patients-intro"><h1 id="patients-page-title">Пациентам</h1><p>Ответы на организационные вопросы и полезная информация о клинике.</p></div>
+      <div class="patient-articles" data-patient-articles></div>
+    </section>
+    <section class="patients-booking" aria-labelledby="booking-title"><div data-include="contact"></div></section>
+  </main>
+  <div data-include="footer"></div>
+  <script src="data/site.js"></script><script src="data/doctors.js"></script><script src="data/home.js"></script><script src="js/layout.js"></script><script src="js/patients.js"></script><script src="js/ui.js"></script><script src="js/forms.js"></script><script src="js/debug-layout.js"></script>
+</body>
+</html>

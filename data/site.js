@@ -49,12 +49,18 @@ window.SIHAT_DATA = {
   ],
 
   // A-05: header shows Услуги, Врачи, Пациентам, Контакты. "page" matches <body data-page>.
+  headerSocials: [
+    { name: "MAX", logo: "max.png", href: "#" },
+    { name: "ВКонтакте", logo: "vk.svg", href: "https://vk.com/public211630542" }
+  ],
+
   nav: {
     header: [
-      { label: "Услуги", href: "#", page: "services" },
-      { label: "Врачи", href: "#", page: "doctors" },
-      { label: "Пациентам", href: "#", page: "patients" },
-      { label: "Контакты", href: "#", page: "contacts" }
+      { label: "Услуги", href: "index.html#directions", page: "services" },
+      { label: "Прайс-лист", href: "prices.html", page: "prices" },
+      { label: "Врачи", href: "index.html#doctors", page: "doctors" },
+      { label: "Пациентам", href: "patients.html", page: "patients" },
+      { label: "Контакты", href: "index.html#contacts", page: "contacts" }
     ],
     // Mobile menu and footer list every section from SPEC.md.
     groups: [
@@ -64,18 +70,18 @@ window.SIHAT_DATA = {
           { label: "Направления", href: "#", page: "services" },
           { label: "Чек-ап программы", href: "direction.html", page: "direction" },
           { label: "Анализы", href: "#" }, // A-41: the item stays, the page is not in stage 1
-          { label: "Цены", href: "#", page: "prices" },
-          { label: "Врачи", href: "#", page: "doctors" }
+          { label: "Прайс-лист", href: "prices.html", page: "prices" },
+          { label: "Врачи", href: "index.html#doctors", page: "doctors" }
         ]
       },
       {
         title: "О клинике",
         links: [
-          { label: "Пациентам", href: "#", page: "patients" },
+          { label: "Пациентам", href: "patients.html", page: "patients" },
           { label: "О нас", href: "#", page: "about" },
           { label: "Новости", href: "#", page: "news" },
-          { label: "Документы", href: "#", page: "documents" },
-          { label: "Контакты", href: "#", page: "contacts" }
+          { label: "Документы", href: "index.html#clinic-documents", page: "documents" },
+          { label: "Контакты", href: "index.html#contacts", page: "contacts" }
         ]
       }
     ]

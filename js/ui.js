@@ -12,11 +12,18 @@
     aria-label="…"><ul class="scroller__list">…</ul></div> with buttons anywhere on the page:
     <button data-scroller-prev="track-id"> / <button data-scroller-next="track-id">. Buttons scroll by one view and
     are never disabled: «next» after the last view starts over from the first, «previous» before the first goes to the last (A-57). Swipe, trackpad and arrow keys (track is focusable) work natively.
+    Reviews use data-scroller-peek: one-card steps with neighboring fragments and inert side copies for the loop.
 */
 (function () {
   "use strict";
 
   window.Sihat = window.Sihat || {};
+
+  // A-70: only the home page and price list are active; section links remain placeholders.
+  Array.prototype.forEach.call(document.querySelectorAll("a"), function (link) {
+    var href = link.getAttribute("href") || "";
+    if (href !== "index.html" && !/^prices\.html(?:[?#]|$)/.test(href)) link.setAttribute("href", "#");
+  });
 
   function resolve(target) {
     return typeof target === "string" ? document.getElementById(target) : target;
@@ -37,7 +44,7 @@
   window.Sihat.modal = modal;
 
   document.addEventListener("click", function (e) {
-    var inert = e.target.closest("[data-inert]");
+    var inert = e.target.closest('[data-inert], a[href="#"]');
     if (inert) {
       e.preventDefault();
       return;
@@ -170,11 +177,68 @@
 
   // ---- Scroller ----
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function initPeekScroller(track, prev, next) {
+    var items = track.querySelectorAll(":scope > .scroller__list > li");
+    var count = track.querySelectorAll(":scope > .scroller__list > li:not([data-scroller-copy])").length;
+    if (!count || items.length < count * 3) return;
+    var active = count;
+    var moving = false;
+    var timer;
+    var width = track.clientWidth;
+    var idle = getComputedStyle(track).getPropertyValue("--duration-fast").trim();
+    var idleMs = parseFloat(idle) * (idle.endsWith("ms") ? 1 : 1000);
+    function geometry() {
+      var first = items[0].getBoundingClientRect();
+      return {
+        step: items[1].getBoundingClientRect().left - first.left,
+        origin: first.left - track.getBoundingClientRect().left + track.scrollLeft,
+        inset: parseFloat(getComputedStyle(track).scrollPaddingLeft)
+      };
+    }
+    function place(index, behavior) {
+      var g = geometry();
+      track.scrollTo({ left: g.origin + index * g.step - g.inset, behavior: behavior });
+    }
+    function settle() {
+      clearTimeout(timer);
+      var g = geometry();
+      if (!g.step) return;
+      var slot = Math.round((track.scrollLeft + g.inset - g.origin) / g.step);
+      active = count + ((slot - count) % count + count) % count;
+      moving = false;
+      // Equivalent copies have identical positions within the viewport, so this reset is invisible.
+      if (slot !== active) place(active, "auto");
+    }
+    function scheduleSettle() {
+      clearTimeout(timer);
+      timer = setTimeout(settle, idleMs);
+    }
+    function go(dir) {
+      if (moving) return;
+      settle();
+      moving = true;
+      place(active + dir, reduceMotion.matches ? "auto" : "smooth");
+      scheduleSettle();
+    }
+    track.addEventListener("scroll", scheduleSettle, { passive: true });
+    track.addEventListener("scrollend", settle);
+    Array.prototype.forEach.call(prev, function (b) { b.setAttribute("aria-controls", track.id); b.addEventListener("click", function () { go(-1); }); });
+    Array.prototype.forEach.call(next, function (b) { b.setAttribute("aria-controls", track.id); b.addEventListener("click", function () { go(1); }); });
+    place(active, "auto");
+    new ResizeObserver(function () {
+      if (width === track.clientWidth) return;
+      width = track.clientWidth;
+      clearTimeout(timer);
+      moving = false;
+      place(active, "auto");
+    }).observe(track);
+  }
   function initScroller(track) {
     if (track._scroller || !track.id) return;
     track._scroller = true;
     var prev = document.querySelectorAll('[data-scroller-prev="' + track.id + '"]');
     var next = document.querySelectorAll('[data-scroller-next="' + track.id + '"]');
+    if (track.hasAttribute("data-scroller-peek")) { initPeekScroller(track, prev, next); return; }
     // A-57: no disabled state, the row loops: after the last view comes the first, before the first comes the last.
     function go(dir) {
       var behavior = reduceMotion.matches ? "auto" : "smooth";

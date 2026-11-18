@@ -15,19 +15,20 @@
     priority  number|null  position on the home page; null = not on the home page (answer 6, A-21)
 */
 window.SIHAT_DIRECTIONS = [
+  { id: "analizy", title: "Анализы", text: "Лабораторные исследования для точной диагностики и контроля здоровья", slug: "analizy", href: "prices.html?category=analizy", icon: "test-pipe", image: null, priority: 3 },
   {
     id: "rody",
-    title: "Роды",
+    title: "Беременность и роды",
     text: "Комфортные роды в Перинатальном центре РКБ с возможностью выбора врача",
     slug: "vedenie-beremennosti-i-rody",
-    href: "#",
+    href: "#booking",
     icon: "baby-carriage",
     image: "assets/img/directions/card-rody.jpg",
     priority: 2
   },
   {
     id: "chek-ap",
-    title: "Чек-ап программы",
+    title: "Чекапы",
     text: "Комплексная проверка здоровья за несколько дней: врачи, диагностика и анализы",
     slug: "chek-ap-programmy",
     href: "direction.html",
@@ -37,13 +38,13 @@ window.SIHAT_DIRECTIONS = [
   },
   {
     id: "khirurgiya",
-    title: "Хирургия",
+    title: "Операции",
     text: "Плановые и сложные операции разного профиля, малоинвазивные технологии",
     slug: "obshchaya-khirurgiya",
-    href: "#",
+    href: "#booking",
     icon: "first-aid-kit",
     image: "assets/img/directions/card-khirurgiya.jpg",
-    priority: 3
+    priority: 4
   },
   {
     id: "konsultacii",

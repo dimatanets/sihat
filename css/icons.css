@@ -49,3 +49,5 @@
 .icon--test-pipe { --icon: url("../assets/icons/test-pipe.svg"); }
 .icon--user { --icon: url("../assets/icons/user.svg"); }
 .icon--x { --icon: url("../assets/icons/x.svg"); }
+
+.icon--star { -webkit-mask-image: url("../assets/icons/star.svg"); mask-image: url("../assets/icons/star.svg"); }

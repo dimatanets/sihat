@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Сихат — платное отделение РКБ, Казань (макет)</title>
+  <title>Сихат — платное отделение РКБ, Казань</title>
   <meta name="description" content="Платные медицинские услуги Республиканской клинической больницы: консультации врачей, чек-апы, диагностика, хирургия и роды. Запись на приём.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/tokens.css">
@@ -37,9 +37,10 @@
           <p class="hero__quick-title" id="hero-quick-title">Популярные направления</p>
           <!-- Answer 6: same set and order as the directions section below -->
           <ul class="hero__quick-list">
-            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html">Чек-ап программы</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="#">Роды</a></li>
-            <li><a class="btn btn--inverse-outline btn--xs" href="#">Хирургия</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="direction.html">Чекапы</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#directions">Беременность и роды</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="prices.html?category=analizy">Анализы</a></li>
+            <li><a class="btn btn--inverse-outline btn--xs" href="#directions">Операции</a></li>
           </ul>
         </nav>
       </div>
@@ -54,13 +55,16 @@
     <section class="home-section" id="directions" aria-labelledby="directions-title">
       <div class="section-head">
         <div class="section-head__text">
-          <h2 id="directions-title">С чем мы помогаем</h2>
-          <p class="section-head__lead">На странице направления — услуги и цены, врачи и порядок записи.</p>
+          <h2 id="directions-title">Популярные направления</h2>
+          <p class="section-head__lead">От заботы о будущем малыше до сложной операции — рядом команда РКБ.</p>
         </div>
-        <a class="link-arrow" href="#">Все направления<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
+        <a class="link-arrow" href="prices.html">Услуги и цены<span class="icon icon--arrow-right" aria-hidden="true"></span></a>
       </div>
-      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="3"></ul>
+      <!-- A-60: four asymmetric tiles, with a tall maternity card. -->
+      <ul class="home-directions" data-render="directions" data-filter="home" data-limit="4"></ul>
     </section>
+
+    <section class="home-section home-callback" aria-label="Получить консультацию"><div data-include="callback"></div></section>
 
     <!-- 3. Doctors: the first of the catalogue on the current site (answer 7, A-22) -->
     <section class="home-section" id="doctors" aria-labelledby="doctors-title">
@@ -79,10 +83,50 @@
       <div class="scroller__track" id="doctors-track" data-scroller tabindex="0" role="region" aria-label="Список врачей, прокручивается по горизонтали">
         <ul class="scroller__list" data-render="doctors" data-filter="home" data-limit="8"></ul>
       </div>
-      <div class="section-more"><a class="btn btn--secondary" href="#">Все врачи</a></div>
+      <div class="section-more"><a class="btn btn--secondary" href="#booking">Помочь с выбором врача</a></div>
     </section>
 
-    <!-- 4. Contact form, shared by both pages (js/layout.js, A-24, A-48) -->
+    <section class="home-section" id="patients" aria-labelledby="patients-title">
+      <div class="section-head"><div class="section-head__text"><h2 id="patients-title">Пациентам</h2><p class="section-head__lead">Всё, что поможет подготовиться к обращению в клинику.</p></div></div>
+      <ul class="patient-grid" data-home="patients"></ul>
+    </section>
+
+    <section class="home-section" id="reviews" aria-labelledby="reviews-title">
+      <div class="section-head"><div class="section-head__text"><h2 id="reviews-title">Отзывы пациентов</h2></div><div class="section-head__controls"><button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-prev="reviews-track" aria-label="Предыдущие отзывы"><span class="icon icon--arrow-left" aria-hidden="true"></span></button><button class="btn btn--secondary btn--icon btn--s" type="button" data-scroller-next="reviews-track" aria-label="Следующие отзывы"><span class="icon icon--arrow-right" aria-hidden="true"></span></button></div></div>
+      <div class="scroller__track reviews-track" id="reviews-track" data-scroller data-scroller-peek tabindex="0" role="region" aria-label="Отзывы пациентов, прокручивается по горизонтали"><ul class="scroller__list" data-home="reviews"></ul></div>
+    </section>
+
+    <section class="home-section home-callback" aria-label="Помощь с выбором специалиста"><div data-include="callback"></div></section>
+
+    <section class="home-section" id="clinic-documents" aria-labelledby="clinic-documents-title">
+      <div class="section-head"><div class="section-head__text"><h2 id="clinic-documents-title">Лицензии и сертификаты</h2><p class="section-head__lead">Документы клиники в одном месте.</p></div></div>
+      <ul class="clinic-documents" data-home="documents"></ul>
+    </section>
+
+    <section class="home-section" id="contacts" aria-labelledby="contacts-title">
+      <div class="section-head"><div class="section-head__text"><h2 id="contacts-title">Как нас найти</h2><p class="section-head__lead">Казань, Оренбургский тракт, 138</p></div><a class="link-arrow" href="https://yandex.ru/maps/?text=РКБ%20Казань%20Оренбургский%20тракт%20138" target="_blank" rel="noopener">Построить маршрут<span class="icon icon--arrow-up-right" aria-hidden="true"></span></a></div>
+      <div class="contacts-grid">
+        <!-- A-67: a high-resolution local screenshot with a custom clinic marker. -->
+        <div class="contacts-map" data-map>
+          <img class="contacts-map__image" src="assets/img/map-rkb-yandex.png" alt="Яндекс Карта территории РКБ в Казани, Оренбургский тракт, 138" width="3000" height="2100" loading="lazy">
+          <span class="contacts-map__marker" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6"></path></svg></span>
+        </div>
+        <div class="contacts-buildings">
+          <h3>Найдите своё отделение</h3>
+          <ul>
+            <li><div><h4>Консультативный приём</h4><p>Корпус В, 1 этаж</p></div></li>
+            <li><div><h4>Перинатальный центр</h4><p>Корпус Д, терминал 6</p></div></li>
+            <li><div><h4>Стационар</h4><p>Корпус А, 2 этаж</p></div></li>
+          </ul>
+          <div class="contacts-buildings__contact">
+            <a class="contacts-phone" href="tel:+78432312090">+7 (843) 231-20-90</a>
+            <p class="contacts-hours">Пн–пт 8:00–18:00, сб 8:00–16:00</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- A-60: shared contact form, without a direction field. -->
     <section class="home-section home-booking" aria-labelledby="booking-title">
       <div data-include="contact"></div>
     </section>
@@ -94,9 +138,11 @@
   <script src="data/site.js"></script>
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
+  <script src="data/home.js"></script>
   <script src="data/services.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>
+  <script src="js/home.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/forms.js"></script>
   <script src="js/debug-layout.js"></script>

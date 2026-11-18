@@ -68,8 +68,9 @@
     return (
       '<ul class="social-links' + (mod ? " " + mod : "") + '">' +
       list.map(function (s) {
-        return '<li><a class="social-link" href="' + s.href + '" aria-label="' + esc(s.name) + '" title="' +
-          esc(s.name) + '"><img class="social-link__img" src="assets/icons/brand/' + s.logo + '" alt="" width="40" height="40"></a></li>';
+        var tag = s.href && s.href !== "#" ? "a" : "span";
+        return '<li><' + tag + ' class="social-link"' + (tag === "a" ? ' href="' + s.href + '"' : '') + ' aria-label="' + esc(s.name) + '" title="' +
+          esc(s.name) + '"><img class="social-link__img" src="assets/icons/brand/' + s.logo + '" alt="" width="40" height="40"></' + tag + '></li>';
       }).join("") + "</ul>"
     );
   }
@@ -103,7 +104,7 @@
       '<div class="site-top"><div class="site-top__inner container">' +
       '<p class="site-top__item">' + icon("map-pin", "icon--s") + esc(D.address.city + ", " + D.address.street) + "</p>" +
       '<div class="site-top__end">' +
-      socialLinks(D.messengers) +
+      socialLinks(D.headerSocials) +
       '<span class="site-top__sep" aria-hidden="true"></span>' +
       lang(false) +
       '<span class="site-top__sep" aria-hidden="true"></span>' +
@@ -120,7 +121,7 @@
       '<div class="site-header__actions">' +
       '<a class="btn btn--tint btn--xs btn--icon site-header__call" href="' + mainPhone.href +
       '" aria-label="Позвонить: ' + esc(mainPhone.number) + '">' + icon("phone") + "</a>" +
-      bookLink("btn--primary btn--xs btn--book", "Записаться") +
+      bookLink("btn--primary btn--xs btn--book", "Записаться на приём") +
       '<button class="btn btn--tint btn--xs site-header__menu" type="button" data-menu-open aria-label="Меню" aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">' +
       icon("menu-2") + '<span class="site-header__menu-text">Меню</span></button>' +
       "</div></div></header>" +
@@ -156,7 +157,7 @@
         return "<li>" + esc(b.name) + ": " + esc(b.place) + "</li>";
       }).join("") + "</ul>" +
       '<p class="mnav__label">Мессенджеры и соцсети</p>' +
-      socialLinks(D.messengers.concat(D.socials), "social-links--inverse") +
+      socialLinks(D.headerSocials, "social-links--inverse") +
       "</div>" +
       '<div class="mnav__tiles">' +
       '<a class="mnav__tile" href="#" data-inert>' +
@@ -169,41 +170,129 @@
 
   /*
     A-48: the one contact form of the site, on both pages. id="booking" is the target of every «Записаться».
-    Fields: A-24. The direction list is filled by js/render.js; js/direction.js preselects the direction of its page.
+    A-60: name, phone, optional email, contact method buttons and consent.
   */
-  function contact() {
-    return (
-      '<div class="form-panel" id="booking">' +
-      '<div class="form-panel__text">' +
-      '<h2 class="form-panel__title" id="booking-title">Остались вопросы?<br>Свяжитесь с&nbsp;нами</h2>' +
-      '<p class="form-panel__lead">Мы всегда готовы помочь разобраться в услугах клиники. Свяжитесь с нами, и мы подскажем, к какому врачу лучше обратиться и как быстро записаться на приём.</p>' +
-      "</div>" +
-      '<div class="form-panel__form">' +
-      '<form class="form" data-validate novalidate aria-labelledby="booking-title">' +
-      '<div class="field"><label class="field__label" for="cf-name">Имя <span class="field__req" aria-hidden="true">*</span></label>' +
-      '<input class="field__control" id="cf-name" name="name" type="text" autocomplete="name" required data-msg-required="Напишите, как к вам обращаться">' +
-      '<p class="field__msg" id="cf-name-msg" aria-live="polite"></p></div>' +
-      '<div class="field"><label class="field__label" for="cf-phone">Телефон <span class="field__req" aria-hidden="true">*</span></label>' +
-      '<input class="field__control" id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required data-msg-required="Укажите телефон, чтобы мы могли связаться">' +
-      '<p class="field__msg" id="cf-phone-msg" aria-live="polite"></p></div>' +
-      '<div class="field"><label class="field__label" for="cf-direction">Направление</label>' +
-      '<div class="field__wrap"><select class="field__control" id="cf-direction" name="direction" data-render="direction-options"><option value="">Пока не знаю</option></select>' +
-      icon("chevron-down", "field__icon") + "</div></div>" +
-      '<div class="field"><label class="field__label" for="cf-contact">Удобный способ связи</label>' +
-      '<div class="field__wrap"><select class="field__control" id="cf-contact" name="contact">' +
-      '<option value="call">Звонок</option><option value="sms">SMS</option><option value="telegram">Telegram</option><option value="whatsapp">WhatsApp</option><option value="max">MAX</option>' +
-      "</select>" + icon("chevron-down", "field__icon") + "</div></div>" +
-      '<div class="field"><label class="check" for="cf-consent"><input class="check__input" id="cf-consent" name="consent" type="checkbox" required data-msg-required="Без согласия мы не сможем обработать заявку">' +
-      '<span class="check__text">Согласен на <a href="#">обработку персональных данных</a> и принимаю <a href="#">политику конфиденциальности</a></span></label>' +
-      '<p class="field__msg" id="cf-consent-msg" aria-live="polite"></p></div>' +
-      '<button class="btn btn--inverse form__submit" type="submit">Отправить</button>' +
-      "</form>" +
-      '<div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>' + icon("circle-check") +
-      '<div><p class="alert__title">Заявка отправлена</p>' +
-      "<p>Запись ещё не подтверждена. Администратор свяжется с вами выбранным способом в рабочее время (" + esc(D.hours) + ") и подтвердит её. Это макет: данные никуда не отправляются.</p>" +
-      '<p><button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button></p></div></div>' +
-      "</div></div>"
-    );
+  // A-60: revised shared form: optional email and native radio buttons.
+  function contact() { return `<div class="form-panel" id="booking">
+      <div class="form-panel__text">
+      <h2 class="form-panel__title" id="booking-title">Остались вопросы?<br>Свяжитесь с нами</h2>
+      <p class="form-panel__lead">Расскажем об услугах клиники, поможем выбрать врача и подготовиться к приёму.</p>
+      <a class="form-panel__phone" href="tel:+78432312090">+7 (843) 231-20-90</a>
+      </div>
+      <div class="form-panel__form">
+      <form class="form form--contact" data-validate novalidate aria-labelledby="booking-title">
+      <div class="field">
+      <label class="field__label" for="cf-name">Имя <span aria-hidden="true">*</span>
+      </label>
+      <input class="field__control field__control--line" id="cf-name" name="name" autocomplete="name" required data-msg-required="Напишите, как к вам обращаться">
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </div>
+      <div class="field">
+      <label class="field__label" for="cf-phone">Телефон <span aria-hidden="true">*</span>
+      </label>
+      <input class="field__control field__control--line" id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required>
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </div>
+      <div class="field">
+      <label class="field__label" for="cf-email">Электронная почта <span class="field__optional">(необязательно)</span>
+      </label>
+      <input class="field__control field__control--line" id="cf-email" name="email" type="email" autocomplete="email" placeholder="mail@example.ru">
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </div>
+      <fieldset class="field">
+      <legend class="field__label">Удобный способ связи</legend>
+      <div class="contact-options">
+      <label class="contact-option">
+      <input class="visually-hidden" type="radio" name="contact" value="call" checked>
+      <span>Звонок</span>
+      </label>
+      <label class="contact-option">
+      <input class="visually-hidden" type="radio" name="contact" value="sms">
+      <span>SMS</span>
+      </label>
+      <label class="contact-option">
+      <input class="visually-hidden" type="radio" name="contact" value="telegram">
+      <span>Telegram</span>
+      </label>
+      <label class="contact-option">
+      <input class="visually-hidden" type="radio" name="contact" value="whatsapp">
+      <span>WhatsApp</span>
+      </label>
+      <label class="contact-option">
+      <input class="visually-hidden" type="radio" name="contact" value="max">
+      <span>MAX</span>
+      </label>
+
+      </div>
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </fieldset>
+      <div class="field">
+      <label class="check" for="cf-consent">
+      <input class="check__input" id="cf-consent" name="consent" type="checkbox" required data-msg-required="Подтвердите согласие на обработку данных">
+      <span class="check__text">Согласен на <a href="https://rkb-sihat.ru/upload/documents/Soglasie_na_obrabotku_PDn_Sihat_RKB.pdf" target="_blank" rel="noopener">обработку персональных данных</a>
+      </span>
+      </label>
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </div>
+      <button class="btn btn--inverse form__submit" type="submit">Отправить заявку</button>
+      </form>
+      <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
+      <span class="icon icon--circle-check" aria-hidden="true">
+      </span>
+      <div>
+      <p class="alert__title">Заявка отправлена</p>
+      <p>Администратор свяжется с вами и подтвердит запись.</p>
+      <button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button>
+      </div>
+      </div>
+      </div>
+      </div>`; }
+
+  var callbackSeq = 0;
+  function callback() {
+    var id = "callback-" + (++callbackSeq);
+    return `<div class="callback-panel">
+      <div class="callback-panel__copy">
+      <h2 id="CALLBACKID-title">Поможем выбрать специалиста</h2>
+      <p>Свяжитесь с нами по <a class="nowrap" href="tel:+78432312090">телефону</a> или укажите свой номер, и мы свяжемся в течение 5 минут.</p>
+      </div>
+      <div class="callback-panel__form">
+      <form class="form form--callback" data-validate novalidate aria-labelledby="CALLBACKID-title">
+      <div class="callback-panel__fields">
+      <div class="field">
+      <label class="field__label" for="CALLBACKID-phone">Номер телефона</label>
+      <input class="field__control" id="CALLBACKID-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" data-phone-mask required>
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </div>
+      <button class="btn btn--primary btn--s" type="submit">Перезвоните мне</button>
+      </div>
+      <div class="field">
+      <label class="check" for="CALLBACKID-consent">
+      <input class="check__input" id="CALLBACKID-consent" name="consent" type="checkbox" required data-msg-required="Подтвердите согласие на обработку данных">
+      <span class="check__text">Согласен на <a href="https://rkb-sihat.ru/upload/documents/Soglasie_na_obrabotku_PDn_Sihat_RKB.pdf" target="_blank" rel="noopener">обработку персональных данных</a>
+      </span>
+      </label>
+      <p class="field__msg" aria-live="polite">
+      </p>
+      </div>
+      </form>
+      <div class="alert alert--success" role="status" tabindex="-1" data-form-success hidden>
+      <span class="icon icon--circle-check" aria-hidden="true">
+      </span>
+      <div>
+      <p class="alert__title">Заявка отправлена</p>
+      <p>Администратор свяжется с вами и подтвердит запись.</p>
+      <button class="btn btn--ghost btn--s" type="button" data-form-again>Отправить ещё одну заявку</button>
+      </div>
+      </div>
+      </div>
+      </div>`.replace(/CALLBACKID/g, id);
   }
 
   // A-47: the compact footer. Rows: contacts, sections and documents; socials and payments; legal text.
@@ -247,7 +336,7 @@
     );
   }
 
-  var parts = { header: header, contact: contact, footer: footer };
+  var parts = { header: header, contact: contact, callback: callback, footer: footer };
   Array.prototype.forEach.call(document.querySelectorAll("[data-include]"), function (slot) {
     var render = parts[slot.getAttribute("data-include")];
     if (render) slot.outerHTML = render();

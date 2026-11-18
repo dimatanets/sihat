@@ -68,6 +68,26 @@
   --color-error-tint: #fdecea;             /* estimate */
   --color-success: #236c1d;                /* darker than the green button: AA as text on the success tint */
   --color-success-tint: #e8f4e6;           /* estimate */
+  /* A-60…A-65: client homepage revision. */
+  --color-rating: #ffbd00;                 /* A-67: filled stars, following the user's reference. */
+  --color-rating-empty: #d9dee3;
+  --color-rating-tint: #fff5dd;
+  --bento-row-height: 320px;
+  --bento-row-height-m: 280px;
+  --bento-title-size: 36px;
+  --bento-title-line: 44px;
+  --bento-icon-size: 80px;
+  --icon-size-display: var(--bento-icon-size);
+  --dialog-width: 560px;
+  --map-height: 480px;
+  --map-height-m: 360px;
+  --map-marker-width: 48px;
+  --map-marker-height: var(--map-marker-width);
+  --map-marker-stroke: 2px;
+  --patient-card-height: 248px;
+  --patient-icon-stroke: calc(8px / 3); /* Preserve the previous Tabler stroke: 2 units at 32/24 scale. */
+  --rating-star-size: 16px;
+  --reviews-side-peek: var(--space-7);
 
   /* ---- Typography: family ---- */
   --font-family-base: "Montserrat", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -169,6 +189,7 @@
   --icon-size: 24px;
   --icon-size-s: 20px;
   --icon-size-l: 32px;
+  --icon-size-xl: 40px;
   --logo-width: 128px;        /* estimate: original 161×58 on rkb-sihat.ru */
   --logo-width-m: 100px;
   --service-code-width: 120px;/* estimate: code column of the long price list */
@@ -228,7 +249,9 @@
 @media (max-width: 1099px) {
   :root {
     --dcard-ratio: 1 / 1;
+    --bento-row-height: 280px;
     --scroller-per-view: 2.5;
+    --reviews-side-peek: var(--space-5);
     --hero-min-height: 0px;
     --hero-padding: 32px;
     --form-panel-padding: 48px;
@@ -252,7 +275,10 @@
     --page-top: 16px;           /* A-53 */
     --logo-width-m: 88px;       /* A-43: the phone bar has to fit 360px with the 24px edge */
     --scroller-per-view: 1.2;   /* a part of the next card shows that the row scrolls */
+    --reviews-side-peek: var(--space-4);
     --hero-padding: 24px;
+    --bento-title-size: 28px;
+    --bento-title-line: 36px;
     --form-panel-padding: 32px;
   }
 }

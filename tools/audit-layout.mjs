@@ -296,6 +296,8 @@ function collect({ scope, tokenNames, nameKeys }) {
   for (const cfg of CARDS) {
     const groups = new Map();
     for (const card of root.querySelectorAll(cfg.card)) {
+      // A-60: the client explicitly requested unequal rows and image shapes in this mosaic.
+      if (cfg.card === ".dcard" && card.closest(".home-directions") && W >= 768) continue;
       const b = card.getBoundingClientRect();
       if (!b.width) continue;
       const li = card.closest("li") || card;
@@ -386,17 +388,23 @@ function collect({ scope, tokenNames, nameKeys }) {
             const ccs = getComputedStyle(c);
             if (ccs.display === "none" || c.matches(".visually-hidden") || !c.getBoundingClientRect().width) continue;
             const cq = c.getBoundingClientRect();
+            // A carousel can start between copies. Measure the visible part inside its viewport.
+            const scroller = c.closest("[data-scroller]");
+            const clip = scroller && scroller.getBoundingClientRect();
+            const visibleLeft = clip ? Math.max(cq.left, clip.left) : cq.left;
+            const visibleRight = clip ? Math.min(cq.right, clip.right) : cq.right;
             // A small painted box (an icon in a circle) is content, a large one is a card.
             if (isSurface(ccs) && cq.width > 64) {
-              if (cq.left < best.x) { best.x = cq.left; best.kind = "surface"; best.el = c; }
+              if (visibleRight > visibleLeft && visibleLeft < best.x) { best.x = visibleLeft; best.kind = "surface"; best.el = c; }
               continue;
             }
             const before = getComputedStyle(c, "::before");
             const hasNumber = before.content && !["none", "normal", '""'].includes(before.content) && !before.content.startsWith("url");
             const t = textBox(c);
             const isLeaf = t || hasNumber || c.classList.contains("icon") || c.tagName === "IMG" || isSurface(ccs);
-            if (isLeaf) {
-              const x = hasNumber ? cq.left + parseFloat(ccs.paddingLeft) : t ? t[0] : cq.left;
+            if (isLeaf && visibleRight > visibleLeft) {
+              const contentLeft = hasNumber ? cq.left + parseFloat(ccs.paddingLeft) : t ? t[0] : cq.left;
+              const x = clip ? Math.max(contentLeft, clip.left) : contentLeft;
               if (x < best.x) { best.x = x; best.kind = "text"; best.el = c; }
             }
             if (!isSurface(ccs)) walk(c, inSurface);
@@ -522,6 +530,11 @@ async function runWidth(browser, base, width, tokenNames, scenes, problems) {
 
   await open("direction.html");
   await scene(page, { id: "direction", page: "Чек-ап программы" }, width, tokenNames, scenes);
+
+  await open("prices.html");
+  await scene(page, { id: "prices", page: "Прайс-лист" }, width, tokenNames, scenes);
+  await open("patients.html");
+  await scene(page, { id: "patients", page: "Пациентам" }, width, tokenNames, scenes);
 
   await context.close();
 }
@@ -781,8 +794,9 @@ function analyzeComponents(scenes, issues) {
     for (const s of scenes.filter((x) => x.width === width)) {
       for (const rec of s.data.els) {
         if (rec.ratio) {
-          if (!media.has(rec.classes[0])) media.set(rec.classes[0], []);
-          media.get(rec.classes[0]).push({ s, rec });
+          const mediaKind = rec.classes.join("."); // Compare the same explicit media variant.
+          if (!media.has(mediaKind)) media.set(mediaKind, []);
+          media.get(mediaKind).push({ s, rec });
         }
         if (!rec.classes.length) continue;
         if (!groups.has(rec.sig)) groups.set(rec.sig, []);
@@ -853,7 +867,7 @@ function analyzeHardcoded(issues) {
       });
     });
   }
-  for (const file of ["index.html", "direction.html", "kit.html"]) {
+  for (const file of ["index.html", "direction.html", "prices.html", "patients.html", "kit.html"]) {
     const text = fs.readFileSync(path.join(ROOT, file), "utf8");
     for (const m of text.matchAll(/style="[^"]*\d(?:px|rem|em)[^"]*"/g)) {
       issues.add("7|" + file + "|" + m[0], { rule: 7, sig: file, title: "Значение в style= вне tokens.css", measured: m[0], expected: "класс и токен", props: new Set(["html"]), file, code: m[0] });
@@ -915,7 +929,7 @@ function writeMarkdown(meta, issues) {
   const L = [];
   L.push("# Аудит отступов и размеров", "");
   L.push("Создано скриптом `tools/audit-layout.mjs`, вручную не править. Наглядная версия со скриншотами: [audit/report.html](../../audit/report.html).", "");
-  L.push("Проверено: главная, «Чек-ап программы», все шаги записи обоих сценариев, оплата, открытое мобильное меню. Ширины: " + WIDTHS.join(", ") + ". Одно нарушение на нескольких ширинах и страницах считается одним номером.", "");
+  L.push("Проверено: главная, «Чек-ап программы», прайс-лист, «Пациентам» и открытое мобильное меню. Ширины: " + WIDTHS.join(", ") + ". Одно нарушение на нескольких ширинах и страницах считается одним номером.", "");
   L.push("## Итог", "");
   L.push("| | Было до правок | Исправлено автоматически | Исправлено по решению | Осталось: нужно решение | Новых |", "|---|---|---|---|---|---|");
   for (const [n, name] of Object.entries(RULES)) {

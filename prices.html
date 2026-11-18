@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Прайс-лист — Сихат РКБ</title>
+  <meta name="description" content="Услуги и цены платного отделения РКБ «Сихат»: консультации, чек-ап программы и анализы.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/icons.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/pages/prices.css">
+</head>
+<body data-page="prices">
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+  <div data-include="header"></div>
+  <main class="prices container" id="main">
+    <section class="prices-catalog" aria-labelledby="prices-title">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки"><ol class="breadcrumbs__list"><li class="breadcrumbs__item"><a href="index.html">Главная</a></li><li class="breadcrumbs__item"><span aria-current="page">Прайс-лист</span></li></ol></nav>
+    <div class="prices-intro"><h1 id="prices-title">Услуги и цены</h1><p>Найдите нужную услугу по названию, коду или категории.</p></div>
+    <div class="prices-filters" role="search" aria-label="Поиск услуг"><div class="field"><label class="field__label" for="price-query">Название или код услуги</label><div class="field__wrap"><input class="field__control" type="search" id="price-query" placeholder="Например, анализ крови" data-price-search></div></div><div class="field"><label class="field__label" for="price-category">Категория</label><div class="field__wrap"><select class="field__control" id="price-category" data-price-category><option value="">Все категории</option><option value="chek-ap">Чек-ап программы</option><option value="konsultacii">Консультации врачей</option><option value="analizy">Анализы</option></select><span class="icon icon--chevron-down field__icon" aria-hidden="true"></span></div></div></div>
+    <p class="prices-count" role="status" data-price-count></p>
+    <div class="price-results" data-price-results></div>
+    <div class="prices-empty" data-price-empty hidden><h2>Ничего не нашли</h2><p>Попробуйте другое название или выберите все категории.</p><button class="btn btn--primary" type="button" data-price-reset>Сбросить поиск</button></div>
+    </section>
+    <section class="prices-booking" aria-labelledby="booking-title"><div data-include="contact"></div></section>
+  </main>
+  <div data-include="footer"></div>
+  <script src="data/site.js"></script><script src="data/directions.js"></script><script src="data/doctors.js"></script><script src="data/home.js"></script><script src="data/services.js"></script><script src="js/layout.js"></script><script src="js/render.js"></script><script src="js/prices.js"></script><script src="js/ui.js"></script><script src="js/forms.js"></script><script src="js/debug-layout.js"></script>
+</body>
+</html>

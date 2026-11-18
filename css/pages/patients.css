@@ -1,0 +1,12 @@
+/* A-63: compact information destinations for the home page patient tiles. */
+.patients { padding-top: var(--page-top); }
+.patients-intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-block: var(--space-6); }
+.patients-intro > p { max-width: var(--text-measure); }
+.patients-note { color: var(--color-text-muted); font-size: var(--text-body-s-size); line-height: var(--text-body-s-line); }
+.patient-articles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--grid-gap); }
+.patient-article { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); padding: var(--space-6); border-radius: var(--radius-card); background: var(--color-surface); scroll-margin-top: var(--anchor-nav-offset); }
+.patient-article > .icon { width: var(--icon-size-l); height: var(--icon-size-l); color: var(--color-primary); }
+.patient-article h2 { font-size: var(--text-h3-size); line-height: var(--text-h3-line); }
+.patient-article > p { flex: 1; }
+.patients-booking { margin-top: var(--space-section); }
+@media (max-width: 767px) { .patient-articles { grid-template-columns: minmax(0, 1fr); } .patient-article { padding: var(--space-5); } }

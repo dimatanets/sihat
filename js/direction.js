@@ -85,10 +85,6 @@
       (b.note ? '<span class="checklist__note">' + esc(b.note) + "</span>" : "") + "</span></li>";
   }).join("");
 
-  // A-48: the shared contact form opens with the direction of this page.
-  var option = Array.prototype.filter.call(document.querySelectorAll("#cf-direction option"), function (o) { return o.textContent === P.title; })[0];
-  if (option) option.defaultSelected = option.selected = true;
-
   /* ---- doctors ---- */
   var docs = slot("doctors");
   docs.setAttribute("data-render", "doctors");

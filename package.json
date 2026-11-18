@@ -1,9 +1,11 @@
 {
   "name": "sihat",
   "private": true,
-  "description": "Static design prototype. No build step; Playwright is only for tools/audit-layout.mjs.",
+  "description": "Static design prototype. No build step. Playwright is used for layout and interaction checks.",
   "scripts": {
-    "audit": "node tools/audit-layout.mjs"
+    "audit": "node tools/audit-layout.mjs",
+    "dev": "node tools/serve.mjs",
+    "check:client": "node tools/check-client-revision.mjs"
   },
   "devDependencies": {
     "playwright": "^1.64.1"

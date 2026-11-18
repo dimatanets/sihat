@@ -36,10 +36,10 @@
   function directionCard(d, h, mod) {
     h = h || "h3";
     return (
-      '<article class="dcard' + (mod ? " " + esc(mod) : "") + '">' +
-      media("dcard__media", d.image, d.icon || "stethoscope") +
+      '<article class="dcard dcard--' + esc(d.id) + (mod ? " " + esc(mod) : "") + '">' +
+      media("dcard__media dcard__media--" + d.id, d.image, d.icon || "stethoscope") +
       '<div class="dcard__body">' +
-      "<" + h + ' class="dcard__title"><a class="dcard__link" href="' + esc(d.href) + '">' + esc(d.title) + "</a></" + h + ">" +
+      "<" + h + ' class="dcard__title"><a class="dcard__link dcard__link--' + esc(d.id) + '" href="' + esc(d.href) + '">' + esc(d.title) + "</a></" + h + ">" +
       '<p class="dcard__text">' + esc(d.text) + "</p>" +
       "</div>" +
       '<span class="dcard__arrow">' + icon("arrow-up-right") + "</span>" +
@@ -54,12 +54,65 @@
     return '<p class="doctor-card__price"><span class="visually-hidden">Цена приёма: </span>' + Number(visit.price).toLocaleString("ru-RU") + " ₽</p>";
   }
 
+  // A-67: five filled stars, a numeric value and an optional count, following the reference.
+  var ratingSeq = 0;
+  // A-69: measure the partial star itself, excluding the empty space between stars.
+  var starPoints = [[12, 1.75], [15.09, 8.01], [22, 9.01], [17, 13.89], [18.18, 20.78], [12, 17.53], [5.82, 20.78], [7, 13.89], [2, 9.01], [8.91, 8.01]];
+  function polygonArea(points) {
+    return Math.abs(points.reduce(function (sum, p, i) {
+      var next = points[(i + 1) % points.length];
+      return sum + p[0] * next[1] - next[0] * p[1];
+    }, 0)) / 2;
+  }
+  function partialStarWidth(fraction) {
+    if (fraction <= 0) return 0;
+    if (fraction >= 1) return 24;
+    var low = 2, high = 22;
+    var targetArea = polygonArea(starPoints) * fraction;
+    for (var step = 0; step < 16; step++) {
+      var cut = (low + high) / 2;
+      var clipped = [];
+      starPoints.forEach(function (point, i) {
+        var previous = starPoints[(i + starPoints.length - 1) % starPoints.length];
+        if ((point[0] <= cut) !== (previous[0] <= cut)) {
+          clipped.push([cut, previous[1] + (point[1] - previous[1]) * (cut - previous[0]) / (point[0] - previous[0])]);
+        }
+        if (point[0] <= cut) clipped.push(point);
+      });
+      if (polygonArea(clipped) < targetArea) low = cut; else high = cut;
+    }
+    return (low + high) / 2;
+  }
+  function ratingMarkup(score, count) {
+    var value = Math.max(0, Math.min(5, parseFloat(String(score).replace(",", ".")) || 0));
+    var label = value.toFixed(1).replace(".", ",");
+    var clip = "rating-clip-" + (++ratingSeq);
+    // Fractional scores fill the corresponding area of the last star, rather than almost all of its bounding box.
+    var path = "M12 1.75l3.09 6.26L22 9.01l-5 4.88 1.18 6.89L12 17.53l-6.18 3.25L7 13.89 2 9.01l6.91-1z";
+    var clipWidth = Math.floor(value) * 24 + partialStarWidth(value % 1);
+    var stars = [0, 24, 48, 72, 96].map(function (x) { return '<path d="' + path + '" transform="translate(' + x + ')"></path>'; }).join("");
+    var countText = "";
+    if (count != null) {
+      var n = count % 100;
+      var word = n >= 11 && n <= 14 ? "оценок" : n % 10 === 1 ? "оценка" : n % 10 >= 2 && n % 10 <= 4 ? "оценки" : "оценок";
+      countText = count + " " + word;
+    }
+    return '<span class="rating" role="img" aria-label="Рейтинг ' + label + ' из 5' + (countText ? ', ' + countText : '') + '"><span class="rating__score"><svg class="rating__stars" viewBox="0 0 120 24" aria-hidden="true" focusable="false"><defs><clipPath id="' + clip + '"><rect width="' + clipWidth + '" height="24"></rect></clipPath></defs><g class="rating__track">' + stars + '</g><g class="rating__fill" clip-path="url(#' + clip + ')">' + stars + '</g></svg><span class="rating__value">' + label + '</span></span>' + (countText ? '<span class="rating__count">' + countText + '</span>' : '') + '</span>';
+  }
+
+  // A-61, A-68: prototype figures; implementation notes belong in project docs, not in the design.
+  function rating(d) {
+    var r = window.SIHAT_HOME && window.SIHAT_HOME.ratings[d.id];
+    if (!r) return "";
+    return '<p class="doctor-card__rating">' + ratingMarkup(r.score, r.count) + '</p>';
+  }
+
   function doctorCard(d, h, mod) {
     h = h || "h3";
     return (
       '<article class="doctor-card' + (mod ? " " + esc(mod) : "") + '">' +
       media("doctor-card__media", d.photo, "user", d.name + ", " + d.spec.toLowerCase()) +
-      '<div class="doctor-card__body">' +
+      '<div class="doctor-card__body">' + rating(d) +
       "<" + h + ' class="doctor-card__name"><a href="' + esc(d.href) + '">' + esc(d.name) + "</a></" + h + ">" +
       (d.role ? '<p class="doctor-card__role">' + esc(d.role) + "</p>" : "") +
       "</div>" +
@@ -117,6 +170,9 @@
     });
   }
 
-  window.Sihat.render = { directionCard: directionCard, doctorCard: doctorCard, all: all };
+  window.Sihat.render = { directionCard: directionCard, doctorCard: doctorCard, rating: ratingMarkup, all: all };
   all(document);
+  Array.prototype.forEach.call(document.querySelectorAll("[data-rating-example]"), function (el) {
+    el.innerHTML = ratingMarkup(el.getAttribute("data-rating-example"));
+  });
 })();

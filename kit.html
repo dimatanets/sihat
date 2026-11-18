@@ -590,8 +590,20 @@
     <!-- ============================================================ Form panel -->
     <section class="container kit-section" id="form-panel" aria-labelledby="h-form-panel">
       <h2 id="h-form-panel">Форма обратной связи</h2>
-      <p class="kit-section__note">Одна форма на обе страницы, собирается в <code>js/layout.js</code> (A-48): поля с линией снизу на синем блоке. Сюда ведут все «Записаться» (<code>#booking</code>).</p>
+      <p class="kit-section__note">Общая форма страниц, собирается в <code>js/layout.js</code> (A-48): поля с линией снизу на синем блоке. Сюда ведут все «Записаться» (<code>#booking</code>).</p>
       <div data-include="contact"></div>
+    </section>
+
+    <!-- A-60: new shared components, used on the revised home page. -->
+    <section class="container kit-section" id="callback" aria-labelledby="h-callback">
+      <h2 id="h-callback">Баннер консультации</h2>
+      <p class="kit-section__note">Повторяется дважды на главной. Телефон и согласие обязательны; у каждого экземпляра свои идентификаторы.</p>
+      <div data-include="callback"></div>
+    </section>
+    <section class="container kit-section" id="review" aria-labelledby="h-review">
+      <h2 id="h-review">Карточка отзыва</h2>
+      <p class="kit-section__note">Демонстрационные текст и оценка. В рабочем проекте — данные подтверждённых отзывов.</p>
+      <article class="review-card"><div class="review-card__top"><div class="review-card__author"><h3 class="review-card__name">Анна</h3><span data-rating-example="5,0"></span><p class="review-card__date">12 ноября 2026</p></div></div><p class="review-card__quote">«На консультации всё подробно объяснили. После приёма появился понятный план действий».</p><div class="review-card__doctor"><img src="assets/img/doctors/sagdiev-azat-ildusovich.jpg" alt="" width="48" height="48"><div><p class="review-card__caption">Лечащий врач</p><p class="review-card__doctor-name">Сагьдиев Азат Ильдусович</p></div></div></article>
     </section>
 
     <!-- ============================================================ Long service list -->
@@ -626,6 +638,7 @@
   <script src="data/site.js"></script>
   <script src="data/directions.js"></script>
   <script src="data/doctors.js"></script>
+  <script src="data/home.js"></script>
   <script src="data/services.js"></script>
   <script src="js/layout.js"></script>
   <script src="js/render.js"></script>
